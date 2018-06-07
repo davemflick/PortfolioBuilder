@@ -12,22 +12,32 @@
 				</v-list>
 			</v-menu>
 			<v-toolbar-title class="white--text">
-				<router-link :to="{name: 'Home'}" tag="span">PortBuilder</router-link>
+				<router-link :to="{name: 'Home'}" tag="span" class="hovlink">PortBuilder</router-link>
 			</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<v-text-field class="nav-search" color="#fff" prepend-icon="search" hide-details single-line></v-text-field>
-				<v-menu :nudge-width="150"  offset-y class="hidden-sm-and-down">
-					<v-toolbar-title slot="activator">
-						<v-btn icon>
-							<v-icon>more_vert</v-icon>
-						</v-btn>
-					</v-toolbar-title>
-					<v-list>
-						<v-list-tile v-for="type in loginItems" :key="type" @click="">
-							<v-list-tile-title v-text="type"></v-list-tile-title>
-						</v-list-tile>
-					</v-list>
-				</v-menu>
+			<v-menu :nudge-width="150"  offset-y class="hidden-sm-and-down">
+				<v-toolbar-title slot="activator">
+					<v-btn icon>
+						<v-icon>more_vert</v-icon>
+					</v-btn>
+				</v-toolbar-title>
+				<v-list>
+					<v-list-tile>
+						<router-link :to="{name: 'Login'}"  tag="span">
+							<v-list-tile-title class="hovlink">Login</v-list-tile-title>
+						</router-link>
+					</v-list-tile>
+					<v-list-tile>
+						<router-link :to="{name: 'SignUp'}"  tag="span">
+							<v-list-tile-title class="hovlink">Sign Up</v-list-tile-title>
+						</router-link>
+					</v-list-tile>
+					<v-list-tile>
+						<v-list-tile-title class="hovlink">Logout</v-list-tile-title>
+					</v-list-tile>
+				</v-list>
+			</v-menu>
 		</v-toolbar>
 	</div>
 </template>
@@ -37,8 +47,7 @@
 		data(){
 			return {
 				searchBar: false,
-				items: ['itemOne', 'itemTwo'],
-				loginItems: ['Sign Up', 'Login', 'Logout']
+				items: ['itemOne', 'itemTwo']
 			}
 		}
 	}
@@ -48,6 +57,13 @@
 .nav-search{
 	max-width: 200px;
 	margin-right: 20px;
+}
+.hovlink{
+	transition: color .2s ease-in;
+}
+.hovlink:hover{
+	color: #ccc;
+	cursor: pointer;
 }
 
 </style>
