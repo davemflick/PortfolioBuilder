@@ -10,7 +10,7 @@ Vue.config.productionTip = false
 
 Vue.use(Vuetify)
 sync(store, router);
-//vue instance
+
 new Vue({
   el: '#app',
   router,
