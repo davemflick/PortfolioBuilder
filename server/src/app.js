@@ -13,11 +13,32 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
 
-//app.use(morgan('combined'));
+app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(cors());
-require('./routes')(app); // pass in route to routes.js
+
+
+const routes = require('./routes.js');
+app.use('/', routes) // pass in route to routes.js
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('File Not Found');
+  err.status = 404;
+  next(err);
+});
+
+// error handler
+// define as the last app.use callback
+app.use(function(err, req, res, next) {
+  res.json({
+  	ok: false,
+    message: err.message,
+    status: err.status || 500,
+    error: {}
+  })
+});
 
 app.listen(config.port, ()=>{
-	console.log('Express Server Running')
+	console.log(`Express Server Running on ${config.port}`)
 })
