@@ -34,8 +34,7 @@ app.use(function(err, req, res, next) {
   res.json({
   	ok: false,
     message: err.message,
-    status: err.status || 500,
-    error: {}
+    error: err || {}
   })
 });
 
