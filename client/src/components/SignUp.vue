@@ -19,13 +19,14 @@
 				<br>
 				<div v-if="error" class="error-alert">{{ error }}</div>
 				<br>
-				<v-btn dark color="primary">Sign Up</v-btn>
+				<v-btn dark color="primary" @click="register">Sign Up</v-btn>
 			</app-form-panel>
 		</v-flex>
 	</v-layout>
 </template>
 
 <script>
+	import AuthenticationService from '@/services/AuthenticationService';
 	import appFormPanel from './universal/FormPanel.vue';
 
 	export default{
@@ -39,6 +40,17 @@
 					confirmPassword: ''
 				},
 				error: null
+			}
+		},
+		methods: {
+			async register(){
+				try{
+					const response = await AuthenticationService.register(this.user);
+					console.log(response.data);
+					this.$store.dispatch('setUser', response.data.user);
+				}catch(error){
+					this.error = error.response.data.error
+				}
 			}
 		},
 		components:{
