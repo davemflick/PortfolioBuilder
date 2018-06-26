@@ -17,7 +17,7 @@ module.exports = {
 
 		const schema = {
 			email: Joi.string().email(),
-			password: Joi.string().regex(new RegExp('^[a-zA-Z0-9]{8,32}$'))
+			password: Joi.string().regex(new RegExp('^[a-zA-Z0-9]{6,32}$'))
 		}
 
 		const user = {
@@ -31,7 +31,7 @@ module.exports = {
 				next(createNewError('Bad email address', 400, null))
 				break;
 				case 'password':
-				next(createNewError('Password must be sexy', 400, null))
+				next(createNewError('Password must be alphanumeric and between 8-32 characters', 400, null))
 				break;
 				default:
 				next(createNewError('Something went wrong validating', 500, null))
