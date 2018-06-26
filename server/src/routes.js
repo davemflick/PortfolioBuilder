@@ -1,14 +1,10 @@
 var express = require('express');
 var router = express.Router();
+var AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy.js');
 
 //comment
 //POST -> Register
-router.post('/register', function(req, res, next){
-	if(req.body.password !== req.body.confirmPassword){
-		var err = new Error("Passwords do not match");
-		err.status = 400;
-		return next(err);
-	}
+router.post('/register', AuthenticationControllerPolicy.register, function(req, res, next){
 	if(req.body.email && req.body.fname && req.body.lname){
 		let user = {
 			email: req.body.email,
