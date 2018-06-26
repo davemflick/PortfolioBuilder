@@ -8,6 +8,16 @@ export default new Vuex.Store({
 	strict: true,
 	plugins: [createPersistedState()],
 	state: {
-		test: 'test-one'
+		user: null
+	},
+	mutations:{
+		setUser(state, user){
+			state.user = user
+		}
+	},
+	actions:{
+		setUser({commit}, user){
+			commit('setUser', user)
+		}
 	}
 })
