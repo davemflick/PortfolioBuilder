@@ -46,8 +46,11 @@
 			async register(){
 				try{
 					const response = await AuthenticationService.register(this.user);
-					console.log(response.data);
-					this.$store.dispatch('setUser', response.data.user);
+					if(response.data.ok){
+						this.$store.dispatch('setUser', response.data.user);
+					} else {
+						this.error = response.data.message
+					}
 				}catch(error){
 					this.error = error.response.data.error
 				}
@@ -59,5 +62,9 @@
 	}
 </script>
 <style scoped>
+.error-alert{
+	text-align: center;
+	color: #dd1212;
+}
 
 </style>
