@@ -8,8 +8,6 @@ var AuthenticationController = require('./controllers/AuthenticationController.j
 router.post('/register', AuthenticationControllerPolicy.register, AuthenticationController.register);
 
 //POST -> login
-router.post('/login', function(req, res, next){
-	return res.json(req.body)
-});
+router.post('/login', AuthenticationController.login);
 
 module.exports = router
