@@ -34,13 +34,14 @@ module.exports = {
 			error.details = {};
 			return next(err);
 		}
-		User.authenticate(req.body.email, req.body.password, (err, user)=>{
+		User.authenticate(req.body.email, req.body.password, function(err, user){
 			if(err){
 				let error = new Error("Invalid Credentials");
 				error.status = 401;
 				error.details = {};
 				return next(err);
 			}
+			console.log(err, user)
 			req.session.userId = user._id;
 			var userReturn = {
 				email: user.email,
