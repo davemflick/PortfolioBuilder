@@ -51,10 +51,20 @@
 					if(response.data.Ok){
 						this.$store.dispatch('setUser', response.data.user);
 					} else {
-						this.error = response.data.message
+						if(response.data.error.code == 11000){
+							this.error = 'Email address provided is already registered with this site.'
+						} else{
+							this.error = response.data.message
+						}
+						
 					}
 				}catch(error){
-					this.error = error.response
+					console.log("ERROR", error);
+					if(error.data.message){
+						this.error = error.data.message
+					} else {
+						this.error = "500 Internal Server Error"
+					}
 				}
 			}
 		},
