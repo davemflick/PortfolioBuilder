@@ -9,13 +9,14 @@
 				<br>
 				<div v-if="error" class="error-alert">{{ error }}</div>
 				<br>
-				<v-btn dark color="primary">Login</v-btn>
+				<v-btn dark color="primary" @click="login">Login</v-btn>
 			</app-form-panel>
 		</v-flex>
 	</v-layout>
 </template>
 
 <script>
+	import AuthenticationService from '@/services/AuthenticationService';
 	import appFormPanel from './universal/FormPanel.vue';
 
 	export default{
@@ -26,6 +27,32 @@
 					password: ''
 				},
 				error: null
+			}
+		},
+		methods:{
+			async login(){
+				try{
+					this.error = null;
+					const response = await AuthenticationService.login(this.user);
+					console.log("Succesful login", response.data)
+					/*if(response.data.Ok){
+						this.$store.dispatch('setUser', response.data.user);
+					} else {
+						if(response.data.error.code == 11000){
+							this.error = 'Email address provided is already registered with this site.'
+						} else{
+							this.error = response.data.message
+						}
+						
+					}*/
+				}catch(error){
+					console.log("ERROR", error);
+					if(error.data.message){
+						this.error = error.data.message
+					} else {
+						this.error = "500 Internal Server Error"
+					}
+				}
 			}
 		},
 		components:{
