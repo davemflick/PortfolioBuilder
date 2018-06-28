@@ -3,6 +3,8 @@ const cors = require('cors');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 const config = require('./config/config');
 const app = express();
 
@@ -12,6 +14,19 @@ mongoose.connect("mongodb://localhost:27017/portbuilder");
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
+//use sessions for tracking logins
+app.use(session({
+	secret: 'Buddy is a good boy',
+	resave: true,
+	saveUninitialized: false,
+	store: new MongoStore({mongooseConnection: db})
+}));
+
+//make user ID available
+app.use((req,res,next)=>{
+	res.locals.currentUser = req.session.userId;
+	next();
+})
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
