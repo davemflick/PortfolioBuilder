@@ -45,14 +45,16 @@
 		methods: {
 			async register(){
 				try{
+					this.error = null;
 					const response = await AuthenticationService.register(this.user);
-					if(response.data.ok){
+					console.log(response.data)
+					if(response.data.Ok){
 						this.$store.dispatch('setUser', response.data.user);
 					} else {
 						this.error = response.data.message
 					}
 				}catch(error){
-					this.error = error.response.data.error
+					this.error = error.response
 				}
 			}
 		},
