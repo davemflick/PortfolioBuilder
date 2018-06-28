@@ -15,7 +15,7 @@ module.exports = {
 				if(err){
 					return next(err);
 				}
-				return res.json({Ok: true, userData})
+				return res.json({Ok: true, Msg: 'User successfuly created'})
 			});
 		} else {
 			var err = new Error("Email and full name required");
