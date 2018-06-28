@@ -1,6 +1,7 @@
 var User = require('../models/User.js');
 
 module.exports = {
+	//register middleware
 	async register(req, res, next){
 		if(req.body.email && req.body.fname && req.body.lname){
 			let userData = {
