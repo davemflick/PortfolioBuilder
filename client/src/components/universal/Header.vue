@@ -23,18 +23,18 @@
 					</v-btn>
 				</v-toolbar-title>
 				<v-list>
-					<v-list-tile>
+					<v-list-tile v-if="!this.$store.state.userLoggedIn">
 						<router-link :to="{name: 'Login'}"  tag="span">
 							<v-list-tile-title class="hovlink">Login</v-list-tile-title>
 						</router-link>
 					</v-list-tile>
-					<v-list-tile>
+					<v-list-tile v-if="!this.$store.state.userLoggedIn">
 						<router-link :to="{name: 'SignUp'}"  tag="span">
 							<v-list-tile-title class="hovlink">Sign Up</v-list-tile-title>
 						</router-link>
 					</v-list-tile>
-					<v-list-tile>
-						<v-list-tile-title class="hovlink">Logout</v-list-tile-title>
+					<v-list-tile v-if="this.$store.state.userLoggedIn">
+						<v-list-tile-title class="hovlink" @click="logout">Logout</v-list-tile-title>
 					</v-list-tile>
 				</v-list>
 			</v-menu>
@@ -48,6 +48,11 @@
 			return {
 				searchBar: false,
 				items: ['itemOne', 'itemTwo']
+			}
+		},
+		methods:{
+			logout(){
+				this.$store.dispatch('setUser', null);
 			}
 		}
 	}
