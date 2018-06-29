@@ -22,14 +22,13 @@ UserSchema.statics.authenticate = function(email, password, callback){
 			return callback(error);
 		}
 		bcrypt.compare(password, user.password, function(error, result){
+			if(error){return callback(err);}
 			if(result === true){
 				return callback(null, user);
-			} else if (result === false){
+			} else {
 				let err = new Error('Passwords do not match');
 				err.status = 401;
 				return callback(err);
-			} else {
-				return callback(error);
 			}
 		})
 	})
