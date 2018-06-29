@@ -62,5 +62,9 @@
 	}
 </script>
 <style scoped>
+.error-alert{
+	text-align: center;
+	color: #dd1212;
+}
 
 </style>
