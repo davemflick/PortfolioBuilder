@@ -3,7 +3,7 @@
 		<v-flex xs10 offset-xs1 sm6 offset-sm3 md4 offset-md4 >
 			<app-form-panel title="Login to PortBuilder">
 				<form id="login-form">
-					<v-text-field type="email" label="Email" required v-model="user.emailOrUsername"></v-text-field>
+					<v-text-field type="email" label="Email/Username" required v-model="user.emailOrUsername"></v-text-field>
 					<v-text-field type="password" label="Password" required v-model="user.password"></v-text-field>
 				</form>
 				<br>
@@ -37,6 +37,7 @@
 					console.log("Succesful login", response.data)
 					if(response.data.Ok){
 						this.$store.dispatch('setUser', response.data.User);
+						this.$router.push({name: 'Portfolio'})
 					} else {
 						if(response.data.error.code == 11000){
 							this.error = 'Email address provided is already registered with this site.'
