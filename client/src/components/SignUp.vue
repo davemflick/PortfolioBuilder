@@ -3,7 +3,7 @@
 		<v-flex xs10 offset-xs1 sm8 offset-sm2 md6 offset-md3 >
 			<app-form-panel title="Register with PortBuilder">
 				<form id="login-form">
-					<v-layout row>
+					<v-layout wrap>
 						<v-flex xs12 sm6 pr-1>
 							<v-text-field type="text" label="First Name" required v-model="user.fname"></v-text-field>
 						</v-flex>
@@ -11,10 +11,22 @@
 							<v-text-field type="text" label="Last Name" required v-model="user.lname"></v-text-field>
 						</v-flex>
 					</v-layout>
-					
-					<v-text-field type="email" label="Email" required v-model="user.email"></v-text-field>
-					<v-text-field type="password" label="Password" required v-model="user.password"></v-text-field>
-					<v-text-field type="password" label="Confirm Password" required v-model="user.confirmPassword"></v-text-field>
+					<v-layout wrap>
+						<v-flex xs12 sm6 pr-1>
+							<v-text-field type="text" label="Username" required v-model="user.username"></v-text-field>
+						</v-flex>
+						<v-flex xs12 sm6 pr-1>
+							<v-text-field type="email" label="Email" required v-model="user.email"></v-text-field>
+						</v-flex>
+					</v-layout>
+					<v-layout wrap>
+						<v-flex xs12 sm6 pr-1>
+							<v-text-field type="password" label="Password" required v-model="user.password"></v-text-field>
+						</v-flex>
+						<v-flex xs12 sm6 pr-1>
+							<v-text-field type="password" label="Confirm Password" required v-model="user.confirmPassword"></v-text-field>
+						</v-flex>
+					</v-layout>
 				</form>
 				<br>
 				<div v-if="error" class="error-alert">{{ error }}</div>
@@ -35,6 +47,7 @@
 				user:{
 					fname: '',
 					lname: '',
+					username: '',
 					email: '',
 					password: '',
 					confirmPassword: ''
@@ -52,7 +65,7 @@
 						this.$store.dispatch('setUser', response.data.user);
 					} else {
 						if(response.data.error.code == 11000){
-							this.error = 'Email address provided is already registered with this site.'
+							this.error = 'Email and/or Username address provided is already registered with this site.'
 						} else{
 							this.error = response.data.message
 						}
