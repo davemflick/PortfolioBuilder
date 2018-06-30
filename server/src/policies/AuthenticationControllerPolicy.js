@@ -17,11 +17,13 @@ module.exports = {
 
 		const schema = {
 			email: Joi.string().email(),
+			username: Joi.string().regex(new RegExp('^[a-zA-Z0-9]{5,25}$')),
 			password: Joi.string().regex(new RegExp('^[a-zA-Z0-9]{6,32}$'))
 		}
 
 		const user = {
 			email: req.body.email,
+			username: req.body.username,
 			password: req.body.password
 		}
 		const {error, value} = Joi.validate(user, schema);
@@ -29,6 +31,9 @@ module.exports = {
 			switch(error.details[0].context.key){
 				case 'email':
 				next(createNewError('Bad email address', 400, null))
+				break;
+				case 'username':
+				next(createNewError('Username must be alphanumeric and between 5-25 characters', 400, null))
 				break;
 				case 'password':
 				next(createNewError('Password must be alphanumeric and between 8-32 characters', 400, null))
