@@ -3,9 +3,10 @@ var User = require('../models/User.js');
 module.exports = {
 	//register middleware
 	async register(req, res, next){
-		if(req.body.email && req.body.fname && req.body.lname){
+		if(req.body.email && req.body.username && req.body.fname && req.body.lname){
 			let userData = {
 				email: req.body.email,
+				username: req.body.username,
 				name: {
 					first: req.body.fname,
 					last: req.body.lname
@@ -17,34 +18,39 @@ module.exports = {
 					return next(err);
 				}
 				req.session.userId = user._id;
-				return res.json({Ok: true, Msg: 'User successfuly created'})
+				let returnUser = {
+					name: {first: user.name.first, last: user.name.last},
+					username: user.username,
+					email: user.email
+				}
+				return res.json({Ok: true, Msg: 'User successfuly created', user: returnUser})
 			});
 		} else {
-			var err = new Error("Email and full name required");
+			var err = new Error("Email, username, and full name required");
 			err.status = 400;
-			err.details = {email: req.body.email, fname: req.body.fname, lname: req.body.lname}
+			err.details = {email: req.body.email, fname: req.body.fname, lname: req.body.lname, username: req.body.username}
 			return next(err);
 		}
 	},
 
 	async login(req, res, next){
-		if(!req.body.email || !req.body.password){
-			let error = new Error("Email and Password Required");
+		if(!req.body.emailOrUsername || !req.body.password){
+			var error = new Error("Email/Username and Password Required");
 			error.status = 400;
 			error.details = {};
-			return next(err);
+			return next(error);
 		}
-		User.authenticate(req.body.email, req.body.password, function(err, user){
+		User.authenticate(req.body.emailOrUsername, req.body.password, function(err, user){
 			if(err){
-				let error = new Error("Invalid Credentials");
+				var error = new Error("Invalid Credentials");
 				error.status = 401;
 				error.details = {};
 				return next(err);
 			}
-			console.log(err, user)
 			req.session.userId = user._id;
 			var userReturn = {
 				email: user.email,
+				username: user.username,
 				name: {first: user.name.first, last: user.name.last}
 			}
 			return res.json({Ok: true, Msg: 'Successful user login', User: userReturn})
