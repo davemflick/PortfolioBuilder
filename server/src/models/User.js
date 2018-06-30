@@ -2,17 +2,18 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 
 var UserSchema = new mongoose.Schema({
-	email: {type: String, required: true, unique: true, trim: true},
-	name: {
+		name: {
 		first: {type: String, required: true, trim: true},
 		last: {type: String, required: true, trim: true}
 	},
+	username: {type: String, required: true, unique: true, trim: true},
+	email: {type: String, required: true, unique: true, trim: true},
 	password: {type: String, required: true},
 	createdAt: {type: Date, default: Date.now}
 });
 
-UserSchema.statics.authenticate = function(email, password, callback){
-	User.findOne({email}).exec(function(err, user){
+UserSchema.statics.authenticate = function(emailOrUsername, password, callback){
+	User.findOne({$or: [{'email': emailOrUsername}, {'username': emailOrUsername}]}).exec(function(err, user){
 		if(err){
 			return callback(err);
 		}else if(!user){
@@ -26,7 +27,7 @@ UserSchema.statics.authenticate = function(email, password, callback){
 			if(result === true){
 				return callback(null, user);
 			} else {
-				let err = new Error('Passwords do not match');
+				var err = new Error('Passwords do not match');
 				err.status = 401;
 				return callback(err);
 			}
