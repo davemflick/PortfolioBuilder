@@ -3,7 +3,7 @@
 </template>
 
 <script>
-	import AuthenticationService from '@/services/AuthenticationService';
+	import PortfolioService from '@/services/PortfolioService';
 	import appFormPanel from './universal/FormPanel.vue';
 
 	export default{
@@ -11,6 +11,17 @@
 			return {
 				user: null
 			}
+		},
+		async mounted(){
+			const username= this.$store.state.route.params.username
+			if(!username){
+				this.$router.push({name: 'Home'});
+				return;
+			}
+			if(this.$store.state.userLoggedIn){
+				this.user = this.$store.state.user;
+			}
+			const portfolio = await PortfolioService.findPortfolio(username);
 		}
 	}
 </script>

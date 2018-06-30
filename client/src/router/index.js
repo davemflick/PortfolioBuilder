@@ -26,7 +26,7 @@ export default new Router({
       component: SignUp
     },
     {
-      path: '/portfolio',
+      path: '/portfolio/:username?',
       name: 'Portfolio',
       component: Portfolio
     }

@@ -35,6 +35,21 @@ UserSchema.statics.authenticate = function(emailOrUsername, password, callback){
 	})
 }
 
+UserSchema.statics.findByUsername = function(username, callback){
+	User.findOne({username}).exec(function(err, user){
+		if(err){
+			return callback(err);
+		}
+		if(!user){
+			let error = new Error(`User ${username} could not be found.`);
+			error.status = 400;
+			return callback(error);
+		}
+		const profile = {name: user.name, email: user.email, username: user.username};
+		callback(null, profile);
+	});
+}
+
 UserSchema.pre('save', function(next){
 	var user = this;
 	bcrypt.hash(user.password, 10, function(err, hash){
