@@ -3,7 +3,7 @@
 		<v-flex xs10 offset-xs1 sm6 offset-sm3 md4 offset-md4 >
 			<app-form-panel title="Login to PortBuilder">
 				<form id="login-form">
-					<v-text-field type="email" label="Email" required v-model="user.email"></v-text-field>
+					<v-text-field type="email" label="Email" required v-model="user.emailOrUsername"></v-text-field>
 					<v-text-field type="password" label="Password" required v-model="user.password"></v-text-field>
 				</form>
 				<br>
@@ -23,7 +23,7 @@
 		data(){
 			return {
 				user:{
-					email: '',
+					emailOrUsername: '',
 					password: ''
 				},
 				error: null
