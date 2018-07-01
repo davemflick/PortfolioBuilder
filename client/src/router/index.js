@@ -4,6 +4,7 @@ import Home from '@/components/Home.vue'
 import Login from '@/components/Login.vue'
 import SignUp from '@/components/SignUp.vue'
 import Portfolio from '@/components/Portfolio.vue'
+import PortfolioBuild from '@/components/PortfolioBuild.vue'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/portfolio/:username?',
       name: 'Portfolio',
       component: Portfolio
+    },
+    {
+      path: '/portfolio/:username/build/:stage',
+      name: 'PortfolioBuild',
+      component: PortfolioBuild
     }
   ]
 })
