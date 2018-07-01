@@ -1,4 +1,5 @@
 var User = require('../models/User.js');
+var Portfolio = require('../models/Portfolio.js');
 
 module.exports = {
 	//register middleware
@@ -13,17 +14,30 @@ module.exports = {
 				},
 				password: req.body.password
 			}
+			//Initially create a new user
 			User.create(userData, function(err, user){
 				if(err){
 					return next(err);
 				}
 				req.session.userId = user._id;
 				let returnUser = {
+					_id: user._id,
 					name: {first: user.name.first, last: user.name.last},
 					username: user.username,
-					email: user.email
+					email: user.email,
+					portfolio: null
 				}
-				return res.json({Ok: true, Msg: 'User successfuly created', user: returnUser})
+				//Once user has _id create a portfolio instance for that user, passing _id and username
+				Portfolio.create({userId: user._id, username: user.username}, function(err, portfolio){
+					if(err){return next(err)};
+					returnUser.portfolio = portfolio._id;
+
+					//Once portfolio instance created, update newly created user with portfolio _id
+					User.update({_id: returnUser._id}, {portfolio: portfolio._id} ,function(err, user){
+						if(err){return next(err);}
+						return res.json({Ok: true, Msg: 'User successfuly created', user: returnUser})
+					})
+				});
 			});
 		} else {
 			var err = new Error("Email, username, and full name required");
