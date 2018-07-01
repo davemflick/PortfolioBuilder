@@ -60,9 +60,9 @@
 				try{
 					this.error = null;
 					const response = await AuthenticationService.register(this.user);
-					console.log(response.data)
 					if(response.data.Ok){
 						this.$store.dispatch('setUser', response.data.user);
+						this.$router.push({name: 'Portfolio', params: {username: response.data.user.username}})
 					} else {
 						if(response.data.error.code == 11000){
 							this.error = 'Email and/or Username address provided is already registered with this site.'
