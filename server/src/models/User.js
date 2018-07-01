@@ -48,8 +48,8 @@ UserSchema.statics.findByUsername = function(username, callback){
 			error.status = 400;
 			return callback(error);
 		}
-		const profile = {name: user.name, email: user.email, username: user.username};
-		callback(null, profile);
+		const account = { _id: user._id, name: user.name, email: user.email, username: user.username, portfolio: user.portfolio};
+		callback(null, account);
 	});
 }
 

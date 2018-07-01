@@ -30,7 +30,7 @@ module.exports = {
 				//Once user has _id create a portfolio instance for that user, passing _id and username
 				Portfolio.create({userId: user._id, username: user.username}, function(err, portfolio){
 					if(err){return next(err)};
-					returnUser.portfolio = portfolio._id;
+					returnUser.portfolio = portfolio
 
 					//Once portfolio instance created, update newly created user with portfolio _id
 					User.update({_id: returnUser._id}, {portfolio: portfolio._id} ,function(err, user){
