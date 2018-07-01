@@ -12,7 +12,7 @@ var UserSchema = new mongoose.Schema({
 	password: {type: String, required: true},
 	createdAt: {type: Date, default: Date.now},
 	portfolioIsSetUp: {type: Boolean, default: false},
-	portfolio: {type: Schema.ObjectId, ref: 'Portfolio'}
+	portfolio: {type: Schema.Types.ObjectId, ref: 'Portfolio'}
 });
 
 UserSchema.statics.authenticate = function(emailOrUsername, password, callback){

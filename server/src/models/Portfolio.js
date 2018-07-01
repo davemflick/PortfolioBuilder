@@ -1,14 +1,12 @@
 const mongoose = require('mongoose');
-const SkillSchema = require('./Skill');
-const ProjectSchema = require('./Project');
 var Schema = mongoose.Schema;
 
 
 const PortfolioSchema = new mongoose.Schema({
-	userId: {type: Schema.ObjectId, required: true, ref: 'User'},
-	username: {type: String, required: true, unique: true, trim: true}
+	userId: {type: Schema.Types.ObjectId, required: true, ref: 'User'},
+	username: {type: String, required: true, unique: true, trim: true},
 	isSetUp: {type: Boolean, default: false},
-	isActive: {type: Boolean. deafult: true},
+	isActive: {type: Boolean, deafult: true},
 	profilePicture: [
 		{
 			path: {type: String, default: __dirname + '/client/src/assets/emptyProfile.png'},
@@ -16,9 +14,9 @@ const PortfolioSchema = new mongoose.Schema({
 			createdOn: {type: Date, default: Date.now }
 		}
 	],
-	projects: [ProjectSchema],
+	projects: [{type: Schema.Types.ObjectId, ref: 'Project'}],
 	certifications: [{name: String, about: String, picturePath: String, dateObtained: Date}],
-	skills: [SkillSchema],
+	skills: [{type: Schema.Types.ObjectId, ref: 'Skill'}],
 	createdOn: {type: Date, default: Date.now },
 	updatedOn: {type: Date, default: Date.now }
 });

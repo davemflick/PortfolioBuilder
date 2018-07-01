@@ -1,13 +1,12 @@
 const mongoose = require('mongoose');
-const SkillSchema = require('./Skill');
 var Schema = mongoose.Schema;
 
 const ProjectSchema = new mongoose.Schema({
-	portfolioId: {type: Schema.ObjectId, required: true, ref: 'Portfolio'},
+	portfolioId: {type: Schema.Types.ObjectId, required: true, ref: 'Portfolio'},
 	name: {type: String, required: true, trim: true},
 	description: {type: String, trim: true},
 	link: {type: String, trim: true},
-	stack: [SkillSchema],
+	stack: [{type: Schema.Types.ObjectId, ref: 'Skill'}],
 	images: [
 		{
 			path: {type: String},
