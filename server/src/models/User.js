@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
+var Schema = mongoose.Schema;
 
 var UserSchema = new mongoose.Schema({
 		name: {
@@ -9,7 +10,9 @@ var UserSchema = new mongoose.Schema({
 	username: {type: String, required: true, unique: true, trim: true},
 	email: {type: String, required: true, unique: true, trim: true},
 	password: {type: String, required: true},
-	createdAt: {type: Date, default: Date.now}
+	createdAt: {type: Date, default: Date.now},
+	portfolioIsSetUp: {type: Boolean, default: false},
+	portfolio: {type: Schema.ObjectId, ref: 'Portfolio'}
 });
 
 UserSchema.statics.authenticate = function(emailOrUsername, password, callback){
