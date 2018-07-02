@@ -15,15 +15,16 @@
       </v-layout>
     </v-container>
   </v-jumbotron>
-  <v-container id="build-stage" v-if="!error && buildStage">
-  	<h2>Pull stage {{ buildStage }}</h2>
-  </v-container>
+  <v-container fluid id="build-stage" v-if="!error && buildStage">
+  	<app-stage-one v-if="buildStage === 'one'"></app-stage-one>
+  </v-container fluid>
 </div>
 </template>
 
 <script>
 	import PortfolioService from '@/services/PortfolioService';
 	import appFormPanel from './universal/FormPanel.vue';
+	import appStageOne from './PortfolioBuildStageOne.vue';
 
 	export default{
 		data(){
@@ -56,6 +57,9 @@
 			}
 			this.buildStage = stage;
 
+		},
+		components:{
+			appStageOne
 		}
 	}
 </script>
@@ -63,6 +67,9 @@
 .error-alert{
 	text-align: center;
 	color: #dd1212;
+}
+#build-stage{
+	background-color: #fff;
 }
 
 </style>
