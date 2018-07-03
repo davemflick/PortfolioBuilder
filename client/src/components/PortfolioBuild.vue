@@ -17,6 +17,7 @@
   </v-jumbotron>
   <v-container fluid id="build-stage" v-if="!error && buildStage">
   	<app-stage-one v-if="buildStage === 'one'"></app-stage-one>
+  	<app-stage-two v-if="buildStage === 'two'" :portfolioId="portfolioId"></app-stage-two>
   </v-container fluid>
 </div>
 </template>
@@ -25,13 +26,15 @@
 	import PortfolioService from '@/services/PortfolioService';
 	import appFormPanel from './universal/FormPanel.vue';
 	import appStageOne from './PortfolioBuildStageOne.vue';
+	import appStageTwo from './PortfolioBuildStageTwo.vue';
 
 	export default{
 		data(){
 			return {
 				user: null,
 				buildStage: null,
-				error: null
+				error: null,
+				portfolioId: null
 			}
 		},
 		async mounted(){
@@ -46,6 +49,7 @@
 			const userData = await PortfolioService.findPortfolio(username);
 			const portfolio = userData.data.portfolio;
 			console.log(portfolio)
+			this.portfolioId = portfolio._id;
 			if(portfolio.isSetUp){
 				this.$router.push({name: 'Portfolio', params: {username}});
 				return;
@@ -57,9 +61,11 @@
 			}
 			this.buildStage = stage;
 
+
 		},
 		components:{
-			appStageOne
+			appStageOne,
+			appStageTwo
 		}
 	}
 </script>
