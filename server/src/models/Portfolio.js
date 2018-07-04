@@ -28,13 +28,32 @@ const PortfolioSchema = new mongoose.Schema({
 
 PortfolioSchema.statics.findUserPortfolio = function(portfolioId, callback){
 	if(!portfolioId){
-		let err = new Error("User Id not found");
+		let err = new Error("Portfolio Id not found");
 		err.status = 400;
 		err.details = {}
 		return callback(err);
 	}
 	Portfolio.findById({_id: portfolioId}).exec(function(error, portfolio){
 		if(error){return callback(error)};
+		if(!portfolio){
+			let err = new Error("Portfolio not found");
+			err.status = 400;
+			err.details = {}
+			return callback(err);
+		}
+		return callback(null, portfolio);
+	});
+}
+
+PortfolioSchema.statics.updatePortfolio = function(portfolioId, body, callback){
+	if(!portfolioId){
+		let err = new Error("Portfolio Id not found");
+		err.status = 400;
+		err.details = {}
+		return callback(err);
+	}
+	Portfolio.findOneAndUpdate({_id: portfolioId}, {$set: body}, {new: true}).exec(function(error, portfolio){
+		if(error){return callback(error);}
 		if(!portfolio){
 			let err = new Error("Portfolio not found");
 			err.status = 400;
