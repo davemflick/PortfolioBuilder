@@ -16,7 +16,7 @@
     </v-container>
   </v-jumbotron>
   <v-container fluid id="build-stage" v-if="!error && buildStage">
-  	<app-stage-one v-if="buildStage === 'one'"></app-stage-one>
+  	<app-stage-one v-if="buildStage === 'one'" :portfolioId="portfolioId" :profilePictures="portfolioPictures"></app-stage-one>
   	<app-stage-two v-if="buildStage === 'two'" :portfolioId="portfolioId"></app-stage-two>
   </v-container fluid>
 </div>
@@ -34,7 +34,8 @@
 				user: null,
 				buildStage: null,
 				error: null,
-				portfolioId: null
+				portfolioId: null,
+				portfolioPictures: null
 			}
 		},
 		async mounted(){
@@ -54,6 +55,7 @@
 				this.$router.push({name: 'Portfolio', params: {username}});
 				return;
 			}
+			this.portfolioPictures = portfolio.profilePicture
 			const stage = !portfolio.setUpStage.one ? 'one' : !portfolio.setUpStage.two ? 'two' : null;
 			if(!stage){
 				this.error = "Error finding build stage."
