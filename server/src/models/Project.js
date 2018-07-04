@@ -18,6 +18,17 @@ const ProjectSchema = new mongoose.Schema({
 	updatedOn: {type: Date, default: Date.now }
 });
 
+ProjectSchema.statics.addUserProject = function(projectData, callback){
+	Project.create(projectData, function(err, project){
+		if(err){return callback(err);}
+		if(!project){
+			let error = new Error("Could not create project");
+			error.status = 401;
+			return callback(error);
+		}
+		callback(null, project);
+	});
+}
 const Project = mongoose.model('Project', ProjectSchema);
 
 module.exports = Project;

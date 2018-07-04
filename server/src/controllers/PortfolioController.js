@@ -1,5 +1,6 @@
 var User = require('../models/User.js');
 var Portfolio = require('../models/Portfolio.js');
+var Project = require('../models/Project.js');
 
 module.exports = {
 	//register middleware
@@ -18,5 +19,15 @@ module.exports = {
 			if(err){return next(err);}
 			return portfolio ? res.json({Ok: true, portfolio}) : res.json({Ok: false, Msg: 'Portfolio did no update'});
 		})
+	},
+
+	async addUserProject(req, res, next){
+		Project.addUserProject(req.body, function(err, project){
+			if(err){return next(err);}
+			Portfolio.addUserProject(req.params.portfolioId, project, function(error, portfolio){
+				if(error){return next(error);}
+				return res.json({Ok: true, portfolio});
+			});
+		});
 	}
 }

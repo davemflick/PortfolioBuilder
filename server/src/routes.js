@@ -17,4 +17,7 @@ router.get('/portfolio/:username', PortfolioController.findPortfolio);
 //Update -portfolio
 router.put('/portfolio/update/:id', PortfolioController.updatePortfolio);
 
+//POST -> First post a new project, then update correct portfolio
+router.post('/project/add/:portfolioId', PortfolioController.addUserProject)
+
 module.exports = router

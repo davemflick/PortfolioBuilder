@@ -26,20 +26,23 @@ const PortfolioSchema = new mongoose.Schema({
 	updatedOn: {type: Date, default: Date.now }
 });
 
+function createError(msg, status, details){
+	let err = new Error(msg);
+	err.status = status;
+	err.details = details;
+	return err;
+}
+const noPortfolioError = createError("Portfolio not found", 400, {});
+const noPortfolioIdError = createError("Portfolio Id not found", 400, {});
+
 PortfolioSchema.statics.findUserPortfolio = function(portfolioId, callback){
 	if(!portfolioId){
-		let err = new Error("Portfolio Id not found");
-		err.status = 400;
-		err.details = {}
-		return callback(err);
+		return callback(noPortfolioIdError);
 	}
-	Portfolio.findById({_id: portfolioId}).exec(function(error, portfolio){
+	Portfolio.findById({_id: portfolioId}).populate('projects').exec(function(error, portfolio){
 		if(error){return callback(error)};
 		if(!portfolio){
-			let err = new Error("Portfolio not found");
-			err.status = 400;
-			err.details = {}
-			return callback(err);
+			return callback(noPortfolioError);
 		}
 		return callback(null, portfolio);
 	});
@@ -47,21 +50,32 @@ PortfolioSchema.statics.findUserPortfolio = function(portfolioId, callback){
 
 PortfolioSchema.statics.updatePortfolio = function(portfolioId, body, callback){
 	if(!portfolioId){
-		let err = new Error("Portfolio Id not found");
-		err.status = 400;
-		err.details = {}
-		return callback(err);
+		return callback(noPortfolioIdError);
 	}
 	Portfolio.findOneAndUpdate({_id: portfolioId}, {$set: body}, {new: true}).exec(function(error, portfolio){
 		if(error){return callback(error);}
 		if(!portfolio){
-			let err = new Error("Portfolio not found");
-			err.status = 400;
-			err.details = {}
-			return callback(err);
+			return callback(noPortfolioError);
 		}
 		return callback(null, portfolio);
 	});
+}
+
+PortfolioSchema.statics.addUserProject = function(portfolioId, project, callback){
+	if(!portfolioId){
+		return callback(noPortfolioIdError);
+	}
+	if(!project){
+		return callback(noPortfolioError);
+	}
+	console.log('PROJECT', project);
+	Portfolio.findOneAndUpdate({_id: portfolioId}, {$push: {projects: project}}, {new: true}).exec(function(error, portfolio){
+		if(error){return callback(error)};
+		if(!portfolio){
+			return callback(noPortfolioError);
+		}
+		return callback(null, portfolio);
+	})
 }
 
 const Portfolio = mongoose.model('Portfolio', PortfolioSchema);
