@@ -12,6 +12,9 @@ router.post('/register', AuthenticationControllerPolicy.register, Authentication
 router.post('/login', AuthenticationController.login);
 
 //GET -> portfolio
-router.get('/portfolio/:username', PortfolioController.findPortfolio)
+router.get('/portfolio/:username', PortfolioController.findPortfolio);
+
+//Update -portfolio
+router.put('/portfolio/update/:id', PortfolioController.updatePortfolio);
 
 module.exports = router
