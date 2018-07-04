@@ -20,7 +20,6 @@
 		data(){
 			return {
 				project:{
-					portfolioId: null,
 					name: null,
 					link: null,
 					description: null
