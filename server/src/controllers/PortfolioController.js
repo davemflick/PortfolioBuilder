@@ -26,7 +26,7 @@ module.exports = {
 			if(err){return next(err);}
 			Portfolio.addUserProject(req.params.portfolioId, project, function(error, portfolio){
 				if(error){return next(error);}
-				return res.json({Ok: true, portfolio});
+				return res.json({ok: true, portfolio});
 			});
 		});
 	}

@@ -68,8 +68,7 @@ PortfolioSchema.statics.addUserProject = function(portfolioId, project, callback
 	if(!project){
 		return callback(noPortfolioError);
 	}
-	console.log('PROJECT', project);
-	Portfolio.findOneAndUpdate({_id: portfolioId}, {$push: {projects: project}}, {new: true}).exec(function(error, portfolio){
+	Portfolio.findOneAndUpdate({_id: portfolioId}, {$set:{setUpStage: {one: true, two: true}, isSetUp: true}, $push: {projects: project}}, {new: true}).populate('projects').exec(function(error, portfolio){
 		if(error){return callback(error)};
 		if(!portfolio){
 			return callback(noPortfolioError);
