@@ -20,7 +20,11 @@
 			return {
 				portfolioData:{
 					aboutUser: null,
-					profilePicture: null
+					profilePicture: null,
+					setUpStage: {
+						one: true,
+						two: false
+					}
 				},
 				profilePicturePath: null,
 				error: null
@@ -45,8 +49,16 @@
 				try{
 					const portfolioUpdate = await PortfolioService.updatePortfolio(this.portfolioId, this.portfolioData);
 					console.log(portfolioUpdate);
+					if(!portfolioUpdate.data.Ok){
+						this.error = "Error updating portfolio";
+						return;
+					} else {
+						this.$store.dispatch('setBuildStage', 'two');
+						this.$router.push({name: 'PortfolioBuild', params: {stage: 'two'}});
+					}
 				}catch(error){
 					console.log("ERROR", error);
+					this.error = error;
 				}
 			}
 		}
