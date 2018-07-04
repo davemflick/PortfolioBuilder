@@ -27,13 +27,17 @@
 	import appFormPanel from './universal/FormPanel.vue';
 	import appStageOne from './PortfolioBuildStageOne.vue';
 	import appStageTwo from './PortfolioBuildStageTwo.vue';
-	import { mapGetters } from 'vuex';
 
 	export default{
 		computed: {
-			...mapGetters({
-				buildStage: 'getBuildStage'
-			})
+			buildStage: {
+				get(){
+					return this.$store.state.buildStage;
+				},
+				set(stage){
+					this.$store.dispatch('setBuildStage', stage);
+				}
+			}
 		},
 		data(){
 			return {
@@ -44,6 +48,7 @@
 			}
 		},
 		async mounted(){
+			console.log(this.buildStage);
 			const username= this.$store.state.route.params.username;
 			if(this.$store.state.userLoggedIn){
 				this.user = this.$store.state.user;
