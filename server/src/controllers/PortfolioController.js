@@ -11,5 +11,12 @@ module.exports = {
 				return res.json({user, portfolio});
 			});
 		});
+	},
+
+	async updatePortfolio(req, res, next){
+		Portfolio.updatePortfolio(req.params.id, req.body, function(err, portfolio){
+			if(err){return next(err);}
+			return portfolio ? res.json({Ok: true, portfolio}) : res.json({Ok: false, Msg: 'Portfolio did no update'});
+		})
 	}
 }
