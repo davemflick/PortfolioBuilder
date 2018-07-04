@@ -7,5 +7,9 @@ export default {
 
 	updatePortfolio(id, req){
 		return Api().put(`portfolio/update/${id}`, req)
+	},
+
+	addUserProject(portfolioId, req){
+		return Api().post(`project/add/${portfolioId}`, req);
 	}
 }

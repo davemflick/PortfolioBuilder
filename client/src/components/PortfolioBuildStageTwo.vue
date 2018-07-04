@@ -8,12 +8,13 @@
 		<br>
 		<div v-if="error" class="error-alert">{{ error }}</div>
 		<br>
-		<v-btn dark color="primary">Next Step</v-btn>
+		<v-btn dark color="primary" @click="addUserProject" >Next Step</v-btn>
 	</app-form-panel>
 </template>
 
 <script>
 	import appFormPanel from './universal/FormPanel.vue';
+	import PortfolioService from '@/services/PortfolioService.js';
 
 	export default{
 		props: ['portfolioId'],
@@ -29,6 +30,25 @@
 		},
 		components:{
 			appFormPanel
+		},
+		methods:{
+			async addUserProject(){
+				try{
+					let newProject = this.project;
+					newProject.portfolioId = this.portfolioId;
+					const project = await PortfolioService.addUserProject(this.portfolioId, newProject);
+					console.log(project);
+					if(!project.data.ok){
+						this.error = project.data.message;
+						return;
+					}
+					this.$store.dispatch('setBuildStage', null);
+					this.$router.push({name: 'Portfolio', params:{username: project.data.portfolio.username}})
+				}catch(error){
+					console.log("ERROR ERROR: ", error);
+					this.error = error;
+				}
+			}
 		}
 	}
 </script>
