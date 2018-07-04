@@ -27,12 +27,17 @@
 	import appFormPanel from './universal/FormPanel.vue';
 	import appStageOne from './PortfolioBuildStageOne.vue';
 	import appStageTwo from './PortfolioBuildStageTwo.vue';
+	import { mapGetters } from 'vuex';
 
 	export default{
+		computed: {
+			...mapGetters({
+				buildStage: 'getBuildStage'
+			})
+		},
 		data(){
 			return {
 				user: null,
-				buildStage: null,
 				error: null,
 				portfolioId: null,
 				portfolioPictures: null
@@ -40,7 +45,6 @@
 		},
 		async mounted(){
 			const username= this.$store.state.route.params.username;
-			const buildState = this.$store.state.route.params.build;
 			if(this.$store.state.userLoggedIn){
 				this.user = this.$store.state.user;
 			} else {
@@ -50,6 +54,7 @@
 			const userData = await PortfolioService.findPortfolio(username);
 			const portfolio = userData.data.portfolio;
 			console.log(portfolio)
+
 			this.portfolioId = portfolio._id;
 			if(portfolio.isSetUp){
 				this.$router.push({name: 'Portfolio', params: {username}});
@@ -61,8 +66,8 @@
 				this.error = "Error finding build stage."
 				return;
 			}
-			this.buildStage = stage;
-
+			this.$store.dispatch('setBuildStage', stage)
+			this.buildStage = this.$store.state.buildStage;
 
 		},
 		components:{
