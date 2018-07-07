@@ -1,11 +1,32 @@
 <template>
-  <div class="container">
-    <h1>Home Page</h1>
-  </div>
+  <v-container>
+    <app-form-panel title="User Information" v-if="user">
+      <form id="login-form">
+        <v-layout wrap>
+          <v-flex xs12 sm6 pr-1>
+            <v-text-field type="text" label="First Name" required v-model="user.name.first"></v-text-field>
+          </v-flex>
+          <v-flex xs12 sm6 pl-1>
+            <v-text-field type="text" label="Last Name" required v-model="user.name.last"></v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-layout wrap>
+          <v-flex xs12 sm6 pr-1>
+            <v-text-field type="text" label="Username" required v-model="user.username"></v-text-field>
+          </v-flex>
+          <v-flex xs12 sm6 pr-1>
+            <v-text-field type="email" label="Email" required v-model="user.email"></v-text-field>
+          </v-flex>
+        </v-layout>
+      </v-layout>
+    </form>
+  </app-form-panel>
+</v-container>
 </template>
 
 <script>
   import PortfolioService from '@/services/PortfolioService';
+  import appFormPanel from './universal/FormPanel.vue';
   export default {
     name: 'HelloWorld',
     data () {
@@ -25,8 +46,10 @@
       const userData = await PortfolioService.findPortfolio(username);
       const portfolio = userData.data.portfolio;
       this.portfolio = portfolio;
-      console.log(this.user, this.portfolio);
 
+    },
+    components:{
+      appFormPanel
     }
   }
 </script>
