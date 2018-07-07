@@ -16,7 +16,7 @@
 
 <script>
 	import PortfolioService from '@/services/PortfolioService';
-	import appFormPanel from './universal/FormPanel.vue';
+	import appFormPanel from '../universal/FormPanel.vue';
 	import defaultProfileImg from '@/assets/emptyProfile.png';
 
 	export default{

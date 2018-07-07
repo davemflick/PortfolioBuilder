@@ -13,7 +13,7 @@
 </template>
 
 <script>
-	import appFormPanel from './universal/FormPanel.vue';
+	import appFormPanel from '../universal/FormPanel.vue';
 	import PortfolioService from '@/services/PortfolioService.js';
 
 	export default{

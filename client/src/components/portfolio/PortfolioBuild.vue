@@ -24,7 +24,7 @@
 
 <script>
 	import PortfolioService from '@/services/PortfolioService';
-	import appFormPanel from './universal/FormPanel.vue';
+	import appFormPanel from '../universal/FormPanel.vue';
 	import appStageOne from './PortfolioBuildStageOne.vue';
 	import appStageTwo from './PortfolioBuildStageTwo.vue';
 

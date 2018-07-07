@@ -26,7 +26,7 @@
 
 <script>
   import PortfolioService from '@/services/PortfolioService';
-  import appFormPanel from './universal/FormPanel.vue';
+  import appFormPanel from '../universal/FormPanel.vue';
   export default {
     name: 'HelloWorld',
     data () {
