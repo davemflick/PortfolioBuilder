@@ -3,9 +3,9 @@ import Router from 'vue-router'
 import Home from '@/components/Home.vue'
 import Login from '@/components/Login.vue'
 import SignUp from '@/components/SignUp.vue'
-import Portfolio from '@/components/Portfolio.vue'
-import PortfolioBuild from '@/components/PortfolioBuild.vue'
-import EditPortfolio from '@/components/EditPortfolio.vue'
+import Portfolio from '@/components/portfolio/Portfolio.vue'
+import PortfolioBuild from '@/components/portfolio/PortfolioBuild.vue'
+import EditPortfolio from '@/components/portfolio/EditPortfolio.vue'
 
 Vue.use(Router)
 
