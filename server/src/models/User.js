@@ -53,6 +53,21 @@ UserSchema.statics.findByUsername = function(username, callback){
 	});
 }
 
+UserSchema.statics.updateUserInfo = function(userId, updateData, callback){
+	User.findByIdAndUpdate(userId, updateData, {new: true}).exec(function(err, user){
+		if(err){return callback(err);}
+		if(!user){
+			let error = new Error(`User ${username} could not be found and/or updated.`);
+			error.status = 400;
+			return callback(error);
+		}
+		console.log("HERE")
+
+		const account = { _id: user._id, name: user.name, email: user.email, username: user.username, portfolio: user.portfolio};
+		callback(null, account);
+	});
+}
+
 UserSchema.pre('save', function(next){
 	var user = this;
 	bcrypt.hash(user.password, 10, function(err, hash){

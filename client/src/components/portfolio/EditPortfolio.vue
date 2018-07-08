@@ -33,6 +33,7 @@
          return;
       }
       this.user = user;
+      console.log({user, portfolio})
 
     },
     components:{

@@ -44,5 +44,32 @@ module.exports = {
 		} else {
 			next();
 		}
+	},
+
+	updateUserInfo(req, res, next){
+		const schema = {
+			email: Joi.string().email(),
+			username: Joi.string().regex(new RegExp('^[a-zA-Z0-9]{5,25}$'))
+		}
+
+		const user = {
+			email: req.body.email,
+			username: req.body.username
+		}
+		const {error, value} = Joi.validate(user, schema);
+		if(error){
+			switch(error.details[0].context.key){
+				case 'email':
+				next(createNewError('Bad email address', 400, null))
+				break;
+				case 'username':
+				next(createNewError('Username must be alphanumeric and between 5-25 characters', 400, null))
+				break;
+				default:
+				next(createNewError('Something went wrong validating', 500, null))
+			}
+		} else {
+			next();
+		}
 	}
 }
