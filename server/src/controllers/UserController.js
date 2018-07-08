@@ -16,7 +16,7 @@ module.exports = {
 			}
 			Portfolio.updatePortfolio(req.body.portfolioId, userPortfolioUpdate, function(err, portfolio){
 				if(err){return next(err);}
-				return res.json({user, portfolio});
+				return res.json({user, portfolio, ok: true});
 			})
 		})
 	}

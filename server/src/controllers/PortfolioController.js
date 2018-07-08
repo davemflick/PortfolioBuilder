@@ -9,7 +9,7 @@ module.exports = {
 			if(err){return next(err)};
 			Portfolio.findUserPortfolio(user.portfolio, function(err, portfolio){
 				if(err){return next(err);}
-				return res.json({user, portfolio});
+				return res.json({user, portfolio, ok: true});
 			});
 		});
 	},
