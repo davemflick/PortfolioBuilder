@@ -13,7 +13,8 @@ export default new Vuex.Store({
 		buildStage: null
 	},
 	getters:{
-		getBuildStage(state){return state.buildStage;}
+		getBuildStage(state){return state.buildStage;},
+		getUser(state){return state.user}
 	},
 	mutations:{
 		setUser(state, user){
@@ -22,6 +23,9 @@ export default new Vuex.Store({
 		},
 		setBuildStage(state, stage){
 			state.buildStage = stage;
+		},
+		updateUser(state, user){
+			state.user = user;
 		}
 	},
 	actions:{
@@ -30,6 +34,9 @@ export default new Vuex.Store({
 		},
 		setBuildStage({commit}, stage){
 			commit('setBuildStage', stage);
+		},
+		updateUser({commit}, user){
+			commit('updateUser', user);
 		}
 	}
 })
