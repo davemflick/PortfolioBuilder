@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <app-edit-user v-if="user" :user="user"></app-edit-user>
+    <app-edit-user v-if="user"></app-edit-user>
     <br><br>
     <app-edit-portfolio v-if="portfolio" :portfolio="portfolio"></app-edit-portfolio>
   </v-container>
