@@ -28,12 +28,12 @@
 <script>
 
   import appFormPanel from '../universal/FormPanel.vue';
-  import _ from 'lodash';
+  
   export default {
+    props: ['user'],
     data(){
       return {
-        error: null,
-        user: _.cloneDeep(this.$store.state.user)
+        error: null
       }
     },
     components:{
