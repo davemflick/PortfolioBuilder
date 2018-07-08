@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <app-edit-user v-if="user" :user="user"></app-edit-user>
+    <app-edit-user v-if="user" :user="user" :portfolioId="portfolio._id"></app-edit-user>
     <br><br>
     <app-edit-portfolio v-if="portfolio" :portfolio="portfolio"></app-edit-portfolio>
   </v-container>
@@ -25,6 +25,10 @@
       }
       
       const userData = await PortfolioService.findPortfolio(username);
+      if(!userData.data.ok){
+        this.$router.push({name: 'Portfolio', params: {username}});
+        return;
+      }
       const portfolio = userData.data.portfolio;
       const user = userData.data.user;
       this.portfolio = portfolio;

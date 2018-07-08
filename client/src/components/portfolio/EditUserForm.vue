@@ -18,7 +18,8 @@
         </v-flex>
       </v-layout>
       <br>
-      <div v-if="error" class="error-alert">{{ error }}</div>
+      <div v-if="error" class="error-alert alert">{{ error }}</div>
+      <div v-if="successfulUpdate" class="success-alert alert">{{ successfulUpdate }}</div>
       <br>
       <v-btn dark color="primary" @click="updateUser">Update</v-btn>
     </form>
@@ -28,26 +29,57 @@
 <script>
 
   import appFormPanel from '../universal/FormPanel.vue';
+  import UserService from '@/services/UserService.js';
   
   export default {
-    props: ['user'],
+    props: ['user', 'portfolioId'],
     data(){
       return {
-        error: null
+        error: null,
+        successfulUpdate: null
       }
     },
     components:{
       appFormPanel
     },
     methods:{
-      updateUser(){
-        console.log(this.user);
+      async updateUser(){
+        this.error = null;
+        this.successfulUpdate = null;
+        let userData = this.user
+        let updateData = {
+          userId: userData._id,
+          user: {
+            email: userData.email,
+            name: userData.name,
+            username: userData.username
+          },
+          portfolioId: this.portfolioId
+        }
+        const updatedUser = await UserService.updateUserInfo(updateData);
+        var updatedData = updatedUser.data;
+        if(!updatedData.ok){
+          this.error = '500 internal server error. User did not update';
+          return;
+        }
+        this.$store.dispatch('setUser', updatedData.user);
+        this.successfulUpdate = 'User data updated!';
       }
     }
   }
-  </script>
+</script>
 
-  <!-- Add "scoped" attribute to limit CSS to this component only -->
-  <style scoped>
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+.alert{
+  text-align: center;
+  font-size: 15px;
+}
+.success-alert{
+  color: #01b900;
+}
+.error-alert{
+  color: #dc0000;
+}
 
 </style>
