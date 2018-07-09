@@ -71,6 +71,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 .alert{
   text-align: center;
   font-size: 15px;
@@ -81,5 +82,4 @@
 .error-alert{
   color: #dc0000;
 }
-
 </style>

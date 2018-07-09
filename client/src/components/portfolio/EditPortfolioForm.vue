@@ -17,6 +17,9 @@
         <v-btn dark color="primary" @click="updatePortfolioGeneral">Update</v-btn>
       </v-layout>
     </form>
+    <br>
+      <div v-if="generalError" class="error-alert alert">{{ generalError }}</div>
+      <div v-if="generalSuccess" class="success-alert alert">{{ generalSuccess }}</div>
     <br><br>
     <h3>Projects</h3>
     <br> <br>
@@ -45,7 +48,9 @@
     data(){
       return{
         profilePictures: JSON.parse(JSON.stringify(this.portfolio.profilePicture)),
-        selectedProfilePicture: JSON.parse(JSON.stringify(this.portfolio.profilePicture.find((p)=>{return p.isMain}).path))
+        selectedProfilePicture: JSON.parse(JSON.stringify(this.portfolio.profilePicture.find((p)=>{return p.isMain}).path)),
+        generalError: null,
+        generalSuccess: null
       }
     },
     components:{
@@ -53,6 +58,8 @@
     },
     methods: {
       async updatePortfolioGeneral(){
+        this.generalError = null;
+        this.generalSuccess = null;
         let generalData = {aboutUser: this.portfolio.aboutUser}
         let initialProfilePic = this.portfolio.profilePicture.find((p)=>{return p.isMain}).path;
         if(initialProfilePic !== this.selectedProfilePicture){
@@ -64,8 +71,12 @@
         try{
           const updatedPortfolio = await PortfolioService.updatePortfolio(portfolioId, generalData);
           console.log("DONE", updatedPortfolio)
+          if(updatedPortfolio.data.Ok){
+            this.generalSuccess = "Portfolio information updated!"
+          }
         } catch(error){
           console.log("ERROR", error);
+          this.generalError = "500 Internal Service Error, Data did not update."
         }
       }
     }
@@ -74,5 +85,14 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.alert{
+  text-align: center;
+  font-size: 15px;
+}
+.success-alert{
+  color: #01b900;
+}
+.error-alert{
+  color: #dc0000;
+}
 </style>
