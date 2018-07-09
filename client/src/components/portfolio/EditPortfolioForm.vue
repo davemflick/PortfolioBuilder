@@ -13,6 +13,8 @@
           v-model="portfolio.profilePicture.find((p)=>{return p.isMain}).path"
           ></v-text-field>
         </v-flex>
+        <br><br>
+        <v-btn dark color="primary" @click="updatePortfolioGeneral">Update</v-btn>
       </v-layout>
     </form>
     <br><br>
@@ -41,6 +43,16 @@
     props: ['portfolio'],
     components:{
       appFormPanel
+    },
+    methods: {
+      updatePortfolioGeneral(){
+        //Will actually need to create new portfolio picture instance (this is just temporary)
+        let generalData = {
+          aboutUser: this.portfolio.aboutUser,
+          portfolioPicutre: this.portfolio.profilePicture.find((p)=>{return p.isMain}).path
+        }
+        console.log(generalData);
+      }
     }
   }
 </script>
