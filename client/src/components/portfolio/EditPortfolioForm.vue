@@ -10,7 +10,7 @@
         <v-flex xs12 sm6 pl-1>
           <v-text-field type="text" 
           label="Profile Picture" 
-          v-model="portfolio.profilePicture.find((p)=>{return p.isMain}).path"
+          v-model="selectedProfilePicture"
           ></v-text-field>
         </v-flex>
         <br><br>
@@ -39,19 +39,34 @@
 
 <script>
   import appFormPanel from '../universal/FormPanel.vue';
+  import PortfolioService from '@/services/PortfolioService';
   export default {
     props: ['portfolio'],
+    data(){
+      return{
+        profilePictures: JSON.parse(JSON.stringify(this.portfolio.profilePicture)),
+        selectedProfilePicture: JSON.parse(JSON.stringify(this.portfolio.profilePicture.find((p)=>{return p.isMain}).path))
+      }
+    },
     components:{
       appFormPanel
     },
     methods: {
-      updatePortfolioGeneral(){
-        //Will actually need to create new portfolio picture instance (this is just temporary)
-        let generalData = {
-          aboutUser: this.portfolio.aboutUser,
-          portfolioPicutre: this.portfolio.profilePicture.find((p)=>{return p.isMain}).path
+      async updatePortfolioGeneral(){
+        let generalData = {aboutUser: this.portfolio.aboutUser}
+        let initialProfilePic = this.portfolio.profilePicture.find((p)=>{return p.isMain}).path;
+        if(initialProfilePic !== this.selectedProfilePicture){
+          let newPics = this.profilePictures.map((pic)=>{ pic.isMain = false; return pic});
+          newPics.push({isMain: true, path: this.selectedProfilePicture})
+          generalData.profilePicture = newPics
+        } 
+        let portfolioId = this.portfolio._id;
+        try{
+          const updatedPortfolio = await PortfolioService.updatePortfolio(portfolioId, generalData);
+          console.log("DONE", updatedPortfolio)
+        } catch(error){
+          console.log("ERROR", error);
         }
-        console.log(generalData);
       }
     }
   }
