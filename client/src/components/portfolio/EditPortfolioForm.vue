@@ -18,8 +18,8 @@
       </v-layout>
     </form>
     <br>
-      <div v-if="generalError" class="error-alert alert">{{ generalError }}</div>
-      <div v-if="generalSuccess" class="success-alert alert">{{ generalSuccess }}</div>
+    <div v-if="generalError" class="error-alert alert">{{ generalError }}</div>
+    <div v-if="generalSuccess" class="success-alert alert">{{ generalSuccess }}</div>
     <br><br>
     <h3>Projects</h3>
     <br> <br>
@@ -30,7 +30,28 @@
             <div slot="header">{{ project.name }}</div>
             <v-card>
               <v-card-text>
-                <p v-if="project.description">{{ project.description }}</p>
+                <form>
+                  <v-layout wrap>
+                    <v-flex xs12>
+                      <v-text-field type="text" label="Name" v-model="project.name"></v-text-field>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-text-field type="text" label="Add Image"></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 v-for="(img, i) in project.images" :key="`projectImg-${i}`">
+                      <v-text-field type="text" label="Image" :value="img"></v-text-field>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-text-field type="text" label="Link" v-model="project.link"></v-text-field>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-text-field type="text" 
+                      label="Description" 
+                      v-model="project.description"
+                      ></v-text-field>
+                    </v-flex>
+                  </v-layout>
+                </form>
               </v-card-text>
             </v-card>
           </v-expansion-panel-content>
