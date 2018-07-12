@@ -5,6 +5,9 @@ var AuthenticationController = require('./controllers/AuthenticationController.j
 var PortfolioController = require('./controllers/PortfolioController.js');
 var UserController = require('./controllers/UserController.js');
 
+const multer = require('multer');
+const upload = multer({ dest: './uploads' })
+
 //comment
 //POST -> Register
 router.post('/register', AuthenticationControllerPolicy.register, AuthenticationController.register);
@@ -24,5 +27,8 @@ router.put('/user/update', AuthenticationControllerPolicy.updateUserInfo, UserCo
 
 //POST -> First post a new project, then update correct portfolio
 router.post('/project/add/:portfolioId', PortfolioController.addUserProject)
+
+//PUT -> Uploading a user portfolio image
+router.post('/user/upload/img', upload.single('image'), UserController.uploadPortfolioImage);
 
 module.exports = router
