@@ -6,6 +6,7 @@ import SignUp from '@/components/SignUp.vue'
 import Portfolio from '@/components/portfolio/Portfolio.vue'
 import PortfolioBuild from '@/components/portfolio/PortfolioBuild.vue'
 import EditPortfolio from '@/components/portfolio/EditPortfolio.vue'
+import FileUploader from '@/components/universal/FileUploader.vue'
 
 Vue.use(Router)
 
@@ -41,6 +42,11 @@ export default new Router({
       path: '/portfolio/:username/edit',
       name: 'EditPortfolio',
       component: EditPortfolio
+    },
+    {
+      path: '/file-uploader',
+      name: 'FileUploader',
+      component: FileUploader
     }
   ]
 })
