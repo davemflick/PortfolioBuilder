@@ -19,5 +19,15 @@ module.exports = {
 				return res.json({user, portfolio, ok: true});
 			})
 		})
+	},
+
+	async uploadPortfolioImage(req, res, next){
+		console.log(req.body);
+		console.log(req.file);
+		if(req.file){
+			res.json(req.file);
+		} else {
+			res.json({Ok: false, Msg: "You suck at uploading"});
+		}
 	}
 }
