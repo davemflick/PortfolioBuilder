@@ -6,7 +6,15 @@ var PortfolioController = require('./controllers/PortfolioController.js');
 var UserController = require('./controllers/UserController.js');
 
 const multer = require('multer');
-const upload = multer({ dest: './uploads' })
+
+let imgStorage = multer.diskStorage({
+	destination: './src/uploads',
+	filename: function(req, file, cb){
+		cb(null, file.originalname );
+	}
+});
+
+const upload = multer({ storage: imgStorage })
 
 //comment
 //POST -> Register
