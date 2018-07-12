@@ -1,5 +1,6 @@
 var User = require('../models/User.js');
 var Portfolio = require('../models/Portfolio.js');
+var gm = require('gm');
 
 module.exports = {
 	async updateUserInfo(req, res, next){
@@ -25,7 +26,16 @@ module.exports = {
 		console.log(req.body);
 		console.log(req.file);
 		if(req.file){
-			res.json(req.file);
+			const imagePath = req.file.path;
+			const imageOutputPath = req.file.originalname;
+			gm(imagePath).crop(200, 200, 0, 0).write(imageOutputPath, function(err){
+				if(err){
+					next(err);
+				} else {
+					console.log("DONE");
+					res.json({ok: true, msg: 'Image uploaded'});
+				}
+			})
 		} else {
 			res.json({Ok: false, Msg: "You suck at uploading"});
 		}
