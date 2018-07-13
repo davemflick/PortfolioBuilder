@@ -28,6 +28,7 @@ module.exports = {
 		if(req.file){
 			const imagePath = req.file.path;
 			const imageOutputPath = req.file.originalname;
+			//lets change crop to resize?
 			gm(imagePath).crop(200, 200, 0, 0).write(imageOutputPath, function(err){
 				if(err){
 					next(err);
