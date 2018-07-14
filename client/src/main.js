@@ -5,6 +5,9 @@ import { sync } from 'vuex-router-sync';
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css';
 import store from './store/store.js';
+import VueDraggableResizable from 'vue-draggable-resizable'
+ 
+Vue.component('vue-draggable-resizable', VueDraggableResizable)
 
 Vue.config.productionTip = false
 
