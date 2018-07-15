@@ -21,7 +21,6 @@
       <br>
       <br>
       <v-btn dark color="primary" @click="uploadImgToServer">Upload</v-btn>
-      <v-btn dark color="primary" @click="checkThis">CheckTHis</v-btn>
     </v-layout>
   </div>
 </template>
@@ -29,6 +28,16 @@
 <script>
   import UploadService from '@/services/UploadService';
   var FormData = require('form-data');
+
+  function randomString(length, chars) {
+    var result = '';
+    for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+      return result;
+  }
+  function newFileName(value, rand, index) {
+    return value.substring(0, index) + rand + value.substring(index);
+}
+
   export default {
     data(){
       return{
@@ -55,8 +64,12 @@
         const file = files[0];
         if(file){
           this.imgName = file.name;
-          if(this.imgName.lastIndexOf('.') <= 0){
+          let lastDot = this.imgName.lastIndexOf('.');
+          if(lastDot <= 0){
             return;
+          } else {
+            let randStr = randomString(12, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+            this.imgName = newFileName(this.imgName, randStr, lastDot);
           }
           const fr = new FileReader();
           fr.readAsDataURL(file);
@@ -70,10 +83,6 @@
           this.imgUrl = null;
           this.imgFile = null;
         }
-      },
-      checkThis(){
-        const myImage = document.getElementById('uploaded-img');
-        console.log(myImage.clientWidth, myImage.clientHeight);
       },
       async uploadImgToServer(){
         const myImage = document.getElementById('uploaded-img');
@@ -111,6 +120,7 @@
   background-color: #ddd;
   position: relative;
   margin-bottom: 25px;
+  overflow: hidden;
 }
 #upload-fields-container{
   margin-top: 10px;
@@ -126,6 +136,9 @@
 #img-crop-box{
   border: 3px solid #333;
   cursor: move;
+  -webkit-box-shadow: 0 0 100px 100px rgba(255,255,255, 0.55);
+  -moz-box-shadow: 0 0 100px 100px rgba(255,255,255, 0.55);
+  box-shadow: 0 0 100px 100px rgba(255,255,255, 0.55);
 }
 
 </style>
