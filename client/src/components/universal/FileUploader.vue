@@ -1,11 +1,21 @@
 <template>
-  <div class="white elevation-2">
+  <v-card style="max-width: 500px;">
+    <v-card-title class="headline grey lighten-2" primary-title> File Uploader </v-card-title>
     <v-layout wrap>
-      <v-flex xs12>
-        <div v-if="imgUrl" id="uploaded-image-container">
+      <v-flex xs12 class="text-center">
+        <div v-if="file.url && file.type.indexOf('image') >= 0" id="uploaded-image-container">
           <vue-draggable-resizable  :active="true" :w="300" :h="300" v-on:dragging="onDrag" :resizable="false" :parent="true" id="img-crop-box">
           </vue-draggable-resizable>
-          <img :src="imgUrl" id="uploaded-img" v-if="imgUrl" />
+          <img :src="file.url" id="uploaded-img" v-if="file.url" />
+        </div>
+      </v-flex>
+      <v-flex xs-12>
+        <div v-if="file && file.type.indexOf('pdf') >= 0">
+          <div class="selected-pdf-file">
+            <div class="text-xs-center">
+              <v-chip>{{ file.name }}</v-chip>
+            </div>
+          </div>
         </div>
       </v-flex>
     </v-layout>
@@ -13,16 +23,16 @@
       <v-flex xs12>
         <form id="upload-form">
           <div id="upload-fields-container">
-            <v-text-field label="Select Image" @click="pickFile" v-model="imgName" prepend-icon="attach_file"></v-text-field>
-            <input type="file" style="display: none;" ref="image" accept="image/*" @change="onFilePicked" />
+            <v-text-field label="Select Image" @click="pickFile" v-model="file.name" prepend-icon="attach_file"></v-text-field>
+            <input type="file" style="display: none;" ref="image" accept=".pdf,image/*" @change="onFilePicked" />
           </div>
         </form>
       </v-flex>
       <br>
       <br>
-      <v-btn dark color="primary" @click="uploadImgToServer">Upload</v-btn>
+      <v-btn dark color="primary" @click="uploadToServer">Upload</v-btn>
     </v-layout>
-  </div>
+  </v-card>
 </template>
 
 <script>
@@ -30,31 +40,36 @@
   var FormData = require('form-data');
 
   function randomString(length, chars) {
-    var result = '';
+    var result = '-';
     for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
       return result;
   }
   function newFileName(value, rand, index) {
+    value = value.replace(new RegExp(' ', 'g'), '-');
     return value.substring(0, index) + rand + value.substring(index);
-}
+  }
 
   export default {
     data(){
       return{
-        imgName: null,
-        imgUrl: null,
-        imgFile: null,
-        imgSize: null,
-        width: 300,
-        height: 300,
-        x: 0,
-        y: 0
+        file:{
+          type: 'notta',
+          name: null,
+          url: null,
+          file: null
+        },
+        imgCrop: {
+          width: 300,
+          height: 300,
+          x: 0,
+          y: 0
+        }
       }
     },
     methods:{
       onDrag: function (x, y) {
-        this.x = x;
-        this.y = y;
+        this.imgCrop.x = x;
+        this.imgCrop.y = y;
       },
       pickFile(){
         this.$refs.image.click();
@@ -63,39 +78,45 @@
         const files = e.target.files;
         const file = files[0];
         if(file){
-          this.imgName = file.name;
-          let lastDot = this.imgName.lastIndexOf('.');
+          this.file.type = file.type
+          this.file.name = file.name;
+          let lastDot = this.file.name.lastIndexOf('.');
           if(lastDot <= 0){
             return;
           } else {
             let randStr = randomString(12, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
-            this.imgName = newFileName(this.imgName, randStr, lastDot);
+            this.file.name = newFileName(this.file.name, randStr, lastDot);
           }
+
           const fr = new FileReader();
           fr.readAsDataURL(file);
           fr.addEventListener('load', ()=>{
-            this.imgUrl = fr.result;
-            this.imgFile = files[0];
+            this.file.url = fr.result;
+            this.file.file = files[0];
           });
+          console.log(this.file)
 
         } else{
-          this.imgName = null;
-          this.imgUrl = null;
-          this.imgFile = null;
+          this.file.name = null;
+          this.file.url = null;
+          this.file.file = null;
         }
       },
-      async uploadImgToServer(){
-        const myImage = document.getElementById('uploaded-img');
+      async uploadToServer(){
         let formData = new FormData();
-        
-        const boundaries = JSON.stringify({
-          crop: {width: this.width, height: this.height, x: this.x, y: this.y},
-          resize: {width: myImage.clientWidth, height: myImage.clientHeight}
-        });
+        let boundaries;
+        if(this.file.type.indexOf('pdf')>= 1){
+          boundaries = JSON.stringify({type: 'pdf'});
+        } else {
+          const myImage = document.getElementById('uploaded-img');
+          boundaries = JSON.stringify({
+            type: 'image',
+            crop: this.imgCrop,
+            resize: {width: myImage.clientWidth, height: myImage.clientHeight}
+          });
+        }
         formData.append('boundaries', boundaries);
-        formData.append("image", this.imgFile, this.imgName);
-        
-        console.log(formData);
+        formData.append("myfile", this.file.file, this.file.name);
         try{
           const uploadedFile = await UploadService.UploadUserProfileImage(formData, boundaries);
           console.log("SUCCESS", uploadedFile);
@@ -119,7 +140,7 @@
   padding: 5px;
   background-color: #ddd;
   position: relative;
-  margin-bottom: 25px;
+  margin: 10px auto;
   overflow: hidden;
 }
 #upload-fields-container{
@@ -139,6 +160,10 @@
   -webkit-box-shadow: 0 0 100px 100px rgba(255,255,255, 0.55);
   -moz-box-shadow: 0 0 100px 100px rgba(255,255,255, 0.55);
   box-shadow: 0 0 100px 100px rgba(255,255,255, 0.55);
+}
+.selected-pdf-file{
+  padding: 10px;
+
 }
 
 </style>
