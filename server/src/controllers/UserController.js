@@ -1,6 +1,7 @@
 var User = require('../models/User.js');
 var Portfolio = require('../models/Portfolio.js');
 var gm = require('gm');
+const bodyParser = require('body-parser');
 
 module.exports = {
 	async updateUserInfo(req, res, next){
@@ -23,13 +24,17 @@ module.exports = {
 	},
 
 	async uploadPortfolioImage(req, res, next){
-		console.log(req.body);
-		console.log(req.file);
+		const boundaries = JSON.parse(req.headers.boundaries);
+		const cropOps = boundaries.crop;
+		const resizeOps = boundaries.resize;
+		console.log(cropOps, resizeOps);
 		if(req.file){
 			const imagePath = req.file.path;
 			const imageOutputPath = req.file.originalname;
 			//lets change crop to resize?
-			gm(imagePath).resize(100, 100).write(imageOutputPath, function(err){
+			gm(imagePath)
+				.resize(resizeOps.width, resizeOps.height)
+				.crop(cropOps.width, cropOps.height, cropOps.x, cropOps.y).write(imageOutputPath, function(err){
 				if(err){
 					next(err);
 				} else {
