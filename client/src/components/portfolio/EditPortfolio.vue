@@ -10,6 +10,7 @@
   import PortfolioService from '@/services/PortfolioService';
   import appEditUser from './EditUserForm.vue';
   import appEditPortfolio from './EditPortfolioForm.vue';
+  
   export default {
     data () {
       return {

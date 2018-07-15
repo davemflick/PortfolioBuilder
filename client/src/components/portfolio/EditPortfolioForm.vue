@@ -4,17 +4,15 @@
     <br> <br>
     <form>
       <v-layout wrap>
-        <v-flex xs12 sm6 pr-1>
+        <v-flex xs12 pr-1>
           <v-text-field type="text" label="About" v-model="portfolio.aboutUser"></v-text-field>
-        </v-flex>
-        <v-flex xs12 sm6 pl-1>
-          <v-text-field type="text" 
-          label="Profile Picture" 
-          v-model="selectedProfilePicture"
-          ></v-text-field>
         </v-flex>
         <br><br>
         <v-btn dark color="primary" @click="updatePortfolioGeneral">Update</v-btn>
+        <br><br>
+        <v-flex xs12 sm6 pl-1>
+          <v-btn @click="openUploadModal">Change Portfolio Image</v-btn>
+        </v-flex>
       </v-layout>
     </form>
     <br>
@@ -36,12 +34,6 @@
                       <v-text-field type="text" label="Name" v-model="project.name"></v-text-field>
                     </v-flex>
                     <v-flex xs12>
-                      <v-text-field type="text" label="Add Image"></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 v-for="(img, i) in project.images" :key="`projectImg-${i}`">
-                      <v-text-field type="text" label="Image" :value="img"></v-text-field>
-                    </v-flex>
-                    <v-flex xs12>
                       <v-text-field type="text" label="Link" v-model="project.link"></v-text-field>
                     </v-flex>
                     <v-flex xs12>
@@ -49,21 +41,41 @@
                       label="Description" 
                       v-model="project.description"
                       ></v-text-field>
-                    </v-flex>
-                  </v-layout>
-                </form>
-              </v-card-text>
-            </v-card>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-flex>
-    </v-layout>
-  </app-form-panel>
+                      <v-layout wrap>
+                        <v-flex xs-6>
+                         <v-btn @click="openUploadModal">Add Project Image</v-btn>
+                       </v-flex>
+                       <v-flex xs-6>
+                        <p class="text-lg-right" v-if="project.images.length === 0"> This project has no images </p>
+                      </v-flex>
+                      <v-flex xs-6 sm-3 v-for="(img, i) in project.images" :key="`projectImg-${i}`">
+                        <v-avatar :size="50" :tile="true">
+                          <img :src="img.path" alt="Project Image" />
+                        </v-avatar>
+                        <br>
+                        <v-icon dark>delete</v-icon>
+                      </v-flex>
+                    </v-layout>
+                  </v-flex>
+                </v-layout>
+              </form>
+            </v-card-text>
+          </v-card>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-flex>
+  </v-layout>
+  <v-dialog v-model="uploadModal" width="500" >
+    <v-btn slot="activator" color="red lighten-2" dark > Edit Profile Image </v-btn>
+    <app-file-uploader></app-file-uploader>
+  </v-dialog>
+</app-form-panel>
 </template>
 
 <script>
   import appFormPanel from '../universal/FormPanel.vue';
   import PortfolioService from '@/services/PortfolioService';
+  import appFileUploader from '../universal/FileUploader.vue';
   export default {
     props: ['portfolio'],
     data(){
@@ -71,13 +83,18 @@
         profilePictures: JSON.parse(JSON.stringify(this.portfolio.profilePicture)),
         selectedProfilePicture: JSON.parse(JSON.stringify(this.portfolio.profilePicture.find((p)=>{return p.isMain}).path)),
         generalError: null,
-        generalSuccess: null
+        generalSuccess: null,
+        uploadModal: false
       }
     },
     components:{
-      appFormPanel
+      appFormPanel,
+      appFileUploader
     },
     methods: {
+      openUploadModal(){
+        this.uploadModal = !this.uploadModal;
+      },
       async updatePortfolioGeneral(){
         this.generalError = null;
         this.generalSuccess = null;
