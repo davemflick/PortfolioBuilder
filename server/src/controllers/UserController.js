@@ -1,6 +1,7 @@
 var User = require('../models/User.js');
 var Portfolio = require('../models/Portfolio.js');
 var gm = require('gm');
+const fs = require('fs');
 const bodyParser = require('body-parser');
 
 module.exports = {
@@ -27,21 +28,37 @@ module.exports = {
 		const boundaries = JSON.parse(req.headers.boundaries);
 		const cropOps = boundaries.crop;
 		const resizeOps = boundaries.resize;
-		console.log(cropOps, resizeOps);
+		const fileType = boundaries.type;
 		if(req.file){
-			const imagePath = req.file.path;
-			const imageOutputPath = req.file.originalname;
+			const filePath = req.file.path;
+			const imageOutputPath = "src/finalUploads/images/" + req.file.originalname;
 			//lets change crop to resize?
-			gm(imagePath)
+			if(fileType == 'image'){
+				gm(filePath)
 				.resize(resizeOps.width, resizeOps.height)
 				.crop(cropOps.width, cropOps.height, cropOps.x, cropOps.y).write(imageOutputPath, function(err){
-				if(err){
-					next(err);
-				} else {
-					console.log("DONE");
-					res.json({ok: true, msg: 'Image uploaded'});
-				}
-			})
+					if(err){
+						next(err);
+					} else {
+						console.log("DONE");
+						fs.unlink(filePath, function(errorx){
+							if(errorx){
+								console.log(errorx);
+							}
+						})
+						res.json({ok: true, msg: 'Image uploaded'});
+					}
+				})
+			} else if(fileType == 'pdf'){
+				const newPath = 'src/finalUploads/pdfs/' + req.file.originalname;
+				fs.rename(filePath, newPath, function(errory){
+					if(errory){
+						console.log(errory);
+					} else {
+						res.json({ok: true, msg: 'PDF uploaded'});
+					}
+				})
+			}
 		} else {
 			res.json({Ok: false, Msg: "You suck at uploading"});
 		}

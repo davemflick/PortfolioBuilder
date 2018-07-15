@@ -8,7 +8,11 @@ var UserController = require('./controllers/UserController.js');
 const multer = require('multer');
 
 let imgStorage = multer.diskStorage({
-	destination: './src/uploads',
+	destination: function(req, file, cb){
+		console.log(file)
+		file.mimetype == 'application/pdf' ? cb(null, './src/tempUploads/pdfs') : cb(null, './src/tempUploads/images');
+		
+	},
 	filename: function(req, file, cb){
 		cb(null, file.originalname );
 	}
@@ -37,6 +41,6 @@ router.put('/user/update', AuthenticationControllerPolicy.updateUserInfo, UserCo
 router.post('/project/add/:portfolioId', PortfolioController.addUserProject)
 
 //PUT -> Uploading a user portfolio image
-router.post('/user/upload/img', upload.single('image'), UserController.uploadPortfolioImage);
+router.post('/user/upload/img', upload.single('myfile'), UserController.uploadPortfolioImage);
 
 module.exports = router
