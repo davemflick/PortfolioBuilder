@@ -11,7 +11,7 @@
         <v-btn dark color="primary" @click="updatePortfolioGeneral">Update</v-btn>
         <br><br>
         <v-flex xs12 sm6 pl-1>
-          <v-btn @click="openUploadModal">Change Portfolio Image</v-btn>
+          <v-btn @click="openUploadModal('portfolioImage', null)">Change Portfolio Image</v-btn>
         </v-flex>
       </v-layout>
     </form>
@@ -43,7 +43,7 @@
                       ></v-text-field>
                       <v-layout wrap>
                         <v-flex xs-6>
-                         <v-btn @click="openUploadModal">Add Project Image</v-btn>
+                         <v-btn @click="openUploadModal('project', project._id)">Add Project Image</v-btn>
                        </v-flex>
                        <v-flex xs-6>
                         <p class="text-lg-right" v-if="project.images.length === 0"> This project has no images </p>
@@ -66,8 +66,7 @@
     </v-flex>
   </v-layout>
   <v-dialog v-model="uploadModal" width="500" >
-    <v-btn slot="activator" color="red lighten-2" dark > Edit Profile Image </v-btn>
-    <app-file-uploader></app-file-uploader>
+    <app-file-uploader :uploadTarget="this.uploadTarget" ref="fileUploadComponent"></app-file-uploader>
   </v-dialog>
 </app-form-panel>
 </template>
@@ -84,15 +83,25 @@
         selectedProfilePicture: JSON.parse(JSON.stringify(this.portfolio.profilePicture.find((p)=>{return p.isMain}).path)),
         generalError: null,
         generalSuccess: null,
-        uploadModal: false
+        uploadModal: false,
+        uploadTarget: {type: null, _id: null}
       }
     },
     components:{
       appFormPanel,
       appFileUploader
     },
+    watch:{
+      uploadModal(){
+        if(!this.uploadModal){
+          this.$refs.fileUploadComponent.clearUploader();
+        }
+      }
+    },
     methods: {
-      openUploadModal(){
+      openUploadModal(type, id){
+        this.uploadTarget.type = type;
+        this.uploadTarget._id = id;
         this.uploadModal = !this.uploadModal;
       },
       async updatePortfolioGeneral(){
