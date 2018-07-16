@@ -32,7 +32,6 @@ module.exports = {
 		if(req.file){
 			const filePath = req.file.path;
 			const imageOutputPath = "src/finalUploads/images/" + req.file.originalname;
-			//lets change crop to resize?
 			if(fileType == 'image'){
 				gm(filePath)
 				.resize(resizeOps.width, resizeOps.height)
@@ -46,7 +45,7 @@ module.exports = {
 								console.log(errorx);
 							}
 						})
-						res.json({ok: true, msg: 'Image uploaded'});
+						res.json({ok: true, msg: 'Image uploaded', filePath: imageOutputPath});
 					}
 				})
 			} else if(fileType == 'pdf'){
@@ -55,7 +54,7 @@ module.exports = {
 					if(errory){
 						console.log(errory);
 					} else {
-						res.json({ok: true, msg: 'PDF uploaded'});
+						res.json({ok: true, msg: 'PDF uploaded', filePath: newPath});
 					}
 				})
 			}
