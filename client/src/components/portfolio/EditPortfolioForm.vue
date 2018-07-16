@@ -11,7 +11,7 @@
         <v-btn dark color="primary" @click="updatePortfolioGeneral">Update</v-btn>
         <br><br>
         <v-flex xs12 sm6 pl-1>
-          <v-btn @click="openUploadModal('portfolioImage', null)">Change Portfolio Image</v-btn>
+          <v-btn @click="openUploadModal({type: 'portfolioImage', _id: portfolio._id})">Change Portfolio Image</v-btn>
         </v-flex>
       </v-layout>
     </form>
@@ -43,7 +43,7 @@
                       ></v-text-field>
                       <v-layout wrap>
                         <v-flex xs-6>
-                         <v-btn @click="openUploadModal('project', project._id)">Add Project Image</v-btn>
+                         <v-btn @click="openUploadModal({type: 'project', _id: project._id})">Add Project Image</v-btn>
                        </v-flex>
                        <v-flex xs-6>
                         <p class="text-lg-right" v-if="project.images.length === 0"> This project has no images </p>
@@ -84,7 +84,7 @@
         generalError: null,
         generalSuccess: null,
         uploadModal: false,
-        uploadTarget: {type: null, _id: null}
+        uploadTarget: null
       }
     },
     components:{
@@ -94,26 +94,25 @@
     watch:{
       uploadModal(){
         if(!this.uploadModal){
+          this.uploadTarget = null;
           this.$refs.fileUploadComponent.clearUploader();
         }
       }
     },
     methods: {
-      openUploadModal(type, id){
-        this.uploadTarget.type = type;
-        this.uploadTarget._id = id;
-        this.uploadModal = !this.uploadModal;
+      openUploadModal(targetData){
+        if(targetData.type === 'portfolioImage'){
+          let newPics = this.profilePictures.map((pic)=>{ pic.isMain = false; return pic});
+          targetData.currentPictures = newPics
+        }
+        //Will have to do same as above for project images
+        this.uploadTarget = targetData
+        this.uploadModal = true;
       },
       async updatePortfolioGeneral(){
         this.generalError = null;
         this.generalSuccess = null;
         let generalData = {aboutUser: this.portfolio.aboutUser}
-        let initialProfilePic = this.portfolio.profilePicture.find((p)=>{return p.isMain}).path;
-        if(initialProfilePic !== this.selectedProfilePicture){
-          let newPics = this.profilePictures.map((pic)=>{ pic.isMain = false; return pic});
-          newPics.push({isMain: true, path: this.selectedProfilePicture})
-          generalData.profilePicture = newPics
-        } 
         let portfolioId = this.portfolio._id;
         try{
           const updatedPortfolio = await PortfolioService.updatePortfolio(portfolioId, generalData);
