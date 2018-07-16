@@ -74,6 +74,7 @@
         },
         pickFile(){
           this.$refs.image.click();
+          console.log(this.uploadTarget)
         },
         onFilePicked(e){
           const files = e.target.files;
@@ -126,7 +127,7 @@
           formData.append('boundaries', boundaries);
           formData.append("myfile", this.file.file, this.file.name);
           try{
-            const uploadedFile = await UploadService.UploadUserProfileImage(formData, boundaries);
+            const uploadedFile = await UploadService.UploadUserProfileImage(formData, boundaries, this.uploadTarget);
             console.log("SUCCESS", uploadedFile);
           }catch(error){
             console.log("ERROR", error);
