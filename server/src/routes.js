@@ -4,6 +4,7 @@ var AuthenticationControllerPolicy = require('./policies/AuthenticationControlle
 var AuthenticationController = require('./controllers/AuthenticationController.js');
 var PortfolioController = require('./controllers/PortfolioController.js');
 var UserController = require('./controllers/UserController.js');
+var fs = require('fs');
 
 const multer = require('multer');
 
@@ -43,7 +44,10 @@ router.post('/user/upload/img', upload.single('myfile'), UserController.uploadPo
 
 //GET IMAGES
 router.get('/src/finalUploads/:folder/:file', function(req, res){
-	res.sendFile(`${__dirname}/finalUploads/${req.params.folder}/${req.params.file}`);
+	const file = `${__dirname}/finalUploads/${req.params.folder}/${req.params.file}`;
+	if (fs.existsSync(path)) {
+    res.sendFile(file);
+  }
 });
 
 module.exports = router
