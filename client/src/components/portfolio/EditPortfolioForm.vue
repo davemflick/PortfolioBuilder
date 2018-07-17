@@ -24,7 +24,7 @@
     <v-layout wrap>
       <v-flex xs12 pr-1>
         <v-expansion-panel>
-          <v-expansion-panel-content v-for="(project, i) in portfolio.projects" :key="project._id">
+          <v-expansion-panel-content v-for="(project, i) in portfolio.projects" :key="`${project.name}-${i}`">
             <div slot="header">{{ project.name }}</div>
             <v-card>
               <v-card-text>
@@ -50,7 +50,7 @@
                       </v-flex>
                       <v-flex xs-6 sm-3 v-for="(img, i) in project.images" :key="`projectImg-${i}`">
                         <v-avatar :size="50" :tile="true">
-                          <img :src="img.path" alt="Project Image" />
+                          <img :src="'http://localhost:8081/' + img.path" alt="Project Image" />
                         </v-avatar>
                         <br>
                         <v-icon dark>delete</v-icon>
@@ -66,7 +66,7 @@
     </v-flex>
   </v-layout>
   <v-dialog v-model="uploadModal" width="500" >
-    <app-file-uploader :uploadTarget="this.uploadTarget" ref="fileUploadComponent"></app-file-uploader>
+    <app-file-uploader :uploadTarget="uploadTarget" ref="fileUploadComponent"></app-file-uploader>
   </v-dialog>
 </app-form-panel>
 </template>
@@ -101,11 +101,15 @@
     },
     methods: {
       openUploadModal(targetData){
+        var newPics = '';
         if(targetData.type === 'portfolioImage'){
-          let newPics = this.profilePictures.map((pic)=>{ pic.isMain = false; return pic});
-          targetData.currentPictures = newPics
+          newPics = this.profilePictures.map((pic)=>{ pic.isMain = false; return pic});
+        } else if (targetData.type === 'project'){
+          newPics = this.portfolio.projects.find(p => p._id = targetData._id).images.map((pic)=>{ pic.isMain = false; return pic});
         }
-        //Will have to do same as above for project images
+        targetData.currentPictures = newPics
+
+        console.log(targetData);
         this.uploadTarget = targetData
         this.uploadModal = true;
       },
