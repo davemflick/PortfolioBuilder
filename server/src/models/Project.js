@@ -18,6 +18,15 @@ const ProjectSchema = new mongoose.Schema({
 	updatedOn: {type: Date, default: Date.now }
 });
 
+function createError(msg, status, details){
+	let err = new Error(msg);
+	err.status = status;
+	err.details = details;
+	return err;
+}
+const noProjectError = createError("Project not found", 400, {});
+const noProjectIdError = createError("Project Id not found", 400, {});
+
 ProjectSchema.statics.addUserProject = function(projectData, callback){
 	Project.create(projectData, function(err, project){
 		if(err){return callback(err);}
@@ -29,6 +38,22 @@ ProjectSchema.statics.addUserProject = function(projectData, callback){
 		callback(null, project);
 	});
 }
+
+ProjectSchema.statics.updateProjectById = function(projectId, body, callback){
+	if(!projectId){
+		return callback(noProjectIdError);
+	}
+	if(!body){
+		return callback(noProjectError);
+	}
+	Project.findOneAndUpdate({_id: projectId}, {$set: body}, {new: true}).exec(function(error, project){
+		if(error){
+			return callback(error);
+		}
+		return callback(null, project);
+	});
+}
+
 const Project = mongoose.model('Project', ProjectSchema);
 
 module.exports = Project;
