@@ -121,13 +121,14 @@
             boundaries = JSON.stringify({
               type: 'image',
               crop: this.imgCrop,
-              resize: {width: myImage.clientWidth, height: myImage.clientHeight}
+              resize: {width: myImage.clientWidth, height: myImage.clientHeight},
+              dbTarget: this.uploadTarget
             });
           }
           formData.append('boundaries', boundaries);
           formData.append("myfile", this.file.file, this.file.name);
           try{
-            const uploadedFile = await UploadService.UploadUserProfileImage(formData, boundaries, this.uploadTarget);
+            const uploadedFile = await UploadService.UploadUserProfileImage(formData, boundaries);
             console.log("SUCCESS", uploadedFile);
           }catch(error){
             console.log("ERROR", error);
