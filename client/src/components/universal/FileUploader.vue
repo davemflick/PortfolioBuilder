@@ -31,6 +31,9 @@
         <br>
         <br>
         <v-btn dark color="primary" @click="uploadToServer">Upload</v-btn>
+        <br>
+        <br>
+        <p v-if="error" class="alert error-alert">{{ error }}</p>
       </v-layout>
     </v-card>
   </template>
@@ -64,7 +67,8 @@
             height: 300,
             x: 0,
             y: 0
-          }
+          },
+          error: null
         }
       },
       methods:{
@@ -74,7 +78,14 @@
         },
         pickFile(){
           this.$refs.image.click();
+          this.error = null;
           console.log(this.uploadTarget)
+        },
+        clearUploader(){
+          this.file.type = 'notta';
+          this.file.name = null;
+          this.file.url = null;
+          this.file.file = null;
         },
         onFilePicked(e){
           const files = e.target.files;
@@ -97,19 +108,9 @@
               this.file.file = files[0];
             });
             console.log(this.file)
-
           } else{
-            this.file.type = 'notta';
-            this.file.name = null;
-            this.file.url = null;
-            this.file.file = null;
+            this.clearUploader();
           }
-        },
-        clearUploader(){
-          this.file.type = 'notta';
-          this.file.name = null;
-          this.file.url = null;
-          this.file.file = null;
         },
         async uploadToServer(){
           let formData = new FormData();
@@ -118,6 +119,11 @@
             boundaries = JSON.stringify({type: 'pdf'});
           } else {
             const myImage = document.getElementById('uploaded-img');
+            if(myImage.clientWidth < 300 || myImage.clientHeight < 300){
+              this.error = "Image does not fit boundaries, upload cancelled"
+              this.clearUploader();
+              return false;
+            }
             boundaries = JSON.stringify({
               type: 'image',
               crop: this.imgCrop,
@@ -173,7 +179,16 @@
   }
   .selected-pdf-file{
     padding: 10px;
-
+  }
+  .alert{
+    text-align: center;
+    font-size: 15px;
+  }
+  .success-alert{
+    color: #01b900;
+  }
+  .error-alert{
+    color: #dc0000;
   }
 
 </style>
