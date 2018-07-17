@@ -23,9 +23,10 @@ module.exports = {
 			})
 		})
 	},
-//yes
+
 	async uploadPortfolioImage(req, res, next){
 		const boundaries = JSON.parse(req.headers.boundaries);
+		const dbData = boundaries.dbTarget;
 		const cropOps = boundaries.crop;
 		const resizeOps = boundaries.resize;
 		const fileType = boundaries.type;
@@ -45,7 +46,14 @@ module.exports = {
 								console.log(errorx);
 							}
 						})
-						res.json({ok: true, msg: 'Image uploaded', filePath: imageOutputPath});
+						if(dbData.type === 'portfolioImage'){
+							let pics = dbData.currentPictures;
+							pics.push({isMain: true, path: imageOutputPath});
+							Portfolio.updatePortfolio(dbData._id, {profilePicture: pics}, function(err, portfolio){
+								if(err){return next(err);}
+								res.json({ok: true, msg: 'Image uploaded, portfolio updated', filePath: imageOutputPath, portfolio: portfolio});
+							})
+						}
 					}
 				})
 			} else if(fileType == 'pdf'){
