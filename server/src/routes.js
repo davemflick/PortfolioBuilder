@@ -9,14 +9,11 @@ const multer = require('multer');
 
 let imgStorage = multer.diskStorage({
 	destination: function(req, file, cb){
-		console.log(file)
 		file.mimetype == 'application/pdf' ? cb(null, './src/tempUploads/pdfs') : cb(null, './src/tempUploads/images');
-		
 	},
 	filename: function(req, file, cb){
 		cb(null, file.originalname );
 	}
-	//ok
 });
 
 const upload = multer({ storage: imgStorage })
@@ -43,5 +40,10 @@ router.post('/project/add/:portfolioId', PortfolioController.addUserProject)
 
 //PUT -> Uploading a user portfolio image
 router.post('/user/upload/img', upload.single('myfile'), UserController.uploadPortfolioImage);
+
+//GET IMAGES
+router.get('/src/finalUploads/:folder/:file', function(req, res){
+	res.sendFile(`${__dirname}/finalUploads/${req.params.folder}/${req.params.file}`);
+});
 
 module.exports = router
