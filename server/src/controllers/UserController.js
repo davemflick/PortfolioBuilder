@@ -23,7 +23,7 @@ module.exports = {
 			})
 		})
 	},
-
+//yes
 	async uploadPortfolioImage(req, res, next){
 		const boundaries = JSON.parse(req.headers.boundaries);
 		const cropOps = boundaries.crop;
