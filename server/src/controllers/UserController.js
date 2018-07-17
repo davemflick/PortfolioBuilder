@@ -1,5 +1,6 @@
 var User = require('../models/User.js');
 var Portfolio = require('../models/Portfolio.js');
+var Project = require('../models/Project.js');
 var gm = require('gm');
 const fs = require('fs');
 const bodyParser = require('body-parser');
@@ -46,12 +47,17 @@ module.exports = {
 								console.log(errorx);
 							}
 						})
+						let pics = dbData.currentPictures;
+						pics.push({isMain: true, path: imageOutputPath});
 						if(dbData.type === 'portfolioImage'){
-							let pics = dbData.currentPictures;
-							pics.push({isMain: true, path: imageOutputPath});
 							Portfolio.updatePortfolio(dbData._id, {profilePicture: pics}, function(err, portfolio){
 								if(err){return next(err);}
 								res.json({ok: true, msg: 'Image uploaded, portfolio updated', filePath: imageOutputPath, portfolio: portfolio});
+							})
+						} else if (dbData.type === 'project'){
+							Project.updateProjectById(dbData._id, {images: pics}, function(err, project){
+								if(err){return next(err);}
+								res.json({ok: true, msg: 'Image uploaded, project updated', filePath: imageOutputPath, project: project});
 							})
 						}
 					}
