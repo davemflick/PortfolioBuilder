@@ -2,18 +2,23 @@
 	<app-form-panel title="Add Some Information" >
 		<form id="login-form">
 			<v-textarea label="About You" v-model="portfolioData.aboutUser"></v-textarea>
-			<v-text-field type="text" label="Profile Picture" v-model="profilePicturePath"></v-text-field>
+			<br><br>
+			 <v-btn @click="openUploadModal({type: 'portfolioImage'})">Add Portfolio Image</v-btn>
 		</form>
 		<br>
 		<div v-if="error" class="error-alert">{{ error }}</div>
 		<br>
 		<v-btn dark color="primary" @click="completeStageOne">Next Step</v-btn>
+		<v-dialog v-model="uploadModal" width="500" >
+		<app-file-uploader :uploadTarget="uploadTarget" ref="fileUploadComponent"></app-file-uploader>
+	</v-dialog>
 	</app-form-panel>
 </template>
 
 <script>
 	import appFormPanel from '../universal/FormPanel.vue';
 	import PortfolioService from '@/services/PortfolioService.js';
+	import appFileUploader from '../universal/FileUploader.vue';
 	export default{
 		props: ['portfolioId', 'profilePictures'],
 		data(){
@@ -27,25 +32,25 @@
 					}
 				},
 				profilePicturePath: null,
-				error: null
+				error: null,
+				uploadModal: false,
+				uploadTarget: null
 			}
 		},
 		components:{
-			appFormPanel
-		},
+      appFormPanel,
+      appFileUploader
+    },
+		watch:{
+      uploadModal(){
+        if(!this.uploadModal){
+          this.uploadTarget = null;
+          this.$refs.fileUploadComponent.clearUploader();
+        }
+      }
+    },
 		methods: {
 			async completeStageOne(){
-				const pics =  [];
-				if(this.profilePictures){
-					this.profilePictures.forEach((pic)=> {
-						if(pic){
-							pic.isMain = false;
-							pics.push(pic);
-						}
-					});
-				}
-				pics.push({path: this.profilePicturePath, isMain: true});
-				this.portfolioData.profilePicture = pics;
 				try{
 					const portfolioUpdate = await PortfolioService.updatePortfolio(this.portfolioId, this.portfolioData);
 					console.log(portfolioUpdate);
@@ -60,7 +65,12 @@
 					console.log("ERROR", error);
 					this.error = error;
 				}
-			}
+			},
+			openUploadModal(targetData){
+        console.log(targetData);
+        this.uploadTarget = targetData
+        this.uploadModal = true;
+      }
 		}
 	}
 </script>

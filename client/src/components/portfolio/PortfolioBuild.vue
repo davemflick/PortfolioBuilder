@@ -61,10 +61,10 @@
 			console.log(portfolio)
 
 			this.portfolioId = portfolio._id;
-			if(portfolio.isSetUp){
+			/*if(portfolio.isSetUp){
 				this.$router.push({name: 'Portfolio', params: {username}});
 				return;
-			}
+			}*/
 			this.portfolioPictures = portfolio.profilePicture
 			const stage = !portfolio.setUpStage.one ? 'one' : !portfolio.setUpStage.two ? 'two' : null;
 			if(!stage){
