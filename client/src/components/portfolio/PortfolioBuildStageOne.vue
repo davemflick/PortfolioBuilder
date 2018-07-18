@@ -3,15 +3,15 @@
 		<form id="login-form">
 			<v-textarea label="About You" v-model="portfolioData.aboutUser"></v-textarea>
 			<br><br>
-			 <v-btn @click="openUploadModal({type: 'portfolioImage', _id: portfolioId})">Add Portfolio Image</v-btn>
+			<v-btn @click="openUploadModal({type: 'portfolioImage', _id: portfolioId})">Add Portfolio Image</v-btn>
 		</form>
 		<br>
 		<div v-if="error" class="error-alert">{{ error }}</div>
 		<br>
 		<v-btn dark color="primary" @click="completeStageOne">Next Step</v-btn>
 		<v-dialog v-model="uploadModal" width="500" >
-		<app-file-uploader :uploadTarget="uploadTarget" ref="fileUploadComponent"></app-file-uploader>
-	</v-dialog>
+			<app-file-uploader :uploadTarget="uploadTarget" ref="fileUploadComponent"></app-file-uploader>
+		</v-dialog>
 	</app-form-panel>
 </template>
 
@@ -38,17 +38,17 @@
 			}
 		},
 		components:{
-      appFormPanel,
-      appFileUploader
-    },
+			appFormPanel,
+			appFileUploader
+		},
 		watch:{
-      uploadModal(){
-        if(!this.uploadModal){
-          this.uploadTarget = null;
-          this.$refs.fileUploadComponent.clearUploader();
-        }
-      }
-    },
+			uploadModal(){
+				if(!this.uploadModal){
+					this.uploadTarget = null;
+					this.$refs.fileUploadComponent.clearUploader();
+				}
+			}
+		},
 		methods: {
 			async completeStageOne(){
 				try{
@@ -68,10 +68,10 @@
 			},
 			openUploadModal(targetData){
 				targetData.currentPictures = [];
-        console.log(targetData);
-        this.uploadTarget = targetData
-        this.uploadModal = true;
-      }
+				console.log(targetData);
+				this.uploadTarget = targetData
+				this.uploadModal = true;
+			}
 		}
 	}
 </script>

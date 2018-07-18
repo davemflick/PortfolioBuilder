@@ -66,7 +66,7 @@
 				return;
 			}*/
 			this.portfolioPictures = portfolio.profilePicture
-			const stage = !portfolio.setUpStage.one ? 'one' : !portfolio.setUpStage.two ? 'two' : null;
+			const stage = !portfolio.setUpStage.one ? 'two' : !portfolio.setUpStage.two ? 'two' : null;
 			if(!stage){
 				this.error = "Error finding build stage."
 				return;
