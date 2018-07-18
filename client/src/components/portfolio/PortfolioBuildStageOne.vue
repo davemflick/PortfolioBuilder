@@ -3,7 +3,7 @@
 		<form id="login-form">
 			<v-textarea label="About You" v-model="portfolioData.aboutUser"></v-textarea>
 			<br><br>
-			 <v-btn @click="openUploadModal({type: 'portfolioImage'})">Add Portfolio Image</v-btn>
+			 <v-btn @click="openUploadModal({type: 'portfolioImage', _id: portfolioId})">Add Portfolio Image</v-btn>
 		</form>
 		<br>
 		<div v-if="error" class="error-alert">{{ error }}</div>
@@ -67,6 +67,7 @@
 				}
 			},
 			openUploadModal(targetData){
+				targetData.currentPictures = [];
         console.log(targetData);
         this.uploadTarget = targetData
         this.uploadModal = true;
