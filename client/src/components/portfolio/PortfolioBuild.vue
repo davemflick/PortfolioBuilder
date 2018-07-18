@@ -61,11 +61,13 @@
 			console.log(portfolio)
 
 			this.portfolioId = portfolio._id;
+			//UNCOMMENT THIS WHEN DOWN ADDING UPLOADER!!
 			/*if(portfolio.isSetUp){
 				this.$router.push({name: 'Portfolio', params: {username}});
 				return;
 			}*/
 			this.portfolioPictures = portfolio.profilePicture
+			//CHANGE FIRST 'two' to 'one' once done adding uploader
 			const stage = !portfolio.setUpStage.one ? 'two' : !portfolio.setUpStage.two ? 'two' : null;
 			if(!stage){
 				this.error = "Error finding build stage."
