@@ -34,6 +34,7 @@
         <br>
         <br>
         <p v-if="error" class="alert error-alert">{{ error }}</p>
+        <p v-if="success" class="alert success-alert">{{ success }}</p>
       </v-layout>
     </v-card>
   </template>
@@ -68,7 +69,8 @@
             x: 0,
             y: 0
           },
-          error: null
+          error: null,
+          success: null
         }
       },
       methods:{
@@ -79,6 +81,7 @@
         pickFile(){
           this.$refs.image.click();
           this.error = null;
+          this.success = null;
           console.log(this.uploadTarget)
         },
         clearUploader(){
@@ -135,6 +138,10 @@
           formData.append("myfile", this.file.file, this.file.name);
           try{
             const uploadedFile = await UploadService.UploadUserProfileImage(formData, boundaries);
+            if(uploadedFile.data.ok){
+              this.clearUploader();
+              this.success = "Image Uploaded Successful"
+            }
             console.log("SUCCESS", uploadedFile);
           }catch(error){
             console.log("ERROR", error);
