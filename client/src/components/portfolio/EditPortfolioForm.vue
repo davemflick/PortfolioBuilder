@@ -66,7 +66,7 @@
     </v-flex>
   </v-layout>
   <v-dialog v-model="uploadModal" width="500" >
-    <app-file-uploader :uploadTarget="uploadTarget" ref="fileUploadComponent"></app-file-uploader>
+    <app-file-uploader :uploadTarget="uploadTarget" ref="fileUploadComponent" v-on:close="closeUploadModal"></app-file-uploader>
   </v-dialog>
 </app-form-panel>
 </template>
@@ -108,10 +108,12 @@
           newPics = this.portfolio.projects.find(p => p._id = targetData._id).images.map((pic)=>{ pic.isMain = false; return pic});
         }
         targetData.currentPictures = newPics
-
         console.log(targetData);
         this.uploadTarget = targetData
         this.uploadModal = true;
+      },
+      closeUploadModal(){
+        this.uploadModal = false;
       },
       async updatePortfolioGeneral(){
         this.generalError = null;
