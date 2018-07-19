@@ -6,7 +6,7 @@
 			<v-textarea label="Description" v-model="project.description"></v-textarea>
 		</form>
 		<br>
-		<v-btn @click="openUploadModal({ type: 'project' })">Add Portfolio Image</v-btn>
+		<v-btn @click="openUploadModal({ type: 'project' })">Add Image</v-btn>
 		<br>
 		<div v-if="error" class="error-alert">{{ error }}</div>
 		<br>
