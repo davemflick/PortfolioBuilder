@@ -10,7 +10,7 @@
 		<br>
 		<v-btn dark color="primary" @click="completeStageOne">Next Step</v-btn>
 		<v-dialog v-model="uploadModal" width="500" >
-			<app-file-uploader :uploadTarget="uploadTarget" ref="fileUploadComponent"></app-file-uploader>
+			<app-file-uploader :uploadTarget="uploadTarget" ref="fileUploadComponent" v-on:close="closeUploadModal"></app-file-uploader>
 		</v-dialog>
 	</app-form-panel>
 </template>
@@ -71,7 +71,10 @@
 				console.log(targetData);
 				this.uploadTarget = targetData
 				this.uploadModal = true;
-			}
+			},
+			closeUploadModal(){
+        this.uploadModal = false;
+      }
 		}
 	}
 </script>
