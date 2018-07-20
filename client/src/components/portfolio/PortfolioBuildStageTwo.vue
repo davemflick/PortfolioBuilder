@@ -4,15 +4,16 @@
 			<v-text-field type="text" label="Name" v-model="project.name"></v-text-field>
 			<v-text-field type="text" label="Link" v-model="project.link"></v-text-field>
 			<v-textarea label="Description" v-model="project.description"></v-textarea>
+			<v-text-field v-if="project.images[0].path" type="text" label="Image" v-model="project.images[0].path" :disabled="true"></v-text-field>
 		</form>
 		<br>
-		<v-btn @click="openUploadModal({ type: 'project' })">Add Image</v-btn>
+		<v-btn @click="openUploadModal({ type: 'projectAdd' })">Add Image</v-btn>
 		<br>
 		<div v-if="error" class="error-alert">{{ error }}</div>
 		<br>
 		<v-btn dark color="primary" @click="addUserProject" >Next Step</v-btn>
 		<v-dialog v-model="uploadModal" width="500" >
-			<app-file-uploader :uploadTarget="uploadTarget" ref="fileUploadComponent"></app-file-uploader>
+			<app-file-uploader :uploadTarget="uploadTarget" ref="fileUploadComponent" v-on:close="closeUploadModal"></app-file-uploader>
 		</v-dialog>
 	</app-form-panel>
 </template>
@@ -28,7 +29,13 @@
 				project:{
 					name: null,
 					link: null,
-					description: null
+					description: null,
+					images: [
+						{
+							path: null,
+							isMain: true
+						}
+					]
 				},
 				error: null,
 				uploadModal: false,
@@ -71,7 +78,11 @@
 				console.log(targetData);
 				this.uploadTarget = targetData
 				this.uploadModal = true;
-			}
+			},
+			closeUploadModal(img){
+				this.project.images[0].path = img;
+        this.uploadModal = false;
+      }
 		}
 	}
 </script>
