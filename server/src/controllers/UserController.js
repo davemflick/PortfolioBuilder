@@ -59,6 +59,8 @@ module.exports = {
 								if(err){return next(err);}
 								res.json({ok: true, msg: 'Image uploaded, project updated', filePath: imageOutputPath, project: project});
 							})
+						} else if (dbData.type === 'projectAdd'){
+							res.json({ok: true, msg: 'Image uploaded, project updated', filePath: imageOutputPath});
 						}
 					}
 				})
