@@ -29,5 +29,13 @@ module.exports = {
 				return res.json({ok: true, portfolio});
 			});
 		});
+	},
+
+	async removeProjectImage(req, res, next){
+		const project = req.body;
+		Project.findImageAndRemove(project.projectId, project.imageId, function(error, project){
+			if(error){return next(error);}
+			return res.json({ok: true, project});
+		});
 	}
 }
