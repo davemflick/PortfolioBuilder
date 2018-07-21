@@ -52,9 +52,9 @@
                         <div class="pi-container">
                           <v-badge color="red" small overlap>
                             <v-icon class="delete-project" 
-                                    slot="badge" dark small 
-                                    @click="deleteProject({projectId: project._id, imageId: img._id})"
-                                    >close</v-icon>
+                            slot="badge" dark small 
+                            @click="deleteProject({projectId: project._id, imageId: img._id})"
+                            >close</v-icon>
                             <v-avatar :size="50" :tile="true">
                               <img :src="'http://localhost:8081/' + img.path" alt="Project Image" />
                             </v-avatar>
@@ -109,6 +109,17 @@
       }
     },
     methods: {
+      updateProjectState(project){
+        let index = -1;
+        this.portfolio.projects.find((proj, i)=>{
+          if(proj._id === project._id){
+            index = i;
+          }
+        });
+        if(index >= 0){
+          this.portfolio.projects.splice(index, 1, project);
+        }
+      },
       openUploadModal(targetData){
         var newPics = '';
         if(targetData.type === 'portfolioImage'){
@@ -121,13 +132,19 @@
         this.uploadTarget = targetData
         this.uploadModal = true;
       },
-      closeUploadModal(){
+      closeUploadModal(resp){
+        if(resp.project){
+          this.updateProjectState(resp.project);
+        }
         this.uploadModal = false;
       },
       async deleteProject(target){
         try{
           const project = await PortfolioService.removeProjectImage(target);
           console.log(project);
+          if(project.data.ok && project.data.project){
+            this.updateProjectState(project.data.project);
+          }
         }catch(error){
           console.log("ERROR", error);
         }

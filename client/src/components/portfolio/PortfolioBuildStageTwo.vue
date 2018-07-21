@@ -80,7 +80,7 @@
 				this.uploadModal = true;
 			},
 			closeUploadModal(img){
-				this.project.images[0].path = img;
+				this.project.images[0].path = img.filePath;
         this.uploadModal = false;
       }
 		}
