@@ -124,8 +124,14 @@
       closeUploadModal(){
         this.uploadModal = false;
       },
-      deleteProject(target){
-        console.log(target);
+      async deleteProject(target){
+        try{
+          const project = await PortfolioService.removeProjectImage(target);
+          console.log(project);
+        }catch(error){
+          console.log("ERROR", error);
+        }
+        
       },
       async updatePortfolioGeneral(){
         this.generalError = null;
