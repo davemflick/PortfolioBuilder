@@ -11,5 +11,9 @@ export default {
 
 	addUserProject(portfolioId, req){
 		return Api().post(`project/add/${portfolioId}`, req);
+	},
+
+	removeProjectImage(projectInfo){
+		return Api().post(`project/delete-img`, projectInfo)
 	}
 }
