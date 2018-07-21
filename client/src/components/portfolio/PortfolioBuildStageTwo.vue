@@ -4,7 +4,7 @@
 			<v-text-field type="text" label="Name" v-model="project.name"></v-text-field>
 			<v-text-field type="text" label="Link" v-model="project.link"></v-text-field>
 			<v-textarea label="Description" v-model="project.description"></v-textarea>
-			<v-text-field v-if="project.images[0].path" type="text" label="Image" v-model="project.images[0].path" :disabled="true"></v-text-field>
+			<v-text-field v-show="false" type="text" label="Image" v-model="project.images[0].path" :disabled="true"></v-text-field>
 		</form>
 		<br>
 		<v-btn @click="openUploadModal({ type: 'projectAdd' })">Add Image</v-btn>
