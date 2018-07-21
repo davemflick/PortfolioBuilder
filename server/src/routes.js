@@ -45,9 +45,14 @@ router.post('/user/upload/img', upload.single('myfile'), UserController.uploadPo
 //GET IMAGES
 router.get('/src/finalUploads/:folder/:file', function(req, res){
 	const file = `${__dirname}/finalUploads/${req.params.folder}/${req.params.file}`;
-	if (fs.existsSync(path)) {
+	if (fs.existsSync(file)) {
     res.sendFile(file);
+  } else {
+  	res.json({ok: false, msg: 'bad pathway'});
   }
 });
+
+//DELETE -> Project Image
+router.post('/project/delete-img', PortfolioController.removeProjectImage);
 
 module.exports = router
