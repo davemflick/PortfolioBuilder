@@ -54,6 +54,16 @@ ProjectSchema.statics.updateProjectById = function(projectId, body, callback){
 	});
 }
 
+ProjectSchema.statics.findImageAndRemove = function(projectId, imageId, callback){
+	console.log("ImageId", imageId);
+	Project.findOneAndUpdate({_id: projectId}, {$pull: {images: {_id: imageId}}}, {new: true}).exec(function(error, project){
+		if(error){
+			return callback(noProjectError);
+		}
+		return callback(null, project);
+	});
+}
+
 const Project = mongoose.model('Project', ProjectSchema);
 
 module.exports = Project;
