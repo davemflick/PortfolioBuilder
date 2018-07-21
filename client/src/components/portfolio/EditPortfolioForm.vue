@@ -1,6 +1,6 @@
 <template>
   <app-form-panel title="Portfolio Content" v-if="portfolio">
-    <h3>General</h3>
+    <h2>General</h2>
     <br> <br>
     <edit-portfolio-general 
         :portfolio="portfolio" 
@@ -12,8 +12,10 @@
       </template>
     </edit-portfolio-general>
     <br><br>
-    <h3>Projects</h3>
+    <h2>Projects</h2>
     <br> <br>
+    <h4>Current Projects</h4>
+    <br>
     <v-layout wrap>
       <v-flex xs12 pr-1>
         <v-expansion-panel>
@@ -66,6 +68,16 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-flex>
+    <br>
+    <h4 class="py-3">Add New Project</h4>
+    <br>
+    <v-flex xs12 pa-2 class="new-project p-5">
+      <add-project :portfolio="portfolio">
+        <div slot="addImage">
+           <v-btn @click="openUploadModal({type: 'AddProject'})">Add Project Image</v-btn>
+        </div>
+      </add-project>
+    </v-flex>
   </v-layout>
   <v-dialog v-model="uploadModal" width="500" >
     <app-file-uploader :uploadTarget="uploadTarget" ref="fileUploadComponent" v-on:close="closeUploadModal"></app-file-uploader>
@@ -77,6 +89,7 @@
   import appFormPanel from '../universal/FormPanel.vue';
   import PortfolioService from '@/services/PortfolioService';
   import editPortfolioGeneral from './EditPortfolioGeneral.vue';
+  import addProject from './AddProject.vue';
   import appFileUploader from '../universal/FileUploader.vue';
   
   export default {
@@ -94,7 +107,8 @@
     components:{
       appFormPanel,
       appFileUploader,
-      editPortfolioGeneral
+      editPortfolioGeneral,
+      addProject
     },
     watch:{
       uploadModal(){
@@ -178,6 +192,11 @@
 .delete-project:hover{
   cursor: pointer;
   transform: rotate(180deg);
+}
+
+.new-project{
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .alert{
