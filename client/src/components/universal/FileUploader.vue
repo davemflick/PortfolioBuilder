@@ -142,7 +142,7 @@
               this.clearUploader();
               this.success = "Image Uploaded Successful"
               setTimeout(()=>{
-                this.$emit('close', uploadedFile.data.filePath)
+                this.$emit('close', uploadedFile.data)
               }, 500)
             }
             console.log("SUCCESS", uploadedFile);
