@@ -2,22 +2,15 @@
   <app-form-panel title="Portfolio Content" v-if="portfolio">
     <h3>General</h3>
     <br> <br>
-    <form>
-      <v-layout wrap>
-        <v-flex xs12 pr-1>
-          <v-text-field type="text" label="About" v-model="portfolio.aboutUser"></v-text-field>
-        </v-flex>
-        <br><br>
-        <v-btn dark color="primary" @click="updatePortfolioGeneral">Update</v-btn>
-        <br><br>
-        <v-flex xs12 sm6 pl-1>
-          <v-btn @click="openUploadModal({type: 'portfolioImage', _id: portfolio._id})">Change Portfolio Image</v-btn>
-        </v-flex>
-      </v-layout>
-    </form>
-    <br>
-    <div v-if="generalError" class="error-alert alert">{{ generalError }}</div>
-    <div v-if="generalSuccess" class="success-alert alert">{{ generalSuccess }}</div>
+    <edit-portfolio-general 
+        :portfolio="portfolio" 
+        :error="generalError" 
+        :success="generalSuccess" 
+        v-on:update="updatePortfolioGeneral">
+      <template slot="addProfileImage">
+         <v-btn @click="openUploadModal({type: 'portfolioImage', _id: portfolio._id})">Change Portfolio Image</v-btn>
+      </template>
+    </edit-portfolio-general>
     <br><br>
     <h3>Projects</h3>
     <br> <br>
@@ -37,10 +30,10 @@
                       <v-text-field type="text" label="Link" v-model="project.link"></v-text-field>
                     </v-flex>
                     <v-flex xs12 px-1>
-                      <v-text-field type="text" 
+                      <v-textarea type="text" 
                       label="Description" 
                       v-model="project.description"
-                      ></v-text-field>
+                      ></v-textarea>
                       <v-layout row my-2>
                         <v-flex xs4 sm2>
                          <v-btn @click="openUploadModal({type: 'project', _id: project._id})">Add Project Image</v-btn>
@@ -53,7 +46,7 @@
                           <v-badge color="red" small overlap>
                             <v-icon class="delete-project" 
                             slot="badge" dark small 
-                            @click="deleteProject({projectId: project._id, imageId: img._id})"
+                            @click="deleteProjectImage({projectId: project._id, imageId: img._id})"
                             >close</v-icon>
                             <v-avatar :size="50" :tile="true">
                               <img :src="'http://localhost:8081/' + img.path" alt="Project Image" />
@@ -83,7 +76,9 @@
 <script>
   import appFormPanel from '../universal/FormPanel.vue';
   import PortfolioService from '@/services/PortfolioService';
+  import editPortfolioGeneral from './EditPortfolioGeneral.vue';
   import appFileUploader from '../universal/FileUploader.vue';
+  
   export default {
     props: ['portfolio'],
     data(){
@@ -98,7 +93,8 @@
     },
     components:{
       appFormPanel,
-      appFileUploader
+      appFileUploader,
+      editPortfolioGeneral
     },
     watch:{
       uploadModal(){
@@ -135,10 +131,12 @@
       closeUploadModal(resp){
         if(resp.project){
           this.updateProjectState(resp.project);
+        } else if(resp.portfolio){
+          this.portfolio.profilePicture = resp.portfolio.profilePicture;
         }
         this.uploadModal = false;
       },
-      async deleteProject(target){
+      async deleteProjectImage(target){
         try{
           const project = await PortfolioService.removeProjectImage(target);
           console.log(project);
