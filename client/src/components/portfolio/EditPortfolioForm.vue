@@ -30,32 +30,41 @@
               <v-card-text>
                 <form>
                   <v-layout wrap>
-                    <v-flex xs12>
+                    <v-flex xs12 sm6 px-1>
                       <v-text-field type="text" label="Name" v-model="project.name"></v-text-field>
                     </v-flex>
-                    <v-flex xs12>
+                    <v-flex xs12 sm6 px-1>
                       <v-text-field type="text" label="Link" v-model="project.link"></v-text-field>
                     </v-flex>
-                    <v-flex xs12>
+                    <v-flex xs12 px-1>
                       <v-text-field type="text" 
                       label="Description" 
                       v-model="project.description"
                       ></v-text-field>
-                      <v-layout wrap>
-                        <v-flex xs-6>
+                      <v-layout row my-2>
+                        <v-flex xs4 sm2>
                          <v-btn @click="openUploadModal({type: 'project', _id: project._id})">Add Project Image</v-btn>
                        </v-flex>
-                       <v-flex xs-6>
+                       <v-flex xs8 sm10>
                         <p class="text-lg-right" v-if="project.images.length === 0"> This project has no images </p>
                       </v-flex>
-                      <v-flex xs-6 sm-3 v-for="(img, i) in project.images" :key="`projectImg-${i}`">
-                        <v-avatar :size="50" :tile="true">
-                          <img :src="'http://localhost:8081/' + img.path" alt="Project Image" />
-                        </v-avatar>
-                        <br>
-                        <v-icon dark>delete</v-icon>
+                      <v-flex xs8 sm10 v-for="(img, i) in project.images" :key="`projectImg-${i}`">
+                        <div class="pi-container">
+                          <v-badge color="red" small overlap>
+                            <v-icon class="delete-project" 
+                                    slot="badge" dark small 
+                                    @click="deleteProject({projectId: project._id, imageId: img._id})"
+                                    >close</v-icon>
+                            <v-avatar :size="50" :tile="true">
+                              <img :src="'http://localhost:8081/' + img.path" alt="Project Image" />
+                            </v-avatar>
+                          </v-badge>
+                        </div>
                       </v-flex>
                     </v-layout>
+                  </v-flex>
+                  <v-flex xs12>
+                    <v-btn dark color="primary">Update Project</v-btn>
                   </v-flex>
                 </v-layout>
               </form>
@@ -115,6 +124,9 @@
       closeUploadModal(){
         this.uploadModal = false;
       },
+      deleteProject(target){
+        console.log(target);
+      },
       async updatePortfolioGeneral(){
         this.generalError = null;
         this.generalSuccess = null;
@@ -137,6 +149,16 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.delete-project{
+  cursor: pointer;
+  transform: rotate(0deg);
+  transition: transform .35s linear;
+}
+.delete-project:hover{
+  cursor: pointer;
+  transform: rotate(180deg);
+}
+
 .alert{
   text-align: center;
   font-size: 15px;
