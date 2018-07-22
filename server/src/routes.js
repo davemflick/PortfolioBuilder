@@ -53,6 +53,9 @@ router.get('/src/finalUploads/:folder/:file', function(req, res){
 });
 
 //DELETE -> Project Image
-router.post('/project/delete-img', PortfolioController.removeProjectImage);
+router.put('/project/delete-img', PortfolioController.removeProjectImage);
+
+//DELETE -> Project
+router.put('/project/delete/:portfolioId/:projectId', PortfolioController.deleteProject);
 
 module.exports = router
