@@ -47,20 +47,25 @@ module.exports = {
 								console.log(errorx);
 							}
 						})
-						let pics = dbData.currentPictures;
-						pics.push({isMain: true, path: imageOutputPath});
+						let pics;
+						if(dbData.currentPictures){
+							pics = dbData.currentPictures;
+							pics.push({isMain: true, path: imageOutputPath});
+						}
 						if(dbData.type === 'portfolioImage'){
 							Portfolio.updatePortfolio(dbData._id, {profilePicture: pics}, function(err, portfolio){
 								if(err){return next(err);}
-								res.json({ok: true, msg: 'Image uploaded, portfolio updated', filePath: imageOutputPath, portfolio: portfolio});
+								res.json({ok: true, msg: 'Image uploaded, portfolio updated', filePath: imageOutputPath, portfolio: portfolio, uploadType: 'portfolioImage'});
 							})
 						} else if (dbData.type === 'project'){
 							Project.updateProjectById(dbData._id, {images: pics}, function(err, project){
 								if(err){return next(err);}
-								res.json({ok: true, msg: 'Image uploaded, project updated', filePath: imageOutputPath, project: project});
+								res.json({ok: true, msg: 'Image uploaded, project updated', filePath: imageOutputPath, project: project, uploadType: 'project'});
 							})
 						} else if (dbData.type === 'projectAdd'){
-							res.json({ok: true, msg: 'Image uploaded, project updated', filePath: imageOutputPath});
+							res.json({ok: true, msg: 'Image uploaded, project updated', filePath: imageOutputPath, uploadType: 'projectAdd'});
+						} else if (dbData.type === 'NewProjectImage'){
+							res.json({ok: true, msg: 'Image uploaded, project not yet created', filePath: imageOutputPath, uploadType: 'NewProjectImage'});
 						}
 					}
 				})
