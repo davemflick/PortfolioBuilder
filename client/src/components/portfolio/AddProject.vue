@@ -17,9 +17,9 @@
             <slot name="addImage"></slot>
           </v-flex>
           <v-flex xs8 sm10>
-            <p class="text-lg-right" v-if="project.images.length === 0"> This project has no images </p>
+            <p class="text-lg-right" v-if="projectImages.length === 0"> This project has no images </p>
           </v-flex>
-          <v-flex xs8 sm10 v-for="(img, i) in project.images" :key="`projectImg-${i}`">
+          <v-flex xs8 sm10 v-for="(img, i) in projectImages" :key="`projectImg-${i}`">
             <div class="pi-container">
               <v-badge color="red" small overlap>
                 <v-icon slot="badge" dark small @click="removeImage(i)" >close</v-icon>
@@ -31,6 +31,11 @@
           </v-flex>
         </v-layout>
       </v-flex>
+      <v-flex class="py-2">
+        <v-btn class="primary" @click="addNewProject">
+          Create Project
+        </v-btn>
+      </v-flex>
     </v-layout>
   </form>
 </template>
@@ -38,7 +43,7 @@
 <script>
 
   export default {
-    props: ['portfolio'],
+    props: ['portfolio', 'projectImages'],
     data(){
       return {
         project:{
@@ -53,7 +58,11 @@
     },
     methods:{
       removeImage(index){
-        this.project.images.splice(index, 1);
+        this.projectImages.splice(index, 1);
+      },
+      addNewProject(){
+        this.project.images = this.projectImages
+        console.log(this.project);
       }
     }
   }
