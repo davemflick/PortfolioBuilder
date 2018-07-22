@@ -1,6 +1,7 @@
 <template>
   <app-form-panel title="Portfolio Content" v-if="portfolio">
     <h2>General</h2>
+    <i class="devicon-git-plain-wordmark devicon-icon"></i>
     <br> <br>
     <edit-portfolio-general 
         :portfolio="portfolio" 
