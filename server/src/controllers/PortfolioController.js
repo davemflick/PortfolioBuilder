@@ -37,5 +37,17 @@ module.exports = {
 			if(error){return next(error);}
 			return res.json({ok: true, project});
 		});
+	},
+
+	async deleteProject(req, res, next){
+		Project.deleteProject(req.params.projectId, function(err, result){
+			if(err){return next(err)};
+			if(result.success){
+				Portfolio.removeProject(req.params.portfolioId, req.params.projectId, function(err, portfolio){
+					if(err){return next(err);}
+					res.json({ok: true, msg: "Project deleted from portfolio", portfolio});
+				});
+			}
+		})
 	}
 }
