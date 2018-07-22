@@ -36,7 +36,7 @@
                       label="Description" 
                       v-model="project.description"
                       ></v-textarea>
-                      <v-layout row my-2>
+                      <v-layout row class="my-2">
                         <v-flex xs4 sm2>
                          <v-btn @click="openUploadModal({type: 'project', _id: project._id})">Add Project Image</v-btn>
                        </v-flex>
@@ -60,6 +60,7 @@
                   </v-flex>
                   <v-flex xs12>
                     <v-btn dark color="primary">Update Project</v-btn>
+                    <v-btn dark color="secondary" @click="deleteProject(project._id)">Delete Project</v-btn>
                   </v-flex>
                 </v-layout>
               </form>
@@ -165,7 +166,20 @@
         }catch(error){
           console.log("ERROR", error);
         }
-        
+      },
+      async deleteProject(id){
+        if(!confirm('Are you sure you want to delete this project?')){
+          return false;
+        }
+        try{
+          const updatedPortfolio = await PortfolioService.deleteProject(this.portfolio._id, id);
+          console.log(updatedPortfolio.data);
+          if(updatedPortfolio.data.ok){
+            this.portfolio.projects = this.portfolio.projects.filter(project => project._id != id);
+          }
+        }catch(error){
+          console.log("ERROR", error);
+        }
       },
       updatePortfolioProjects(portfolioProjects){
         this.newProjectImages = [];
