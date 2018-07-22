@@ -64,6 +64,15 @@ ProjectSchema.statics.findImageAndRemove = function(projectId, imageId, callback
 	});
 }
 
+ProjectSchema.statics.deleteProject = function(projectId, callback){
+	Project.remove({_id: projectId}).exec(function(error){
+		if(error){
+			return callback(noProjectError);
+		}
+		return callback(null, {success: true, msg: 'project deleted'});
+	});
+}
+
 const Project = mongoose.model('Project', ProjectSchema);
 
 module.exports = Project;
