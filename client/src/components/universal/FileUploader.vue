@@ -79,16 +79,19 @@
           this.imgCrop.y = y;
         },
         pickFile(){
+          this.$refs.image.value = null;
           this.$refs.image.click();
           this.error = null;
           this.success = null;
-          console.log(this.uploadTarget)
+          this.clearUploader();
         },
         clearUploader(){
           this.file.type = 'notta';
           this.file.name = null;
           this.file.url = null;
           this.file.file = null;
+          this.error = null;
+          this.success = null;
         },
         onFilePicked(e){
           const files = e.target.files;
