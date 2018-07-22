@@ -22,5 +22,8 @@ export default {
 </script>
 
 <style>
+.devicon-icon{
+  font-size: 6em;
+}
 
 </style>
