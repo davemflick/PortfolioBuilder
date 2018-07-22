@@ -72,7 +72,7 @@
     <h4 class="py-3">Add New Project</h4>
     <br>
     <v-flex xs12 pa-2 class="new-project p-5">
-      <add-project :portfolio="portfolio" :projectImages="newProjectImages">
+      <add-project :portfolio="portfolio" :projectImages="newProjectImages" v-on:update="updatePortfolioProjects">
         <div slot="addImage">
            <v-btn @click="openUploadModal({type: 'NewProjectImage'})">Add Project Image</v-btn>
         </div>
@@ -166,6 +166,10 @@
           console.log("ERROR", error);
         }
         
+      },
+      updatePortfolioProjects(portfolioProjects){
+        this.newProjectImages = [];
+        this.portfolio.projects = portfolioProjects;
       },
       async updatePortfolioGeneral(){
         this.generalError = null;
