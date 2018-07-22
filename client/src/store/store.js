@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
+import allSkills from './devicons.json';
 
 Vue.use(Vuex);
 
@@ -10,11 +11,13 @@ export default new Vuex.Store({
 	state: {
 		user: null,
 		userLoggedIn: false,
-		buildStage: null
+		buildStage: null,
+		allSkills: allSkills
 	},
 	getters:{
 		getBuildStage(state){return state.buildStage;},
-		getUser(state){return state.user}
+		getUser(state){return state.user;},
+		getSkills(state){ return state.allSkills;}
 	},
 	mutations:{
 		setUser(state, user){
