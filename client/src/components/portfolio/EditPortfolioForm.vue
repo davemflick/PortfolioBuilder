@@ -72,9 +72,9 @@
     <h4 class="py-3">Add New Project</h4>
     <br>
     <v-flex xs12 pa-2 class="new-project p-5">
-      <add-project :portfolio="portfolio">
+      <add-project :portfolio="portfolio" :projectImages="newProjectImages">
         <div slot="addImage">
-           <v-btn @click="openUploadModal({type: 'AddProject'})">Add Project Image</v-btn>
+           <v-btn @click="openUploadModal({type: 'NewProjectImage'})">Add Project Image</v-btn>
         </div>
       </add-project>
     </v-flex>
@@ -101,7 +101,8 @@
         generalError: null,
         generalSuccess: null,
         uploadModal: false,
-        uploadTarget: null
+        uploadTarget: null,
+        newProjectImages: []
       }
     },
     components:{
@@ -143,11 +144,15 @@
         this.uploadModal = true;
       },
       closeUploadModal(resp){
-        if(resp.project){
+        if(resp.project && resp.uploadType === 'project'){
           this.updateProjectState(resp.project);
-        } else if(resp.portfolio){
+        } else if(resp.portfolio && resp.uploadType === 'portfolioImage'){
           this.portfolio.profilePicture = resp.portfolio.profilePicture;
+        } else if(resp.uploadType === 'NewProjectImage'){
+          this.newProjectImages = this.newProjectImages.map(img => {img.isMain = false; return img});
+          this.newProjectImages.push({path: resp.filePath, isMain: true});
         }
+        this.uploadTarget = null;
         this.uploadModal = false;
       },
       async deleteProjectImage(target){
