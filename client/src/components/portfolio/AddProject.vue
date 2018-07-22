@@ -37,32 +37,46 @@
         </v-btn>
       </v-flex>
     </v-layout>
+    <br>
+    <p v-if="error" class="error error-alert">{{ error }}</p>
   </form>
 </template>
 
 <script>
-
+  import PortfolioService from '@/services/PortfolioService';
+  const emptyProject = function(id){
+    this.images = [];
+    this.name = null;
+    this.link = null;
+    this.description = null;
+    this.portfolioId = id;
+    this.stack = [];
+  }
   export default {
     props: ['portfolio', 'projectImages'],
     data(){
       return {
-        project:{
-          images: [],
-          name: null,
-          link: null,
-          description: null,
-          portfolioId: this.portfolio._id,
-          stack: []
-        }
+        project: new emptyProject(this.portfolio._id),
+        error: null
       }
     },
     methods:{
       removeImage(index){
         this.projectImages.splice(index, 1);
       },
-      addNewProject(){
+      async addNewProject(){
         this.project.images = this.projectImages
-        console.log(this.project);
+        try{
+          const updatedPortfolio = await PortfolioService.addUserProject(this.portfolio._id, this.project);
+          if(updatedPortfolio.data.ok){
+            this.$emit('update', updatedPortfolio.data.portfolio.projects);
+            this.project = new emptyProject(this.portfolio._id);
+            console.log(updatedPortfolio.data);
+          }
+        }catch(error){
+          console.log("ERRROR", error);
+          this.error = error;
+        }
       }
     }
   }
