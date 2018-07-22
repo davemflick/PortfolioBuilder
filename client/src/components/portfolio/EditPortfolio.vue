@@ -3,6 +3,8 @@
     <app-edit-user v-if="user" :user="user" :portfolioId="portfolio._id"></app-edit-user>
     <br><br>
     <app-edit-portfolio v-if="portfolio" :portfolio="portfolio"></app-edit-portfolio>
+    <br><br>
+    <app-skills></app-skills>
   </v-container>
 </template>
 
@@ -10,6 +12,7 @@
   import PortfolioService from '@/services/PortfolioService';
   import appEditUser from './EditUserForm.vue';
   import appEditPortfolio from './EditPortfolioForm.vue';
+  import appSkills from '../universal/Skills.vue';
   
   export default {
     data () {
@@ -43,7 +46,8 @@
     },
     components:{
       appEditUser,
-      appEditPortfolio
+      appEditPortfolio,
+      appSkills
     }
   }
 </script>
