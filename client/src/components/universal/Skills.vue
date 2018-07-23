@@ -1,5 +1,18 @@
 <template>
   <app-form-panel :title="'Skills'">
+    <h2>
+      Current Skills
+    </h2>
+    <p v-if="currentSkills.length === 0">No skills for you</p>
+     <v-layout wrap>
+      <v-flex xs4 sm3 class="p-2" v-for="skill in currentSkills" :key="skill">
+        <i :class="`devicon-icon devicon-${skill}`"></i>
+      </v-flex>
+    </v-layout>
+    <br><br>
+    <h2>
+      Add Skills
+    </h2>
     <v-layout wrap>
       <v-flex xs12 class="p-2">
         <v-text-field
@@ -22,26 +35,32 @@
             <v-flex sm6 class="text-xs-center" v-for="icon in skill.versions.font" :key="icon">
               <v-layout wrap justify-space-between>
                 <v-flex sm6 class="pa-2">
-                  <div class="pa-1 single-icon">
+                  <v-badge class="add-skill-badge" overlap  color="green" >
+                    <v-icon slot="badge" dark small  @click="addToCurrentSkills(`${skill.name}-${icon}`)">library_add</v-icon>
+                   <div class="pa-1 single-icon">
                     <i :class="`devicon-icon devicon-${skill.name}-${icon}`"></i>
                     <br>
                     <p>{{ icon }}</p>
                   </div>
-                </v-flex>
-                <v-flex sm6 class="pa-2">
-                  <div class=" pa-1 single-icon">
+                </v-badge>
+              </v-flex>
+              <v-flex sm6 class="pa-2">
+                <v-badge class="add-skill-badge"  overlap color="green" >
+                  <v-icon slot="badge" dark small @click="addToCurrentSkills(`${skill.name}-${icon} colored`)" >library_add</v-icon>
+                 <div class=" pa-1 single-icon">
                    <i :class="`devicon-icon devicon-${skill.name}-${icon} colored`"></i>
                    <br>
                    <p>{{ icon }} with color</p>
                  </div>
-               </v-flex>
-             </v-layout>
-           </v-flex>
-         </v-layout>
-       </v-flex>
-     </v-layout>
-   </div>
- </app-form-panel>
+               </v-badge>
+             </v-flex>
+           </v-layout>
+         </v-flex>
+       </v-layout>
+     </v-flex>
+   </v-layout>
+ </div>
+</app-form-panel>
 </template>
 
 <script>
@@ -52,7 +71,8 @@
       return {
         allSkills: this.$store.state.allSkills,
         searchTerm: null,
-        searchResults: []
+        searchResults: [],
+        currentSkills: []
       }
     },
     components:{
@@ -69,6 +89,9 @@
         } else {
           this.searchResults = [];
         }
+      },
+      addToCurrentSkills(skill){
+        this.currentSkills.push(skill);
       }
     }
   }
@@ -83,6 +106,14 @@
 .single-icon{
   border: 1px solid #ccc;
   border-radius: 3px;
+}
+.v-badge{
+  width: 100%;
+}
+
+.add-skill-badge .v-badge__badge i.v-icon:hover{
+  background-color: #a1c7a3;
+  cursor: pointer;
 }
 
 h2 small{
