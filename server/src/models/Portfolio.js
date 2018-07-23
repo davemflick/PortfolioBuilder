@@ -21,7 +21,7 @@ const PortfolioSchema = new mongoose.Schema({
 	],
 	projects: [{type: Schema.Types.ObjectId, ref: 'Project'}],
 	certifications: [{name: String, about: String, picturePath: String, dateObtained: Date}],
-	skills: [{type: Schema.Types.ObjectId, ref: 'Skill'}],
+	skills: [{type: String, trim: true}],
 	createdOn: {type: Date, default: Date.now },
 	updatedOn: {type: Date, default: Date.now }
 });

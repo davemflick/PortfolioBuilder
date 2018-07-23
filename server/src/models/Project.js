@@ -6,7 +6,7 @@ const ProjectSchema = new mongoose.Schema({
 	name: {type: String, required: true, trim: true},
 	description: {type: String, trim: true},
 	link: {type: String, trim: true},
-	stack: [{type: Schema.Types.ObjectId, ref: 'Skill'}],
+	stack: {type: String, trim: true},
 	images: [
 		{
 			path: {type: String},
