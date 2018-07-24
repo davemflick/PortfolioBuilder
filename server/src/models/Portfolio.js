@@ -6,7 +6,7 @@ const PortfolioSchema = new mongoose.Schema({
 	userId: {type: Schema.Types.ObjectId, required: true, ref: 'User'},
 	username: {type: String, required: true, unique: true, trim: true},
 	isSetUp: {type: Boolean, default: false},
-	isActive: {type: Boolean, deafult: true},
+	isActive: {type: Boolean, deafult: true, required: true},
 	setUpStage:{
 		one:{type: Boolean, default: false},
 		two:{type: Boolean, default: false}
