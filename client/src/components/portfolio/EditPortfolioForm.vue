@@ -1,88 +1,93 @@
 <template>
   <app-form-panel title="Portfolio Content" v-if="portfolio">
     <h2>General</h2>
-    <br> <br>
-    <edit-portfolio-general 
-        :portfolio="portfolio" 
-        :error="generalError" 
-        :success="generalSuccess" 
-        v-on:update="updatePortfolioGeneral">
-      <template slot="addProfileImage">
-         <v-btn @click="openUploadModal({type: 'portfolioImage', _id: portfolio._id})">Change Portfolio Image</v-btn>
-      </template>
-    </edit-portfolio-general>
-    <br><br>
-    <h2>Projects</h2>
-    <br> <br>
-    <h4>Current Projects</h4>
     <br>
-    <v-layout wrap>
-      <v-flex xs12 pr-1>
-        <v-expansion-panel>
-          <v-expansion-panel-content v-for="(project, i) in portfolio.projects" :key="`${project.name}-${i}`">
-            <div slot="header">{{ project.name }}</div>
-            <v-card>
-              <v-card-text>
-                <form>
-                  <v-layout wrap>
-                    <v-flex xs12 sm6 px-1>
-                      <v-text-field type="text" label="Name" v-model="project.name"></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 px-1>
-                      <v-text-field type="text" label="Link" v-model="project.link"></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 px-1>
-                      <v-textarea type="text" 
-                      label="Description" 
-                      v-model="project.description"
-                      ></v-textarea>
-                      <v-layout row class="my-2">
-                        <v-flex xs4 sm2>
-                         <v-btn @click="openUploadModal({type: 'project', _id: project._id})">Add Project Image</v-btn>
-                       </v-flex>
-                       <v-flex xs8 sm10>
-                        <p class="text-lg-right" v-if="project.images.length === 0"> This project has no images </p>
-                      </v-flex>
-                      <v-flex xs8 sm10 v-for="(img, i) in project.images" :key="`projectImg-${i}`">
-                        <div class="pi-container">
-                          <v-badge color="red" small overlap>
-                            <v-icon class="delete-project" 
-                            slot="badge" dark small 
-                            @click="deleteProjectImage({projectId: project._id, imageId: img._id})"
-                            >close</v-icon>
-                            <v-avatar :size="50" :tile="true">
-                              <img :src="'http://localhost:8081/' + img.path" alt="Project Image" />
-                            </v-avatar>
-                          </v-badge>
-                        </div>
-                      </v-flex>
-                    </v-layout>
+    <v-switch
+      :label="`Portfolio Active`"
+      v-model="portfolio.isActive"
+      @change="portfolioActivation"
+    ></v-switch>
+    <edit-portfolio-general 
+    :portfolio="portfolio" 
+    :error="generalError" 
+    :success="generalSuccess" 
+    v-on:update="updatePortfolioGeneral">
+    <template slot="addProfileImage">
+     <v-btn @click="openUploadModal({type: 'portfolioImage', _id: portfolio._id})">Change Portfolio Image</v-btn>
+   </template>
+ </edit-portfolio-general>
+ <br><br>
+ <h2>Projects</h2>
+ <br> <br>
+ <h4>Current Projects</h4>
+ <br>
+ <v-layout wrap>
+  <v-flex xs12 pr-1>
+    <v-expansion-panel>
+      <v-expansion-panel-content v-for="(project, i) in portfolio.projects" :key="`${project.name}-${i}`">
+        <div slot="header">{{ project.name }}</div>
+        <v-card>
+          <v-card-text>
+            <form>
+              <v-layout wrap>
+                <v-flex xs12 sm6 px-1>
+                  <v-text-field type="text" label="Name" v-model="project.name"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 px-1>
+                  <v-text-field type="text" label="Link" v-model="project.link"></v-text-field>
+                </v-flex>
+                <v-flex xs12 px-1>
+                  <v-textarea type="text" 
+                  label="Description" 
+                  v-model="project.description"
+                  ></v-textarea>
+                  <v-layout row class="my-2">
+                    <v-flex xs4 sm2>
+                     <v-btn @click="openUploadModal({type: 'project', _id: project._id})">Add Project Image</v-btn>
+                   </v-flex>
+                   <v-flex xs8 sm10>
+                    <p class="text-lg-right" v-if="project.images.length === 0"> This project has no images </p>
                   </v-flex>
-                  <v-flex xs12>
-                    <v-btn dark color="primary">Update Project</v-btn>
-                    <v-btn dark color="secondary" @click="deleteProject(project._id)">Delete Project</v-btn>
+                  <v-flex xs8 sm10 v-for="(img, i) in project.images" :key="`projectImg-${i}`">
+                    <div class="pi-container">
+                      <v-badge color="red" small overlap>
+                        <v-icon class="delete-project" 
+                        slot="badge" dark small 
+                        @click="deleteProjectImage({projectId: project._id, imageId: img._id})"
+                        >close</v-icon>
+                        <v-avatar :size="50" :tile="true">
+                          <img :src="'http://localhost:8081/' + img.path" alt="Project Image" />
+                        </v-avatar>
+                      </v-badge>
+                    </div>
                   </v-flex>
                 </v-layout>
-              </form>
-            </v-card-text>
-          </v-card>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-flex>
-    <br>
-    <h4 class="py-3">Add New Project</h4>
-    <br>
-    <v-flex xs12 pa-2 class="new-project p-5">
-      <add-project :portfolio="portfolio" :projectImages="newProjectImages" v-on:update="updatePortfolioProjects">
-        <div slot="addImage">
-           <v-btn @click="openUploadModal({type: 'NewProjectImage'})">Add Project Image</v-btn>
-        </div>
-      </add-project>
-    </v-flex>
-  </v-layout>
-  <v-dialog v-model="uploadModal" width="500" >
-    <app-file-uploader :uploadTarget="uploadTarget" ref="fileUploadComponent" v-on:close="closeUploadModal"></app-file-uploader>
-  </v-dialog>
+              </v-flex>
+              <v-flex xs12>
+                <v-btn dark color="primary">Update Project</v-btn>
+                <v-btn dark color="secondary" @click="deleteProject(project._id)">Delete Project</v-btn>
+              </v-flex>
+            </v-layout>
+          </form>
+        </v-card-text>
+      </v-card>
+    </v-expansion-panel-content>
+  </v-expansion-panel>
+</v-flex>
+<br>
+<h4 class="py-3">Add New Project</h4>
+<br>
+<v-flex xs12 pa-2 class="new-project p-5">
+  <add-project :portfolio="portfolio" :projectImages="newProjectImages" v-on:update="updatePortfolioProjects">
+    <div slot="addImage">
+     <v-btn @click="openUploadModal({type: 'NewProjectImage'})">Add Project Image</v-btn>
+   </div>
+ </add-project>
+</v-flex>
+</v-layout>
+<v-dialog v-model="uploadModal" width="500" >
+  <app-file-uploader :uploadTarget="uploadTarget" ref="fileUploadComponent" v-on:close="closeUploadModal"></app-file-uploader>
+</v-dialog>
 </app-form-panel>
 </template>
 
@@ -121,6 +126,15 @@
       }
     },
     methods: {
+      async portfolioActivation(){
+         try{
+          const updatedPortfolio = await PortfolioService.updatePortfolio(this.portfolio._id, {isActive: this.portfolio.isActive});
+          console.log("DONE", updatedPortfolio)
+        } catch(error){
+          console.log("ERROR", error);
+          alert("Something has gone wrong updating active state");
+        }
+      },
       updateProjectState(project){
         let index = -1;
         this.portfolio.projects.find((proj, i)=>{
