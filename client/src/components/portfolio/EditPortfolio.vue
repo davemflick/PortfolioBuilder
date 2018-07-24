@@ -4,7 +4,7 @@
     <br><br>
     <app-edit-portfolio v-if="portfolio" :portfolio="portfolio"></app-edit-portfolio>
     <br><br>
-    <app-skills v-if="portfolio" :portfolioSkills="portfolio.skills"></app-skills>
+    <app-skills v-if="portfolio" :portfolio="portfolio"></app-skills>
   </v-container>
 </template>
 
