@@ -18,7 +18,7 @@ module.exports = {
 		Portfolio.updatePortfolio(req.params.id, req.body, function(err, portfolio){
 			if(err){return next(err);}
 			return portfolio ? res.json({Ok: true, portfolio}) : res.json({Ok: false, Msg: 'Portfolio did no update'});
-		})
+		});
 	},
 
 	async addUserProject(req, res, next){
