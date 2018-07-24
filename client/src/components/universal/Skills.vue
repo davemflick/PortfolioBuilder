@@ -1,5 +1,6 @@
 <template>
   <app-form-panel :title="'Skills'">
+    <p v-if="uploadError" class="text-xs-center alert alert-error">{{ uploadError }}</p>
     <h2>
       Current Skills
     </h2>
@@ -78,15 +79,17 @@
 
 <script>
   import FormPanel from './FormPanel.vue';
-
+  import PortfolioService from '@/services/PortfolioService';
   export default{
-    props: ["portfolioSkills"],
+    props: ["portfolio"],
     data(){
       return {
         allSkills: this.$store.state.allSkills,
         searchTerm: null,
         searchResults: [],
-        currentSkills: this.portfolioSkills
+        tempSkills: this.portfolio.skills,
+        currentSkills: this.portfolio.skills,
+        uploadError: null
       }
     },
     components:{
@@ -105,13 +108,30 @@
         }
       },
       addToCurrentSkills(skill){
-        this.currentSkills.push(skill);
+        this.tempSkills.push(skill);
+        this.updateUsersSkills(this.tempSkills);
       },
       removeFromCurrentSkills(skill){
-        this.currentSkills.splice(this.currentSkills.indexOf(skill), 1);
+        this.tempSkills.splice(this.tempSkills.indexOf(skill), 1);
+        this.updateUsersSkills(this.tempSkills);
       },
       checkIfCurrent(skill){
         return this.currentSkills.includes(skill);
+      },
+      async updateUsersSkills(skills){
+        try{
+          const updatedPortfolio = await PortfolioService.updatePortfolio(this.portfolio._id, {skills: this.tempSkills});
+          console.log(updatedPortfolio);
+          if(updatedPortfolio.data.Ok){
+            this.currentSkills = updatedPortfolio.data.portfolio.skills;
+          } else {
+            console.log("Error on update");
+            this.uploadError = updatedPortfolio.data.msg;
+          }
+        }catch(error){
+          console.log("ERROR", error);
+          this.uploadError = error;
+        }
       }
     }
   }
