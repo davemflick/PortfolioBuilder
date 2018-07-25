@@ -24,7 +24,7 @@
  <v-layout wrap>
   <v-flex xs12 pr-1>
     <v-expansion-panel>
-      <v-expansion-panel-content v-for="(project, i) in portfolio.projects" :key="`${project.name}-${i}`">
+      <v-expansion-panel-content v-for="(project, i) in portfolio.projects" :key="`project-${i}`">
         <div slot="header">{{ project.name }}</div>
         <v-card>
           <v-card-text>
@@ -35,6 +35,9 @@
                 </v-flex>
                 <v-flex xs12 sm6 px-1>
                   <v-text-field type="text" label="Link" v-model="project.link"></v-text-field>
+                </v-flex>
+                <v-flex xs12 px-1>
+                  <v-text-field type="text" label="Stack" v-model="project.stack"></v-text-field>
                 </v-flex>
                 <v-flex xs12 px-1>
                   <v-textarea type="text" 
@@ -64,8 +67,10 @@
                 </v-layout>
               </v-flex>
               <v-flex xs12>
-                <v-btn dark color="primary">Update Project</v-btn>
+                <v-btn dark color="primary" @click="updateProject(project._id)">Update Project</v-btn>
                 <v-btn dark color="secondary" @click="deleteProject(project._id)">Delete Project</v-btn>
+                <p v-if="projectError" class="alert error-alert">{{ projectError }}</p>
+                <p v-if="projectSuccess" class="alert success-alert">{{ projectSuccess }}</p>
               </v-flex>
             </v-layout>
           </form>
@@ -106,6 +111,8 @@
         selectedProfilePicture: JSON.parse(JSON.stringify(this.portfolio.profilePicture.find((p)=>{return p.isMain}).path)),
         generalError: null,
         generalSuccess: null,
+        projectError: null,
+        projectSuccess: null,
         uploadModal: false,
         uploadTarget: null,
         newProjectImages: []
@@ -169,6 +176,29 @@
         }
         this.uploadTarget = null;
         this.uploadModal = false;
+      },
+      async updateProject(projectId){
+        this.projectSuccess = null;
+        this.projectError = null;
+        const thisProject = this.portfolio.projects.find(p => p._id === projectId);
+        const updateFields = {
+          name: thisProject.name,
+          link: thisProject.link,
+          stack: thisProject.stack,
+          description: thisProject.description
+        }
+        try{
+          const updatedProject = await PortfolioService.editProject(projectId, updateFields);
+          console.log(updatedProject)
+          if(updatedProject.data.ok){
+            this.updateProjectState(updatedProject.data.project);
+            this.projectSuccess = "Project Updated";
+          } else {
+            this.projectError = "Something has gone terribly wrong. It's all your fault."
+          }
+        }catch(error){
+          console.log("ERROR", error);
+        }
       },
       async deleteProjectImage(target){
         try{
