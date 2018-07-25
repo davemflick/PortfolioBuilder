@@ -8,6 +8,9 @@
         <v-text-field type="text" label="Link" v-model="project.link"></v-text-field>
       </v-flex>
       <v-flex xs12 px-1>
+        <v-text-field type="text" label="Stack" v-model="project.stack"></v-text-field>
+      </v-flex>
+      <v-flex xs12 px-1>
         <v-textarea type="text" 
         label="Description" 
         v-model="project.description"
@@ -50,7 +53,7 @@
     this.link = null;
     this.description = null;
     this.portfolioId = id;
-    this.stack = [];
+    this.stack = null;
   }
   export default {
     props: ['portfolio', 'projectImages'],
