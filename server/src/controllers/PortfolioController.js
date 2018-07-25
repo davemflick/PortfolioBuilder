@@ -31,6 +31,13 @@ module.exports = {
 		});
 	},
 
+	async editProject(req, res, next){
+		Project.updateProjectById(req.params.projectId, req.body, function(error, project){
+			if(error){return next(error);}
+			res.json({ok: true, project});
+		})
+	},
+
 	async removeProjectImage(req, res, next){
 		const project = req.body;
 		Project.findImageAndRemove(project.projectId, project.imageId, function(error, project){
