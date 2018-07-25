@@ -17,6 +17,10 @@ export default {
 		return Api().put(`project/delete-img`, projectInfo);
 	},
 
+	editProject(projectId, req){
+		return Api().put(`project/update/${projectId}`, req);
+	},
+
 	deleteProject(portfolioId, projectId){
 		return Api().put(`project/delete/${portfolioId}/${projectId}`);
 	}
