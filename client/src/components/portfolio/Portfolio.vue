@@ -44,6 +44,9 @@
 				if(!portfolio.data.portfolio){
 					console.log('Portfolio not found');
 				} else {
+					if(!portfolio.data.portfolio.isActive){
+						this.$router.push({name: 'Home'});
+					}
 					this.portfolio = portfolio.data.portfolio;
 				}
 				if(!portfolio.data.user){
