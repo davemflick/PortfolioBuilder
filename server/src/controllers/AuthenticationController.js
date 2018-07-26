@@ -35,7 +35,7 @@ module.exports = {
 					//Once portfolio instance created, update newly created user with portfolio _id
 					User.update({_id: returnUser._id}, {portfolio: portfolio._id} ,function(err, user){
 						if(err){return next(err);}
-						return res.json({Ok: true, Msg: 'User successfuly created', user: returnUser})
+						return res.json({ok: true, Msg: 'User successfuly created', user: returnUser})
 					})
 				});
 			});
@@ -67,7 +67,7 @@ module.exports = {
 				username: user.username,
 				name: {first: user.name.first, last: user.name.last}
 			}
-			return res.json({Ok: true, Msg: 'Successful user login', User: userReturn})
+			return res.json({ok: true, Msg: 'Successful user login', User: userReturn})
 		})
 	}
 }

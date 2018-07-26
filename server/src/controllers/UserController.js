@@ -80,7 +80,7 @@ module.exports = {
 				})
 			}
 		} else {
-			res.json({Ok: false, Msg: "You suck at uploading"});
+			res.json({ok: false, Msg: "You suck at uploading"});
 		}
 	}
 }

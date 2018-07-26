@@ -17,7 +17,7 @@ module.exports = {
 	async updatePortfolio(req, res, next){
 		Portfolio.updatePortfolio(req.params.id, req.body, function(err, portfolio){
 			if(err){return next(err);}
-			return portfolio ? res.json({Ok: true, portfolio}) : res.json({Ok: false, Msg: 'Portfolio did no update'});
+			return portfolio ? res.json({ok: true, portfolio}) : res.json({ok: false, Msg: 'Portfolio did no update'});
 		});
 	},
 
