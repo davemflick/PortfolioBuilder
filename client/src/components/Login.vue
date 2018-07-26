@@ -35,7 +35,7 @@
 					this.error = null;
 					const response = await AuthenticationService.login(this.user);
 					console.log("Succesful login", response.data)
-					if(response.data.Ok){
+					if(response.data.ok){
 						this.$store.dispatch('setUser', response.data.User);
 						this.$router.push({name: 'Portfolio'})
 					} else {

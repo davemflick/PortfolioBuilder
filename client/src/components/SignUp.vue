@@ -60,7 +60,7 @@
 				try{
 					this.error = null;
 					const response = await AuthenticationService.register(this.user);
-					if(response.data.Ok){
+					if(response.data.ok){
 						this.$store.dispatch('setUser', response.data.user);
 						this.$router.push({name: 'Portfolio', params: {username: response.data.user.username}})
 					} else {

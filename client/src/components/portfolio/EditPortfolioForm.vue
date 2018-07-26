@@ -237,7 +237,7 @@
         try{
           const updatedPortfolio = await PortfolioService.updatePortfolio(portfolioId, generalData);
           console.log("DONE", updatedPortfolio)
-          if(updatedPortfolio.data.Ok){
+          if(updatedPortfolio.data.ok){
             this.generalSuccess = "Portfolio information updated!"
           }
         } catch(error){

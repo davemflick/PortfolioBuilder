@@ -54,7 +54,7 @@
 				try{
 					const portfolioUpdate = await PortfolioService.updatePortfolio(this.portfolioId, this.portfolioData);
 					console.log(portfolioUpdate);
-					if(!portfolioUpdate.data.Ok){
+					if(!portfolioUpdate.data.ok){
 						this.error = "Error updating portfolio";
 						return;
 					} else {

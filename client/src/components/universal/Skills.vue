@@ -122,7 +122,7 @@
         try{
           const updatedPortfolio = await PortfolioService.updatePortfolio(this.portfolio._id, {skills: this.tempSkills});
           console.log(updatedPortfolio);
-          if(updatedPortfolio.data.Ok){
+          if(updatedPortfolio.data.ok){
             this.currentSkills = updatedPortfolio.data.portfolio.skills;
           } else {
             console.log("Error on update");
