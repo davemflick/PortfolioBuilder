@@ -5,7 +5,7 @@ import Login from '@/components/Login.vue'
 import SignUp from '@/components/SignUp.vue'
 import Portfolio from '@/components/portfolio/Portfolio.vue'
 import PortfolioBuild from '@/components/portfolio/PortfolioBuild.vue'
-import EditPortfolio from '@/components/portfolio/EditPortfolio.vue'
+import EditPortfolio from '@/components/portfolio/Edit/Portfolio.vue'
 import FileUploader from '@/components/universal/FileUploader.vue'
 
 Vue.use(Router)
