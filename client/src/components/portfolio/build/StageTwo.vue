@@ -7,7 +7,15 @@
 			<v-text-field v-show="false" type="text" label="Image" v-model="project.images[0].path" :disabled="true"></v-text-field>
 		</form>
 		<br>
-		<v-btn @click="openUploadModal({ type: 'projectAdd' })">Add Image</v-btn>
+		<v-btn v-if="!this.project.images[0].path" @click="openUploadModal({ type: 'projectAdd' })">Add Image</v-btn>
+		<v-flex xs12 sm6 v-if="this.project.images[0].path">
+			<v-badge color="green">
+				<span slot="badge"><v-icon dark>done</v-icon></span>
+				<v-avatar  :size="100" color="grey lighten-4" >
+					<img :src="`http://localhost:8081/${this.project.images[0].path}`" alt="avatar">
+				</v-avatar>
+			</v-badge>
+		</v-flex>
 		<br>
 		<div v-if="error" class="error-alert">{{ error }}</div>
 		<br>
@@ -31,10 +39,10 @@
 					link: null,
 					description: null,
 					images: [
-						{
-							path: null,
-							isMain: true
-						}
+					{
+						path: null,
+						isMain: true
+					}
 					]
 				},
 				error: null,
@@ -60,12 +68,10 @@
 					let newProject = this.project;
 					newProject.portfolioId = this.portfolioId;
 					const project = await PortfolioService.addUserProject(this.portfolioId, newProject);
-					console.log(project);
 					if(!project.data.ok){
 						this.error = project.data.message;
 						return;
 					}
-					this.$store.dispatch('setBuildStage', null);
 					this.$router.push({name: 'Portfolio', params:{username: project.data.portfolio.username}})
 				}catch(error){
 					console.log("ERROR ERROR: ", error);
@@ -81,8 +87,8 @@
 			},
 			closeUploadModal(img){
 				this.project.images[0].path = img.filePath;
-        this.uploadModal = false;
-      }
+				this.uploadModal = false;
+			}
 		}
 	}
 </script>

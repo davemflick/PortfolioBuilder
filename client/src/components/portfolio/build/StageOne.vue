@@ -37,7 +37,6 @@
 			return {
 				portfolioData:{
 					aboutUser: null,
-					profilePicture: null,
 				},
 				profilePicturePath: null,
 				error: null,
