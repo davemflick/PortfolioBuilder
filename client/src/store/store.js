@@ -11,11 +11,9 @@ export default new Vuex.Store({
 	state: {
 		user: null,
 		userLoggedIn: false,
-		buildStage: null,
 		allSkills: allSkills
 	},
 	getters:{
-		getBuildStage(state){return state.buildStage;},
 		getUser(state){return state.user;},
 		getSkills(state){ return state.allSkills;}
 	},
@@ -24,9 +22,6 @@ export default new Vuex.Store({
 			state.user = user;
 			state.user ? state.userLoggedIn = true : state.userLoggedIn = false
 		},
-		setBuildStage(state, stage){
-			state.buildStage = stage;
-		},
 		updateUser(state, user){
 			state.user = user;
 		}
@@ -34,9 +29,6 @@ export default new Vuex.Store({
 	actions:{
 		setUser({commit}, user){
 			commit('setUser', user)
-		},
-		setBuildStage({commit}, stage){
-			commit('setBuildStage', stage);
 		},
 		updateUser({commit}, user){
 			commit('updateUser', user);
