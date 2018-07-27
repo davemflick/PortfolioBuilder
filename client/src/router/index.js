@@ -4,8 +4,8 @@ import Home from '@/components/Home.vue'
 import Login from '@/components/Login.vue'
 import SignUp from '@/components/SignUp.vue'
 import Portfolio from '@/components/portfolio/Portfolio.vue'
-import PortfolioBuild from '@/components/portfolio/PortfolioBuild.vue'
-import EditPortfolio from '@/components/portfolio/Edit/Portfolio.vue'
+import PortfolioBuild from '@/components/portfolio/build/PortfolioBuild.vue'
+import EditPortfolio from '@/components/portfolio/edit/Portfolio.vue'
 import FileUploader from '@/components/universal/FileUploader.vue'
 
 Vue.use(Router)
@@ -34,7 +34,7 @@ export default new Router({
       component: Portfolio
     },
     {
-      path: '/portfolio/:username/build/:stage',
+      path: '/portfolio/:username/build',
       name: 'PortfolioBuild',
       component: PortfolioBuild
     },
