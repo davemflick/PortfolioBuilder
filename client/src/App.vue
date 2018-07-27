@@ -22,8 +22,22 @@ export default {
 </script>
 
 <style>
+.alert{
+  text-align: center;
+  font-size: 15px;
+}
+.success-alert{
+  color: #01b900;
+}
+.error-alert{
+  color: #dc0000;
+}
 .devicon-icon{
   font-size: 6em;
+}
+.v-jumbotron__image{
+  min-width: 100px;
+  max-width: 100%;
 }
 
 </style>
