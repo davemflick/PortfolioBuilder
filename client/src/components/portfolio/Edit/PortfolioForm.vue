@@ -13,7 +13,9 @@
     :success="generalSuccess" 
     v-on:update="updatePortfolioGeneral">
     <template slot="addProfileImage">
-     <v-btn @click="openUploadModal({type: 'portfolioImage', _id: portfolio._id})">Change Portfolio Image</v-btn>
+     <v-btn @click="openUploadModal({type: 'portfolioImage', _id: portfolio._id})">Upload New Image</v-btn>
+     <br>
+     <v-btn @click="profilePicturesModal = true">Edit Profile Images</v-btn>
    </template>
  </edit-portfolio-general>
  <br><br>
@@ -93,6 +95,9 @@
 <v-dialog v-model="uploadModal" width="500" >
   <app-file-uploader :uploadTarget="uploadTarget" ref="fileUploadComponent" v-on:close="closeUploadModal"></app-file-uploader>
 </v-dialog>
+<v-dialog v-model="profilePicturesModal" width="500" >
+  <app-profile-images :images="portfolio.profilePicture"></app-profile-images>
+</v-dialog>
 </app-form-panel>
 </template>
 
@@ -102,6 +107,7 @@
   import editPortfolioGeneral from './PortfolioGeneral.vue';
   import addProject from './AddProject.vue';
   import appFileUploader from '../../universal/FileUploader.vue';
+  import appProfileImages from './ProfileImages.vue';
   
   export default {
     props: ['portfolio'],
@@ -115,6 +121,7 @@
         projectSuccess: null,
         uploadModal: false,
         uploadTarget: null,
+        profilePicturesModal: false,
         newProjectImages: []
       }
     },
@@ -122,7 +129,8 @@
       appFormPanel,
       appFileUploader,
       editPortfolioGeneral,
-      addProject
+      addProject,
+      appProfileImages
     },
     watch:{
       uploadModal(){
