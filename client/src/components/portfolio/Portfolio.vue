@@ -4,7 +4,7 @@
 		<v-layout wrap v-if="portfolioUser && portfolio">
 			<v-flex xs12 sm4>
 				<v-avatar :size="150" :tile="true">
-					<img v-if="portfolio.profilePicture.length > 0"
+					<img v-if="portfolio.profilePicture"
 					:src="'http://localhost:8081/' + portfolio.profilePicture.find((p)=>{return p.isMain}).path" />
 					<img v-else :src="defaultProfileImg" />
 				</v-avatar>
