@@ -36,7 +36,7 @@
                   <v-text-field type="text" label="Name" v-model="project.name"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 px-1>
-                  <v-text-field type="text" label="Link" v-model="project.link"></v-text-field>
+                  <v-text-field type="text" label="Link" v-model="project.link" @input="validate('url', project.link)"></v-text-field>
                 </v-flex>
                 <v-flex xs12 px-1>
                   <v-text-field type="text" label="Stack" v-model="project.stack"></v-text-field>
@@ -146,6 +146,22 @@
       }
     },
     methods: {
+      validate(type, value){
+        const validations = {
+          url: {
+            re: /^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
+            required: false
+          },
+          email: {
+            re: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            required: true
+          }
+        }
+        if(!value){
+          return !validations[type].required
+        }
+        return validations[type].re.test(value.toLowerCase());
+      },
       profilePicsUpdated(pics){
         this.portfolio.profilePicture = pics;
       },
@@ -197,6 +213,10 @@
       this.projectSuccess = null;
       this.projectError = null;
       const thisProject = this.portfolio.projects.find(p => p._id === projectId);
+      if(!this.validate('url', thisProject.link)){
+        alert("Invalid Link");
+        return false;
+      }
       const updateFields = {
         name: thisProject.name,
         link: thisProject.link,
@@ -248,7 +268,21 @@
     async updatePortfolioGeneral(){
       this.generalError = null;
       this.generalSuccess = null;
-      let generalData = {aboutUser: this.portfolio.aboutUser}
+      let generalData = {
+        aboutUser: this.portfolio.aboutUser,
+        otherProfiles: {
+          github: this.portfolio.otherProfiles.github,
+          linkedin: this.portfolio.otherProfiles.linkedin,
+          otherPortfolio: this.portfolio.otherProfiles.otherPortfolio
+        }
+      }
+      for(let link in generalData.otherProfiles){
+        if(!this.validate('url', generalData.otherProfiles[link])){
+          this.generalError = `Link for ${link} is invalid`;
+          console.log(this.generalError);
+          return false;
+        }
+      }
       let portfolioId = this.portfolio._id;
       try{
         const updatedPortfolio = await PortfolioService.updatePortfolio(portfolioId, generalData);

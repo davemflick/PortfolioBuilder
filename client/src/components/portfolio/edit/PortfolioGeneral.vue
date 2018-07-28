@@ -3,7 +3,15 @@
     <form>
       <v-layout wrap>
         <v-flex xs12 sm6 px-1>
-          <v-textarea type="text" label="About" v-model="portfolio.aboutUser"></v-textarea>
+          <v-textarea label="About" v-model="portfolio.aboutUser"></v-textarea>
+          <div v-if="portfolio.otherProfiles">
+            <v-text-field label="Github Account" v-model="portfolio.otherProfiles.github"></v-text-field>
+            <v-text-field label="Linkedin Account" v-model="portfolio.otherProfiles.linkedin"></v-text-field>
+            <v-text-field label="Other Portfolio" v-model="portfolio.otherProfiles.otherPortfolio"></v-text-field>
+          </div>
+          <br>
+          <div v-if="error" class="error-alert alert">{{ error }}</div>
+          <div v-if="success" class="success-alert alert">{{ success }}</div>
           <br>
           <v-btn dark color="primary" @click="$emit('update')">Update</v-btn>
         </v-flex>
@@ -20,23 +28,17 @@
         </v-flex>
       </v-layout>
     </form>
-    <br>
-    <div v-if="generalError" class="error-alert alert">{{ generalError }}</div>
-    <div v-if="generalSuccess" class="success-alert alert">{{ generalSuccess }}</div>
   </div>
 </template>
 
 <script>
   import defaultProfileImg from '@/assets/emptyProfile.png';
   export default {
-    props: ['portfolio', 'generalSuccess', 'generalError'],
+    props: ['portfolio', 'success', 'error'],
     data(){
       return{
         defaultProfileImg: defaultProfileImg
       }
-    },
-    mounted(){
-      console.log(this.portfolio.profilePicture)
     }
   }
 </script>
