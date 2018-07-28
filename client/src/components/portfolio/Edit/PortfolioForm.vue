@@ -3,9 +3,9 @@
     <h2>General</h2>
     <br>
     <v-switch
-      :label="`Portfolio Active`"
-      v-model="portfolio.isActive"
-      @change="portfolioActivation"
+    :label="`Portfolio Active`"
+    v-model="portfolio.isActive"
+    @change="portfolioActivation"
     ></v-switch>
     <edit-portfolio-general 
     :portfolio="portfolio" 
@@ -95,8 +95,8 @@
 <v-dialog v-model="uploadModal" width="500" >
   <app-file-uploader :uploadTarget="uploadTarget" ref="fileUploadComponent" v-on:close="closeUploadModal"></app-file-uploader>
 </v-dialog>
-<v-dialog v-model="profilePicturesModal" width="500" >
-  <app-profile-images :images="portfolio.profilePicture"></app-profile-images>
+<v-dialog v-model="profilePicturesModal" width="1000" >
+  <app-profile-images :images="portfolio.profilePicture" :portfolioId="portfolio._id" v-on:updated="profilePicsUpdated"></app-profile-images>
 </v-dialog>
 </app-form-panel>
 </template>
@@ -114,7 +114,7 @@
     data(){
       return{
         profilePictures: JSON.parse(JSON.stringify(this.portfolio.profilePicture)),
-        selectedProfilePicture: JSON.parse(JSON.stringify(this.portfolio.profilePicture.find((p)=>{return p.isMain}).path)),
+        selectedProfilePicture: null,
         generalError: null,
         generalSuccess: null,
         projectError: null,
@@ -132,6 +132,11 @@
       addProject,
       appProfileImages
     },
+    mounted(){
+      if(this.portfolio.profilePicture.length > 0){
+        this.selectedProfilePicture = JSON.parse(JSON.stringify(this.portfolio.profilePicture.find((p)=>{return p.isMain}).path))
+      }
+    },
     watch:{
       uploadModal(){
         if(!this.uploadModal){
@@ -141,120 +146,123 @@
       }
     },
     methods: {
+      profilePicsUpdated(pics){
+        this.portfolio.profilePicture = pics;
+      },
       async portfolioActivation(){
-         try{
-          const updatedPortfolio = await PortfolioService.updatePortfolio(this.portfolio._id, {isActive: this.portfolio.isActive});
-          console.log("DONE", updatedPortfolio)
-        } catch(error){
-          console.log("ERROR", error);
-          alert("Something has gone wrong updating active state");
+       try{
+        const updatedPortfolio = await PortfolioService.updatePortfolio(this.portfolio._id, {isActive: this.portfolio.isActive});
+        console.log("DONE", updatedPortfolio)
+      } catch(error){
+        console.log("ERROR", error);
+        alert("Something has gone wrong updating active state");
+      }
+    },
+    updateProjectState(project){
+      let index = -1;
+      this.portfolio.projects.find((proj, i)=>{
+        if(proj._id === project._id){
+          index = i;
         }
-      },
-      updateProjectState(project){
-        let index = -1;
-        this.portfolio.projects.find((proj, i)=>{
-          if(proj._id === project._id){
-            index = i;
-          }
-        });
-        if(index >= 0){
-          this.portfolio.projects.splice(index, 1, project);
+      });
+      if(index >= 0){
+        this.portfolio.projects.splice(index, 1, project);
+      }
+    },
+    openUploadModal(targetData){
+      var newPics = '';
+      if(targetData.type === 'portfolioImage'){
+        newPics = this.profilePictures.map((pic)=>{ pic.isMain = false; return pic});
+      } else if (targetData.type === 'project'){
+        newPics = this.portfolio.projects.find(p => p._id = targetData._id).images.map((pic)=>{ pic.isMain = false; return pic});
+      }
+      targetData.currentPictures = newPics
+      console.log(targetData);
+      this.uploadTarget = targetData
+      this.uploadModal = true;
+    },
+    closeUploadModal(resp){
+      if(resp.project && resp.uploadType === 'project'){
+        this.updateProjectState(resp.project);
+      } else if(resp.portfolio && resp.uploadType === 'portfolioImage'){
+        this.portfolio.profilePicture = resp.portfolio.profilePicture;
+      } else if(resp.uploadType === 'NewProjectImage'){
+        this.newProjectImages = this.newProjectImages.map(img => {img.isMain = false; return img});
+        this.newProjectImages.push({path: resp.filePath, isMain: true});
+      }
+      this.uploadTarget = null;
+      this.uploadModal = false;
+    },
+    async updateProject(projectId){
+      this.projectSuccess = null;
+      this.projectError = null;
+      const thisProject = this.portfolio.projects.find(p => p._id === projectId);
+      const updateFields = {
+        name: thisProject.name,
+        link: thisProject.link,
+        stack: thisProject.stack,
+        description: thisProject.description
+      }
+      try{
+        const updatedProject = await PortfolioService.editProject(projectId, updateFields);
+        console.log(updatedProject)
+        if(updatedProject.data.ok){
+          this.updateProjectState(updatedProject.data.project);
+          this.projectSuccess = "Project Updated";
+        } else {
+          this.projectError = "Something has gone terribly wrong. It's all your fault."
         }
-      },
-      openUploadModal(targetData){
-        var newPics = '';
-        if(targetData.type === 'portfolioImage'){
-          newPics = this.profilePictures.map((pic)=>{ pic.isMain = false; return pic});
-        } else if (targetData.type === 'project'){
-          newPics = this.portfolio.projects.find(p => p._id = targetData._id).images.map((pic)=>{ pic.isMain = false; return pic});
+      }catch(error){
+        console.log("ERROR", error);
+      }
+    },
+    async deleteProjectImage(target){
+      try{
+        const project = await PortfolioService.removeProjectImage(target);
+        console.log(project);
+        if(project.data.ok && project.data.project){
+          this.updateProjectState(project.data.project);
         }
-        targetData.currentPictures = newPics
-        console.log(targetData);
-        this.uploadTarget = targetData
-        this.uploadModal = true;
-      },
-      closeUploadModal(resp){
-        if(resp.project && resp.uploadType === 'project'){
-          this.updateProjectState(resp.project);
-        } else if(resp.portfolio && resp.uploadType === 'portfolioImage'){
-          this.portfolio.profilePicture = resp.portfolio.profilePicture;
-        } else if(resp.uploadType === 'NewProjectImage'){
-          this.newProjectImages = this.newProjectImages.map(img => {img.isMain = false; return img});
-          this.newProjectImages.push({path: resp.filePath, isMain: true});
+      }catch(error){
+        console.log("ERROR", error);
+      }
+    },
+    async deleteProject(id){
+      if(!confirm('Are you sure you want to delete this project?')){
+        return false;
+      }
+      try{
+        const updatedPortfolio = await PortfolioService.deleteProject(this.portfolio._id, id);
+        console.log(updatedPortfolio.data);
+        if(updatedPortfolio.data.ok){
+          this.portfolio.projects = this.portfolio.projects.filter(project => project._id != id);
         }
-        this.uploadTarget = null;
-        this.uploadModal = false;
-      },
-      async updateProject(projectId){
-        this.projectSuccess = null;
-        this.projectError = null;
-        const thisProject = this.portfolio.projects.find(p => p._id === projectId);
-        const updateFields = {
-          name: thisProject.name,
-          link: thisProject.link,
-          stack: thisProject.stack,
-          description: thisProject.description
+      }catch(error){
+        console.log("ERROR", error);
+      }
+    },
+    updatePortfolioProjects(portfolioProjects){
+      this.newProjectImages = [];
+      this.portfolio.projects = portfolioProjects;
+    },
+    async updatePortfolioGeneral(){
+      this.generalError = null;
+      this.generalSuccess = null;
+      let generalData = {aboutUser: this.portfolio.aboutUser}
+      let portfolioId = this.portfolio._id;
+      try{
+        const updatedPortfolio = await PortfolioService.updatePortfolio(portfolioId, generalData);
+        console.log("DONE", updatedPortfolio)
+        if(updatedPortfolio.data.ok){
+          this.generalSuccess = "Portfolio information updated!"
         }
-        try{
-          const updatedProject = await PortfolioService.editProject(projectId, updateFields);
-          console.log(updatedProject)
-          if(updatedProject.data.ok){
-            this.updateProjectState(updatedProject.data.project);
-            this.projectSuccess = "Project Updated";
-          } else {
-            this.projectError = "Something has gone terribly wrong. It's all your fault."
-          }
-        }catch(error){
-          console.log("ERROR", error);
-        }
-      },
-      async deleteProjectImage(target){
-        try{
-          const project = await PortfolioService.removeProjectImage(target);
-          console.log(project);
-          if(project.data.ok && project.data.project){
-            this.updateProjectState(project.data.project);
-          }
-        }catch(error){
-          console.log("ERROR", error);
-        }
-      },
-      async deleteProject(id){
-        if(!confirm('Are you sure you want to delete this project?')){
-          return false;
-        }
-        try{
-          const updatedPortfolio = await PortfolioService.deleteProject(this.portfolio._id, id);
-          console.log(updatedPortfolio.data);
-          if(updatedPortfolio.data.ok){
-            this.portfolio.projects = this.portfolio.projects.filter(project => project._id != id);
-          }
-        }catch(error){
-          console.log("ERROR", error);
-        }
-      },
-      updatePortfolioProjects(portfolioProjects){
-        this.newProjectImages = [];
-        this.portfolio.projects = portfolioProjects;
-      },
-      async updatePortfolioGeneral(){
-        this.generalError = null;
-        this.generalSuccess = null;
-        let generalData = {aboutUser: this.portfolio.aboutUser}
-        let portfolioId = this.portfolio._id;
-        try{
-          const updatedPortfolio = await PortfolioService.updatePortfolio(portfolioId, generalData);
-          console.log("DONE", updatedPortfolio)
-          if(updatedPortfolio.data.ok){
-            this.generalSuccess = "Portfolio information updated!"
-          }
-        } catch(error){
-          console.log("ERROR", error);
-          this.generalError = "500 Internal Service Error, Data did not update."
-        }
+      } catch(error){
+        console.log("ERROR", error);
+        this.generalError = "500 Internal Service Error, Data did not update."
       }
     }
   }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
