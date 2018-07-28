@@ -11,7 +11,7 @@
       </v-layout>
       <v-layout wrap>
         <v-flex xs12 sm6 pr-1>
-          <v-text-field type="text" label="Username" v-model="user.username"></v-text-field>
+          <v-text-field :error="!validUsername" type="text" label="Username" v-model="user.username"></v-text-field>
         </v-flex>
         <v-flex xs12 sm6 pr-1>
           <v-text-field :error="!validEmail" type="email" label="Email" v-model="user.email"></v-text-field>
@@ -38,7 +38,8 @@
         error: null,
         successfulUpdate: null,
         email: this.user.email,
-        validEmail: true
+        validEmail: true,
+        validUsername: true
       }
     },
     components:{
@@ -49,6 +50,10 @@
         const validations = {
           email: {
             re: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            required: true
+          },
+          username:{
+            re: /^[a-z0-9]+$/i,
             required: true
           }
         }
@@ -66,6 +71,11 @@
         if(!this.validate( 'email', userData.email)){
           this.error = "Invalid Email Address";
           this.validEmail = false;
+          return false;
+        }
+        if(!this.validate('username', userData.username)){
+          this.error = "Invalid Username";
+          this.validUsername = false;
           return false;
         }
         let updateData = {
