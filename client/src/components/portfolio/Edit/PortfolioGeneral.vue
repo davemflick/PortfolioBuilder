@@ -34,6 +34,9 @@
       return{
         defaultProfileImg: defaultProfileImg
       }
+    },
+    mounted(){
+      console.log(this.portfolio.profilePicture)
     }
   }
 </script>
