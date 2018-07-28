@@ -8,6 +8,11 @@ const PortfolioSchema = new mongoose.Schema({
 	isSetUp: {type: Boolean, default: false},
 	isActive: {type: Boolean, deafult: true, required: true},
 	aboutUser: {type: String, trim: true},
+	otherProfiles: {
+		github: {type: String, trim: true},
+		linkedin: {type: String, trim: true},
+		otherPortfolio: {type: String, trim: true}
+	},
 	profilePicture: [
 	{
 		path: {type: String, default: __dirname + '/client/src/assets/emptyProfile.png'},
