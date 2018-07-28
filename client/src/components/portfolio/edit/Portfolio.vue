@@ -5,6 +5,8 @@
     <app-edit-portfolio v-if="portfolio" :portfolio="portfolio"></app-edit-portfolio>
     <br><br>
     <app-skills v-if="portfolio" :portfolio="portfolio"></app-skills>
+    <br><br>
+    <app-certs v-if="portfolio" :portfolio="portfolio"></app-certs>
   </v-container>
 </template>
 
@@ -12,6 +14,7 @@
   import PortfolioService from '@/services/PortfolioService';
   import appEditUser from './UserForm.vue';
   import appEditPortfolio from './PortfolioForm.vue';
+  import appCerts from './Certs.vue';
   import appSkills from '../../universal/Skills.vue';
   
   export default {
@@ -47,6 +50,7 @@
     components:{
       appEditUser,
       appEditPortfolio,
+      appCerts,
       appSkills
     }
   }
