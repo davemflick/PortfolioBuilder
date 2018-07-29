@@ -44,6 +44,7 @@ router.post('/user/upload/img', upload.single('myfile'), UserController.uploadPo
 
 //GET IMAGES
 router.get('/src/finalUploads/:folder/:file', function(req, res){
+	console.log(req.params)
 	const file = `${__dirname}/finalUploads/${req.params.folder}/${req.params.file}`;
 	if (fs.existsSync(file)) {
     res.sendFile(file);
