@@ -186,15 +186,17 @@
       }
     },
     openUploadModal(targetData){
-      var newPics = '';
+      var newPics = null;
+      console.log(targetData._id);
       if(targetData.type === 'portfolioImage'){
         newPics = this.profilePictures.map((pic)=>{ pic.isMain = false; return pic});
       } else if (targetData.type === 'project'){
-        newPics = this.portfolio.projects.find(p => p._id = targetData._id).images.map((pic)=>{ pic.isMain = false; return pic});
+        newPics = this.portfolio.projects.find(p => p._id === targetData._id).images.map((pic)=>{ pic.isMain = false; return pic});
+        console.log(newPics);
       }
       targetData.currentPictures = newPics
-      console.log(targetData);
       this.uploadTarget = targetData
+      console.log(this.uploadTarget);
       this.uploadModal = true;
     },
     closeUploadModal(resp){
