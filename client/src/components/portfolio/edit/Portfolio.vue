@@ -57,6 +57,15 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
+.delete-badge{
+  cursor: pointer;
+  transform: rotate(0deg);
+  transition: transform .35s linear;
+}
+.delete-badge:hover{
+  cursor: pointer;
+  transform: rotate(180deg);
+}
 
 </style>

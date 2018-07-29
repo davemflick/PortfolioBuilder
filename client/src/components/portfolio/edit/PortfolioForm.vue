@@ -56,7 +56,7 @@
                   <v-flex xs8 sm10 v-for="(img, i) in project.images" :key="`projectImg-${i}`">
                     <div class="pi-container">
                       <v-badge color="red" small overlap>
-                        <v-icon class="delete-project" 
+                        <v-icon class="delete-badge" 
                         slot="badge" dark small 
                         @click="deleteProjectImage({projectId: project._id, imageId: img._id})"
                         >close</v-icon>
@@ -303,15 +303,6 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.delete-project{
-  cursor: pointer;
-  transform: rotate(0deg);
-  transition: transform .35s linear;
-}
-.delete-project:hover{
-  cursor: pointer;
-  transform: rotate(180deg);
-}
 
 .new-project{
   border: 1px solid #ccc;
