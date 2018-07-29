@@ -48,6 +48,7 @@
 </template>
 
 <script>
+  
   export default {
     props: ['cert', 'portfolioId', 'error', 'success'],
     data(){
