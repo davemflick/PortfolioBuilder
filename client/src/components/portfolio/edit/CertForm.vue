@@ -5,7 +5,7 @@
         <v-text-field type="text" label="Name" v-model="cert.name"></v-text-field>
       </v-flex>
       <v-flex xs12 sm6 px-1>
-        <v-text-field type="text" label="Date Obtained" v-model="cert.dateObtained" @click="dateModal = true"></v-text-field>
+        <v-text-field type="text" label="Date Obtained" v-model="cert.dateObtained" @click="dateModal = true" @focus="$event.target.click()"></v-text-field>
         <v-dialog ref="dialog" v-model="dateModal" persistent lazy full-width width="290px" >
           <v-date-picker v-model="cert.dateObtained" scrollable>
             <v-spacer></v-spacer>
@@ -21,13 +21,25 @@
         ></v-textarea>
       </v-flex>
       <v-flex xs4 sm2>
-        <v-btn @click="$emit('openUploadModal', {type: 'certification', _id: portfolioId})">Add Image</v-btn>
+        <v-btn @click="$emit('openUploadModal', {type: 'certification', _id: portfolioId, cid: cert._id})">Add Image</v-btn>
       </v-flex>
       <v-flex v-if="!cert.picturePath" xs8 sm10>
         <p class="text-lg-right">No Certification Image</p>
       </v-flex>
+      <v-flex v-else xs8 sm10>
+        <v-badge color="red" small overlap>
+          <v-icon class="delete-badge" 
+          @click="cert.picturePath = null"
+          slot="badge" dark small 
+          >close</v-icon>
+          <v-avatar :size="50" :tile="true">
+            <img :src="'http://localhost:8081/' + cert.picturePath" alt="Project Image" />
+          </v-avatar>
+        </v-badge>
+      </v-flex>
       <v-flex xs12 class="py-1">
         <v-btn class="primary" @click="$emit('submit', cert)">Submit</v-btn>
+        <v-btn v-if="cert._id" dark color="secondary" @click="$emit('delete', cert._id)">Delete</v-btn>
       </v-flex>
       <p v-if="success" class="alert success-alert pa-2">{{ success }}</p>
       <p v-if="error" class="alert error-alert" pa-2>{{ error }}</p>

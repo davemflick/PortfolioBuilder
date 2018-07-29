@@ -11,7 +11,8 @@
             :portfolioId="portfolio._id" 
             :cert="cert" 
             v-on:openUploadModal="openUploadModal" 
-            v-on:submit="submitCert" 
+            v-on:submit="submitCert"
+            v-on:delete="deleteCert"
             :error="!editError ? null : editError.cid === cert._id ? editError.errMsg : null"
             :success="!editSuccess ? null : editSuccess.cid === cert._id ? editSuccess.msg : null"
             ></app-cert-form>
@@ -91,7 +92,14 @@
         const updatedPortfolio = await PortfolioService.updatePortfolio(this.portfolio._id, {certifications: curCerts});
         if(updatedPortfolio.data.ok){
           this.portfolio.certifications = updatedPortfolio.data.portfolio.certifications;
-          certType === 'edit' ? this.editSuccess = {msg: "Certification Updated", cid: cert._id} : this.newSuccess = "Certification Added";
+          if(certType === 'edit'){
+            this.editSuccess = {msg: "Certification Updated", cid: cert._id};
+          } else {
+           this.newSuccess = "Certification Added";
+            for(let key in this.newCert){
+              this.newCert[key] = null;
+            }
+          }
         } else {
           let errMsg = "An error has occured trying to update your certification";
           certType === 'edit' ? this.editError = {errMsg, cid: cert._id} : this.newError = errMsg;
@@ -102,13 +110,35 @@
         certType === 'edit' ? this.editError = {err, cid: cert._id} : this.newError = err;
       }
     },
+    async deleteCert(certId){
+      const certs = this.portfolio.certifications.filter( c => c._id !== certId);
+      try{
+        const updatedPortfolio = await PortfolioService.updatePortfolio(this.portfolio._id, {certifications: certs});
+        console.log(updatedPortfolio.certifications);
+        if(updatedPortfolio.data.ok){
+          alert("Certification removed");
+          this.portfolio.certifications = updatedPortfolio.data.portfolio.certifications;
+        } else {
+          alert("Something went wrong removing certification");
+        }
+      }catch(error){
+        console.log("ERROR", error)
+        alert("Something has gone terribly wrong removing certification");
+      }
+    },
     openUploadModal(targetData){
-      console.log(targetData);
+      console.log(targetData)
       this.uploadTarget = targetData
       this.uploadModal = true;
     },
     closeUploadModal(resp){
       console.log("NOW", resp);
+      if(this.uploadTarget.cid){
+        this.portfolio.certifications.find(c => c._id === this.uploadTarget.cid).picturePath = resp.filePath;
+      } else {
+        this.newCert.picturePath = resp.filePath;
+        console.log(this.newCert);
+      }
       this.uploadTarget = null;
       this.uploadModal = false;
     },
