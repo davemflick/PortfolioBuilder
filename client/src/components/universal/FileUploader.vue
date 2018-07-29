@@ -23,7 +23,7 @@
         <v-flex xs12>
           <form id="upload-form">
             <div id="upload-fields-container">
-              <v-text-field label="Select Image" @click="pickFile" v-model="file.name" prepend-icon="attach_file"></v-text-field>
+              <v-text-field label="Select Image" @click="pickFile" @focus="$event.target.click()" v-model="file.name" prepend-icon="attach_file"></v-text-field>
               <input type="file" style="display: none;" ref="image" accept=".pdf,image/*" @change="onFilePicked" />
             </div>
           </form>
@@ -119,7 +119,6 @@
           }
         },
         async uploadToServer(){
-          
           let formData = new FormData();
           let boundaries;
           if(this.file.type.indexOf('pdf')>= 1){
@@ -141,9 +140,7 @@
           formData.append('boundaries', boundaries);
           formData.append("myfile", this.file.file, this.file.name);
           try{
-            console.log("HERE 2")
             const uploadedFile = await UploadService.UploadUserProfileImage(formData, boundaries);
-            console.log("uploadedFile")
             if(uploadedFile.data.ok){
               this.clearUploader();
               this.success = "Image Uploaded Successful"
