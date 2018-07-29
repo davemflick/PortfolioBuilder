@@ -13,7 +13,7 @@ import Devicon from 'devicon';
 Vue.component('vue-draggable-resizable', VueDraggableResizable);
 
 Vue.config.productionTip = false
-Vue.use(Devicon);
+//Vue.use(Devicon);
 Vue.use(Vuetify);
 sync(store, router);
 
