@@ -16,6 +16,7 @@
     "devicon": "^2.0.0",
     "form-data": "^2.3.2",
     "lodash": "^4.17.10",
+    "moment": "^2.22.2",
     "vue": "^2.5.2",
     "vue-draggable-resizable": "^1.7.1",
     "vue-router": "^3.0.1",
