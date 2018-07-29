@@ -21,6 +21,7 @@ const PortfolioSchema = new mongoose.Schema({
 	}
 	],
 	projects: [{type: Schema.Types.ObjectId, ref: 'Project'}],
+	resume: {type: String, trim: true},
 	certifications: [{name: String, about: String, picturePath: String, dateObtained: Date}],
 	skills: [{type: String, trim: true}],
 	createdOn: {type: Date, default: Date.now },

@@ -31,6 +31,7 @@ module.exports = {
 		const cropOps = boundaries.crop;
 		const resizeOps = boundaries.resize;
 		const fileType = boundaries.type;
+		console.log(dbData);
 		if(req.file){
 			const filePath = req.file.path;
 			const imageOutputPath = "src/uploads/images/" + req.file.originalname;
@@ -85,12 +86,16 @@ module.exports = {
 				})
 			} else if(fileType == 'pdf'){
 				const newPath = 'src/uploads/pdfs/' + req.file.originalname;
-				fs.rename(filePath, newPath, function(errory){
-					if(errory){
-						console.log(errory);
-					} else {
-						res.json({ok: true, msg: 'PDF uploaded', filePath: newPath});
-					}
+				console.log("HERE");
+				Portfolio.updatePortfolio(dbData._id, {resume: newPath}, function(err, portfolio){
+					if(err){return next(err);}
+					fs.rename(filePath, newPath, function(errory){
+						if(errory){
+							next(errory);
+						} else {
+							res.json({ok: true, msg: 'PDF uploaded', filePath: newPath, portfolio: portfolio, uploadType: 'pdf'});
+						}
+					});
 				})
 			}
 		} else {
