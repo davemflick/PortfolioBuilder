@@ -7,19 +7,33 @@
     <v-expansion-panel>
       <v-expansion-panel-content v-for="(cert, i) in portfolio.certifications" :key="`cert-${i}`">
         <div slot="header">{{ cert.name }}</div>
-        <app-cert-form :portfolioId="portfolio._id" :cert="cert" v-on:openUploadModal="openUploadModal" v-on:submit="submitCert"></app-cert-form>
+        <app-cert-form 
+            :portfolioId="portfolio._id" 
+            :cert="cert" 
+            v-on:openUploadModal="openUploadModal" 
+            v-on:submit="submitCert" 
+            :error="!editError ? null : editError.cid === cert._id ? editError.errMsg : null"
+            :success="!editSuccess ? null : editSuccess.cid === cert._id ? editSuccess.msg : null"
+            ></app-cert-form>
       </v-expansion-panel-content>
     </v-expansion-panel>
     <br> <br>
     <h4>Add New Certification</h4>
     <br>
     <div class="new-cert pa-2">
-      <app-cert-form :portfolioId="portfolio._id" :cert="newCert" v-on:openUploadModal="openUploadModal" v-on:submit="submitCert"></app-cert-form>
-   </div>
-   <v-dialog v-model="uploadModal" width="500" >
-    <app-file-uploader :uploadTarget="uploadTarget" ref="fileUploadComponent" v-on:close="closeUploadModal"></app-file-uploader>
-  </v-dialog>
-</app-form-panel>
+      <app-cert-form 
+          :portfolioId="portfolio._id" 
+          :cert="newCert" 
+          v-on:openUploadModal="openUploadModal" 
+          v-on:submit="submitCert" 
+          :error="newError"
+          :success="newSuccess"
+          ></app-cert-form>
+    </div>
+    <v-dialog v-model="uploadModal" width="500" >
+      <app-file-uploader :uploadTarget="uploadTarget" ref="fileUploadComponent" v-on:close="closeUploadModal"></app-file-uploader>
+    </v-dialog>
+  </app-form-panel>
 </template>
 
 <script>
@@ -36,7 +50,10 @@
     },
     data(){
       return {
-        error: null,
+        editError: null,
+        newError: null,
+        editSuccess: null,
+        newSuccess: null,
         uploadTarget: null,
         uploadModal: false,
         dateModal: false,
@@ -48,20 +65,41 @@
         }
       }
     },
+    watch:{
+      uploadModal(){
+        if(!this.uploadModal){
+          this.uploadTarget = null;
+          this.$refs.fileUploadComponent.clearUploader();
+        }
+      }
+    },
     methods:{
      async submitCert(cert){
+      this.editError = null;
+      this.newError = null;
+      this.editSuccess =  null;
+      this.newSuccess =  null;
       let curCerts = JSON.parse(JSON.stringify(this.portfolio.certifications))
+      let certType = 'edit';
       if(cert._id){
         curCerts = curCerts.map(c=> c._id === cert._id ? cert : c);
       } else {
         curCerts.push(cert);
+        certType = 'new';
       }
       try{
         const updatedPortfolio = await PortfolioService.updatePortfolio(this.portfolio._id, {certifications: curCerts});
-        console.log(updatedPortfolio);
+        if(updatedPortfolio.data.ok){
+          this.portfolio.certifications = updatedPortfolio.data.portfolio.certifications;
+          certType === 'edit' ? this.editSuccess = {msg: "Certification Updated", cid: cert._id} : this.newSuccess = "Certification Added";
+        } else {
+          let errMsg = "An error has occured trying to update your certification";
+          certType === 'edit' ? this.editError = {errMsg, cid: cert._id} : this.newError = errMsg;
+        }
       }catch(error){
         console.log("ERROR", error)
-        this.error = error;
+        let err = "Something has gone terribly wrong."
+        certType === 'edit' ? this.editError = {err, cid: cert._id} : this.newError = err;
       }
     },
     openUploadModal(targetData){
@@ -70,6 +108,7 @@
       this.uploadModal = true;
     },
     closeUploadModal(resp){
+      console.log("NOW", resp);
       this.uploadTarget = null;
       this.uploadModal = false;
     },
