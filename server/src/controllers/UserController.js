@@ -33,7 +33,7 @@ module.exports = {
 		const fileType = boundaries.type;
 		if(req.file){
 			const filePath = req.file.path;
-			const imageOutputPath = "src/finalUploads/images/" + req.file.originalname;
+			const imageOutputPath = "src/uploads/images/" + req.file.originalname;
 			if(fileType == 'image'){
 				gm(filePath)
 				.resize(resizeOps.width, resizeOps.height)
@@ -84,7 +84,7 @@ module.exports = {
 					}
 				})
 			} else if(fileType == 'pdf'){
-				const newPath = 'src/finalUploads/pdfs/' + req.file.originalname;
+				const newPath = 'src/uploads/pdfs/' + req.file.originalname;
 				fs.rename(filePath, newPath, function(errory){
 					if(errory){
 						console.log(errory);

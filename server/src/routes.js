@@ -43,9 +43,8 @@ router.post('/project/add/:portfolioId', PortfolioController.addUserProject)
 router.post('/user/upload/img', upload.single('myfile'), UserController.uploadPortfolioImage);
 
 //GET IMAGES
-router.get('/src/finalUploads/:folder/:file', function(req, res){
-	console.log(req.params)
-	const file = `${__dirname}/finalUploads/${req.params.folder}/${req.params.file}`;
+router.get('/src/uploads/:folder/:file', function(req, res){
+	const file = `${__dirname}/uploads/${req.params.folder}/${req.params.file}`;
 	if (fs.existsSync(file)) {
     res.sendFile(file);
   } else {
