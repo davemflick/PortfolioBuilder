@@ -1,5 +1,5 @@
 <template>
-  <app-form-panel title="Portfolio Content" v-if="portfolio">
+  <app-form-panel class="mb-3" title="Portfolio Content" v-if="portfolio">
     <h2>General</h2>
     <br>
     <v-switch
@@ -12,11 +12,14 @@
     :error="generalError" 
     :success="generalSuccess" 
     v-on:update="updatePortfolioGeneral">
-    <template slot="addProfileImage">
+    <div slot="addResume">
+      <v-btn @click="openUploadModal({type: 'pdf', _id: portfolio._id})">Upload Resume</v-btn>
+    </div>
+    <div slot="addProfileImage">
      <v-btn @click="openUploadModal({type: 'portfolioImage', _id: portfolio._id})">Upload New Image</v-btn>
      <br>
      <v-btn @click="profilePicturesModal = true">Edit Profile Images</v-btn>
-   </template>
+   </div>
  </edit-portfolio-general>
  <br><br>
  <h2>Projects</h2>
@@ -207,6 +210,8 @@
       } else if(resp.uploadType === 'NewProjectImage'){
         this.newProjectImages = this.newProjectImages.map(img => {img.isMain = false; return img});
         this.newProjectImages.push({path: resp.filePath, isMain: true});
+      } else if(resp.uploadType === 'pdf'){
+        this.portfolio.resume = resp.filePath;
       }
       this.uploadTarget = null;
       this.uploadModal = false;

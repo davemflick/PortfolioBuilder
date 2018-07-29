@@ -9,6 +9,15 @@
             <v-text-field label="Linkedin Account" v-model="portfolio.otherProfiles.linkedin"></v-text-field>
             <v-text-field label="Other Portfolio" v-model="portfolio.otherProfiles.otherPortfolio"></v-text-field>
           </div>
+          <v-layout row class="pa-1">
+            <v-flex xs6>
+              <slot name="addResume"></slot>
+            </v-flex>
+            <v-flex xs6>
+              <a class="btn dark flat" v-if="portfolio.resume" :href="`http://localhost:8081/${portfolio.resume}`" target="_blank">My Resume</a>
+            </v-flex>
+          </v-layout>
+          
           <br>
           <div v-if="error" class="error-alert alert">{{ error }}</div>
           <div v-if="success" class="success-alert alert">{{ success }}</div>
