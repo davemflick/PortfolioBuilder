@@ -119,6 +119,7 @@
           }
         },
         async uploadToServer(){
+          
           let formData = new FormData();
           let boundaries;
           if(this.file.type.indexOf('pdf')>= 1){
@@ -140,7 +141,9 @@
           formData.append('boundaries', boundaries);
           formData.append("myfile", this.file.file, this.file.name);
           try{
+            console.log("HERE 2")
             const uploadedFile = await UploadService.UploadUserProfileImage(formData, boundaries);
+            console.log("uploadedFile")
             if(uploadedFile.data.ok){
               this.clearUploader();
               this.success = "Image Uploaded Successful"
