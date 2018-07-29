@@ -122,7 +122,7 @@
           let formData = new FormData();
           let boundaries;
           if(this.file.type.indexOf('pdf')>= 1){
-            boundaries = JSON.stringify({type: 'pdf'});
+            boundaries = JSON.stringify({type: 'pdf', dbTarget: this.uploadTarget});
           } else {
             const myImage = document.getElementById('uploaded-img');
             if(myImage.clientWidth < 300 || myImage.clientHeight < 300){
