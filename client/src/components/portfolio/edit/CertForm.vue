@@ -29,16 +29,17 @@
       <v-flex xs12 class="py-1">
         <v-btn class="primary" @click="$emit('submit', cert)">Submit</v-btn>
       </v-flex>
+      <p v-if="success" class="alert success-alert pa-2">{{ success }}</p>
+      <p v-if="error" class="alert error-alert" pa-2>{{ error }}</p>
     </v-layout>
   </form>
 </template>
 
 <script>
   export default {
-    props: ['cert', 'portfolioId'],
+    props: ['cert', 'portfolioId', 'error', 'success'],
     data(){
       return {
-        error: null,
         dateModal: false
       }
     }
