@@ -52,20 +52,34 @@ module.exports = {
 							pics = dbData.currentPictures;
 							pics.push({isMain: true, path: imageOutputPath});
 						}
+						const uploadResponse = function(msg, utype){
+							this.ok = true;
+							this.filePath = imageOutputPath;
+							this.msg = msg;
+							this.uploadType = utype;
+						} 
 						if(dbData.type === 'portfolioImage'){
 							Portfolio.updatePortfolio(dbData._id, {profilePicture: pics}, function(err, portfolio){
 								if(err){return next(err);}
-								res.json({ok: true, msg: 'Image uploaded, portfolio updated', filePath: imageOutputPath, portfolio: portfolio, uploadType: 'portfolioImage'});
+								let response = new uploadResponse('Image uploaded, portfolio updated', 'portfolioImage')
+								response.portfolio = portfolio;
+								res.json(response);
 							})
 						} else if (dbData.type === 'project'){
 							Project.updateProjectById(dbData._id, {images: pics}, function(err, project){
 								if(err){return next(err);}
-								res.json({ok: true, msg: 'Image uploaded, project updated', filePath: imageOutputPath, project: project, uploadType: 'project'});
+								let response = new uploadResponse('Image uploaded, project updated', 'project');
+								response.project = project;
+								res.json(response);
 							})
 						} else if (dbData.type === 'projectAdd'){
-							res.json({ok: true, msg: 'Image uploaded, project updated', filePath: imageOutputPath, uploadType: 'projectAdd'});
+							res.json(new uploadResponse('Image uploaded, project updated', 'projectAdd'))
 						} else if (dbData.type === 'NewProjectImage'){
-							res.json({ok: true, msg: 'Image uploaded, project not yet created', filePath: imageOutputPath, uploadType: 'NewProjectImage'});
+							res.json(new uploadResponse('Image uploaded, project not yet created', 'NewProjectImage'))
+						} else if (dbData.type === 'certification'){
+							res.json(new uploadResponse('Certification image uploaded', 'CertificationImage'))
+						} else {
+							res.json(new uploadResponse('Unknown dbData type image uploaded', 'UnknownImage'))
 						}
 					}
 				})
