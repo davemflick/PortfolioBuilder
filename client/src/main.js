@@ -7,14 +7,16 @@ import 'vuetify/dist/vuetify.min.css';
 import store from './store/store.js';
 import VueDraggableResizable from 'vue-draggable-resizable'
 import Devicon from 'devicon';
+
+
  
-Vue.component('vue-draggable-resizable', VueDraggableResizable)
+Vue.component('vue-draggable-resizable', VueDraggableResizable);
 
 Vue.config.productionTip = false
 Vue.use(Devicon);
 Vue.use(Vuetify);
 sync(store, router);
-//sup
+
 new Vue({
   el: '#app',
   router,
@@ -22,3 +24,4 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
