@@ -72,14 +72,6 @@
     }
   },
   {
-    "name": "behance",
-    "tags": ["social", "website"],
-    "versions": {
-      "svg": ["original", "original-wordmark", "plain", "plain-wordmark"],
-      "font": ["plain", "plain-wordmark"]
-    }
-  },
-  {
     "name": "bitbucket",
     "tags": [],
     "versions": {
@@ -112,22 +104,6 @@
     }
   },
   {
-    "name": "cakephp",
-    "tags": ["framework"],
-    "versions": {
-      "svg": ["original", "original-wordmark", "plain", "plain-wordmark"],
-      "font": ["plain", "plain-wordmark"]
-    }
-  },
-  {
-    "name": "ceylon",
-    "tags": ["language"],
-    "versions": {
-      "svg": ["original", "original-wordmark", "plain", "plain-wordmark"],
-      "font": ["plain", "plain-wordmark"]
-    }
-  },
-  {
     "name": "chrome",
     "tags": ["browser"],
     "versions": {
@@ -156,14 +132,6 @@
     "tags": [],
     "versions": {
       "svg": ["original", "original-wordmark"],
-      "font": ["plain", "plain-wordmark"]
-    }
-  },
-  {
-    "name": "couchdb",
-    "tags": ["database"],
-    "versions": {
-      "svg": ["original", "original-wordmark", "plain", "plain-wordmark"],
       "font": ["plain", "plain-wordmark"]
     }
   },
@@ -261,30 +229,6 @@
     "versions": {
       "svg": ["original", "original-wordmark", "plain", "plain-wordmark"],
       "font": ["plain", "plain-wordmark"]
-    }
-  },
-  {
-    "name": "electron",
-    "tags": ["framework"],
-    "versions": {
-      "svg": ["original", "original-wordmark"],
-      "font": ["original", "original-wordmark"]
-    }
-  },
-  {
-    "name": "elm",
-    "tags": ["framework"],
-    "versions": {
-      "svg": ["original", "original-wordmark", "plain", "plain-wordmark"],
-      "font": ["plain", "plain-wordmark"]
-    }
-  },
-  {
-    "name": "ember",
-    "tags": ["framework"],
-    "versions": {
-      "svg": ["original-wordmark"],
-      "font": ["original-wordmark"]
     }
   },
   {
@@ -408,14 +352,6 @@
     }
   },
   {
-    "name": "handlebars",
-    "tags": ["framework"],
-    "versions": {
-      "svg": ["original", "original-wordmark"],
-      "font": ["plain", "plain-wordmark"]
-    }
-  },
-  {
     "name": "heroku",
     "tags": ["cloud"],
     "versions": {
@@ -461,14 +397,6 @@
     "versions": {
       "svg": ["original", "original-wordmark", "plain", "plain-wordmark"],
       "font": ["plain", "plain-wordmark"]
-    }
-  },
-  {
-    "name": "ionic",
-    "tags": ["framework"],
-    "versions": {
-      "svg": ["original", "original-wordmark"],
-      "font": ["original", "original-wordmark"]
     }
   },
   {
@@ -541,14 +469,6 @@
     "versions": {
       "svg": ["plain-wordmark"],
       "font": ["plain-wordmark"]
-    }
-  },
-  {
-    "name": "linkedin",
-    "tags": ["social", "auth"],
-    "versions": {
-      "svg": ["original", "original-wordmark", "plain", "plain-wordmark"],
-      "font": ["plain", "plain-wordmark"]
     }
   },
   {
@@ -768,14 +688,6 @@
     }
   },
   {
-    "name": "sketch",
-    "tags": ["application"],
-    "versions": {
-      "svg": ["original", "original-wordmark", "line", "line-wordmark"],
-      "font": ["line", "line-wordmark"]
-    }
-  },
-  {
     "name": "slack",
     "tags": ["chat"],
     "versions": {
@@ -872,14 +784,6 @@
     }
   },
   {
-    "name": "vagrant",
-    "tags": ["platform"],
-    "versions": {
-      "svg": ["original", "original-wordmark", "plain", "plain-wordmark"],
-      "font": ["plain", "plain-wordmark"]
-    }
-  },
-  {
     "name": "vim",
     "tags": ["editor"],
     "versions": {
@@ -932,14 +836,6 @@
     "tags": ["cms"],
     "versions": {
       "svg": ["original", "plain", "plain-wordmark"],
-      "font": ["plain", "plain-wordmark"]
-    }
-  },
-  {
-    "name": "yarn",
-    "tags": ["package", "manager"],
-    "versions": {
-      "svg": ["original", "original-wordmark"],
       "font": ["plain", "plain-wordmark"]
     }
   },
