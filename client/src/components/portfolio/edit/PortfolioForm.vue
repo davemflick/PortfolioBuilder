@@ -11,7 +11,8 @@
     :portfolio="portfolio" 
     :error="generalError" 
     :success="generalSuccess" 
-    v-on:update="updatePortfolioGeneral">
+    v-on:update="updatePortfolioGeneral"
+    v-on:removeResume="removeResume">
     <div slot="addResume">
       <v-btn @click="openUploadModal({type: 'pdf', _id: portfolio._id})">Upload Resume</v-btn>
     </div>
@@ -271,6 +272,19 @@
     updatePortfolioProjects(portfolioProjects){
       this.newProjectImages = [];
       this.portfolio.projects = portfolioProjects;
+    },
+    async removeResume(){
+      try{
+        const updatedPortfolio = await PortfolioService.updatePortfolio(this.portfolio._id, {resume: null});
+        console.log("Resume Removed", updatedPortfolio)
+        if(updatedPortfolio.data.ok){
+          this.generalSuccess = "Resume Removed"
+          this.portfolio.resume = null;
+        }
+      } catch(error){
+        console.log("ERROR", error);
+        this.generalError = "500 Internal Service Error, Data did not update."
+      }
     },
     async updatePortfolioGeneral(){
       this.generalError = null;
