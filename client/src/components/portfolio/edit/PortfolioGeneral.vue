@@ -14,7 +14,14 @@
               <slot name="addResume"></slot>
             </v-flex>
             <v-flex xs6>
-              <a class="btn dark flat" v-if="portfolio.resume" :href="`http://localhost:8081/${portfolio.resume}`" target="_blank">My Resume</a>
+              <h3  v-if="portfolio.resume">
+                <a class="view-resume mx-2" :href="`http://localhost:8081/${portfolio.resume}`" target="_blank">
+                  <v-icon color="green">get_app</v-icon>
+                </a>
+               My Resume 
+                <v-icon style="cursor: pointer;" color="red" @click="$emit('removeResume')">delete_forever</v-icon>
+              </h3>
+              
             </v-flex>
           </v-layout>
           
@@ -54,14 +61,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.alert{
-  text-align: center;
-  font-size: 15px;
-}
-.success-alert{
-  color: #01b900;
-}
-.error-alert{
-  color: #dc0000;
+.view-resume{
+  text-decoration: none;
 }
 </style>
