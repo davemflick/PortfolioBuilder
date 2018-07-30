@@ -3,6 +3,7 @@
     <transition name="slide" mode="out-in">
       <app-edit-user v-if="bottomNav === 'user'" :user="user" :portfolioId="portfolio._id"></app-edit-user>
       <app-edit-portfolio  v-if="bottomNav === 'portfolio'" :portfolio="portfolio"></app-edit-portfolio>
+      <app-projects  v-if="bottomNav === 'projects'" :portfolio="portfolio"></app-projects>
       <app-skills v-if="bottomNav === 'skills'" :portfolio="portfolio"></app-skills>
       <app-certs  v-if="bottomNav === 'certs'" :portfolio="portfolio"></app-certs>
     </transition>
@@ -19,6 +20,11 @@
 
     <v-btn color="white" flat value="portfolio" >
       <span>Portfolio</span>
+      <v-icon>favorite</v-icon>
+    </v-btn>
+
+    <v-btn color="white" flat value="projects" >
+      <span>Projects</span>
       <v-icon>favorite</v-icon>
     </v-btn>
 
@@ -39,6 +45,7 @@
   import PortfolioService from '@/services/PortfolioService';
   import appEditUser from './UserForm.vue';
   import appEditPortfolio from './PortfolioForm.vue';
+  import appProjects from './Projects.vue';
   import appCerts from './Certs.vue';
   import appSkills from '../../universal/Skills.vue';
   
@@ -76,6 +83,7 @@
    components:{
     appEditUser,
     appEditPortfolio,
+    appProjects,
     appCerts,
     appSkills
   }
