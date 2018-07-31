@@ -24,16 +24,6 @@
               
             </v-flex>
           </v-layout>
-          <v-layout column>
-            <v-flex xs12>
-              <h4>Pick Portfolio Font</h4>
-              <v-radio-group v-model="font" @change="$emit('styleChange', {type: 'fontFamily', value: font})">
-                <v-radio label="Roboto (default)" value="'Roboto', sans-serif" style="font-family: 'Roboto', sans-serif"></v-radio>
-                <v-radio label="Libre Franklin" value="'Libre Franklin', sans-serif" style="font-family: 'Libre Franklin', sans-serif"></v-radio>
-                <v-radio label="Merriweather Sans" value="'Merriweather Sans', sans-serif" style="font-family: 'Merriweather Sans', sans-serif"></v-radio>
-              </v-radio-group>
-            </v-flex>
-          </v-layout>
           
           <br>
           <div v-if="error" class="error-alert alert">{{ error }}</div>
@@ -63,8 +53,7 @@
     props: ['portfolio', 'success', 'error'],
     data(){
       return{
-        defaultProfileImg: defaultProfileImg,
-        font: this.portfolio.styles.fontFamily ? this.portfolio.styles.fontFamily : "'Roboto', sans-serif"
+        defaultProfileImg: defaultProfileImg
       }
     }
   }
