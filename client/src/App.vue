@@ -12,13 +12,13 @@
 </template>
 
 <script>
-import appHeader from './components/universal/Header.vue';
-export default {
-  name: 'App',
-  components: {
-    appHeader
+  import appHeader from './components/universal/Header.vue';
+  export default {
+    name: 'App',
+    components: {
+      appHeader
+    }
   }
-}
 </script>
 
 <style>
@@ -39,5 +39,17 @@ export default {
   min-width: 100px;
   max-width: 100%;
 }
+
+@media screen and (max-width: 600px){
+  .v-bottom-nav{
+    flex-wrap: wrap;
+    height: 112px !important;
+  }
+  .v-bottom-nav button.v-btn{
+    max-height: 50px;
+    max-width: 32%;
+  }
+}
+
 
 </style>
