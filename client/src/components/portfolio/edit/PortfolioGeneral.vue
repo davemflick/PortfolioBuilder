@@ -18,10 +18,20 @@
                 <a class="view-resume mx-2" :href="`http://localhost:8081/${portfolio.resume}`" target="_blank">
                   <v-icon color="green">get_app</v-icon>
                 </a>
-               My Resume 
+                My Resume 
                 <v-icon style="cursor: pointer;" color="red" @click="$emit('removeResume')">delete_forever</v-icon>
               </h3>
               
+            </v-flex>
+          </v-layout>
+          <v-layout column>
+            <v-flex xs12>
+              <h4>Pick Portfolio Font</h4>
+              <v-radio-group v-model="font" @change="$emit('styleChange', {type: 'fontFamily', value: font})">
+                <v-radio label="Roboto (default)" value="'Roboto', sans-serif" style="font-family: 'Roboto', sans-serif"></v-radio>
+                <v-radio label="Libre Franklin" value="'Libre Franklin', sans-serif" style="font-family: 'Libre Franklin', sans-serif"></v-radio>
+                <v-radio label="Merriweather Sans" value="'Merriweather Sans', sans-serif" style="font-family: 'Merriweather Sans', sans-serif"></v-radio>
+              </v-radio-group>
             </v-flex>
           </v-layout>
           
@@ -32,7 +42,7 @@
           <v-btn dark color="primary" @click="$emit('update')">Update</v-btn>
         </v-flex>
         <v-flex xs12 sm6 px-1 text-xs-center>
-          <v-avatar :size="150" :tile="true">
+          <v-avatar :size="200" :tile="true">
             <img v-if="portfolio.profilePicture.length > 0"
             :src="'http://localhost:8081/' + portfolio.profilePicture.find((p)=>{return p.isMain}).path" />
             <img v-else :src="defaultProfileImg" />
@@ -53,7 +63,8 @@
     props: ['portfolio', 'success', 'error'],
     data(){
       return{
-        defaultProfileImg: defaultProfileImg
+        defaultProfileImg: defaultProfileImg,
+        font: this.portfolio.styles.fontFamily ? this.portfolio.styles.fontFamily : "'Roboto', sans-serif"
       }
     }
   }

@@ -10,7 +10,8 @@
     :error="generalError" 
     :success="generalSuccess" 
     v-on:update="updatePortfolioGeneral"
-    v-on:removeResume="removeResume">
+    v-on:removeResume="removeResume"
+    v-on:styleChange="styleUpdate">
     <div slot="addResume">
       <v-btn @click="openUploadModal({type: 'pdf', _id: portfolio._id})">Upload Resume</v-btn>
     </div>
@@ -92,6 +93,19 @@
         alert("Something has gone wrong updating active state");
       }
     },
+    async styleUpdate(style){
+      this.portfolio.styles[style.type] = style.value;
+      console.log(this.portfolio.styles)
+      try{
+        const updatedPortfolio = await PortfolioService.updatePortfolio(this.portfolio._id, {styles: this.portfolio.styles});
+        if(updatedPortfolio.data.ok){
+          this.generalSuccess = 'Style Updated';
+        }
+      } catch(error){
+        console.log("ERROR", error);
+        alert("Something has gone wrong updating active state");
+      }
+    },
     openUploadModal(targetData){
       var newPics = null;
       if(targetData.type === 'portfolioImage'){
@@ -129,11 +143,7 @@
       this.generalSuccess = null;
       let generalData = {
         aboutUser: this.portfolio.aboutUser,
-        otherProfiles: {
-          github: this.portfolio.otherProfiles.github,
-          linkedin: this.portfolio.otherProfiles.linkedin,
-          otherPortfolio: this.portfolio.otherProfiles.otherPortfolio
-        }
+        otherProfiles: this.portfolio.otherProfiles
       }
       for(let link in generalData.otherProfiles){
         if(!this.validate('url', generalData.otherProfiles[link])){

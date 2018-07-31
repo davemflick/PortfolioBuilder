@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="portfolio && user">
+  <v-container v-if="portfolio && user" :style="`font-family: ${portfolio.styles.fontFamily}`">
     <transition name="slide" mode="out-in">
       <app-edit-user v-if="bottomNav === 'user'" :user="user" :portfolioId="portfolio._id"></app-edit-user>
       <app-edit-portfolio  v-if="bottomNav === 'portfolio'" :portfolio="portfolio"></app-edit-portfolio>
@@ -15,27 +15,27 @@
     >
     <v-btn color="white" flat value="user" >
       <span>User</span>
-      <v-icon>history</v-icon>
+      <v-icon>account_circle</v-icon>
     </v-btn>
 
     <v-btn color="white" flat value="portfolio" >
       <span>Portfolio</span>
-      <v-icon>favorite</v-icon>
+      <v-icon>description</v-icon>
     </v-btn>
 
     <v-btn color="white" flat value="projects" >
       <span>Projects</span>
-      <v-icon>favorite</v-icon>
+      <v-icon>devices_other</v-icon>
     </v-btn>
 
     <v-btn color="white" flat value="skills" >
       <span>Skills</span>
-      <v-icon>place</v-icon>
+      <v-icon>code</v-icon>
     </v-btn>
 
     <v-btn color="white" flat value="certs" >
       <span>Certs</span>
-      <v-icon>place</v-icon>
+      <v-icon>school</v-icon>
     </v-btn>
   </v-bottom-nav>
 </v-container>
