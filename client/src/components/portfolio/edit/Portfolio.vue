@@ -6,12 +6,14 @@
       <app-projects  v-if="bottomNav === 'projects'" :portfolio="portfolio"></app-projects>
       <app-skills v-if="bottomNav === 'skills'" :portfolio="portfolio"></app-skills>
       <app-certs  v-if="bottomNav === 'certs'" :portfolio="portfolio"></app-certs>
+      <app-styling  v-if="bottomNav === 'styling'" :portfolio="portfolio"></app-styling>
     </transition>
     <v-bottom-nav
     :active.sync="bottomNav"
     :value="true"
     fixed
     color="primary"
+    shift
     >
     <v-btn color="white" flat value="user" >
       <span>User</span>
@@ -37,6 +39,11 @@
       <span>Certs</span>
       <v-icon>school</v-icon>
     </v-btn>
+
+    <v-btn color="white" flat value="styling" >
+      <span>Styling</span>
+      <v-icon>color_lens</v-icon>
+    </v-btn>
   </v-bottom-nav>
 </v-container>
 </template>
@@ -47,6 +54,7 @@
   import appEditPortfolio from './PortfolioForm.vue';
   import appProjects from './Projects.vue';
   import appCerts from './Certs.vue';
+  import appStyling from './Styling.vue';
   import appSkills from '../../universal/Skills.vue';
   
   export default {
@@ -85,7 +93,8 @@
     appEditPortfolio,
     appProjects,
     appCerts,
-    appSkills
+    appSkills,
+    appStyling
   }
 }
 </script>
