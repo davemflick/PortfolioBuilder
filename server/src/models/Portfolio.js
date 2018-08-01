@@ -25,7 +25,7 @@ const PortfolioSchema = new mongoose.Schema({
 	certifications: [{name: String, about: String, picturePath: String, dateObtained: Date}],
 	skills: [{type: String, trim: true}],
 	styles: {
-		fontFamily: {type: String, required: true, trim: true, default: "'Roboto', sans-serif"}
+		fontFamily: {type: String, trim: true, default: "'Roboto', sans-serif"}
 	},
 	createdOn: {type: Date, default: Date.now },
 	updatedOn: {type: Date, default: Date.now }
