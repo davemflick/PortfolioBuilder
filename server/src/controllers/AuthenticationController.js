@@ -1,5 +1,14 @@
 var User = require('../models/User.js');
 var Portfolio = require('../models/Portfolio.js');
+const jwt = require("jsonwebtoken");
+const config = require('../config/config');
+
+function jwtSignUser(user){
+	const ONE_WEEK = 60 * 60 * 24 * 7;
+	return jwt.sign(user, config.authentication.jwtSecret, {
+		expiresIn: ONE_WEEK
+	})
+}
 
 module.exports = {
 	//register middleware
@@ -19,7 +28,7 @@ module.exports = {
 				if(err){
 					return next(err);
 				}
-				req.session.userId = user._id;
+				//req.session.userId = user._id;
 				let returnUser = {
 					_id: user._id,
 					name: {first: user.name.first, last: user.name.last},
@@ -61,13 +70,12 @@ module.exports = {
 				error.details = {};
 				return next(err);
 			}
-			req.session.userId = user._id;
 			var userReturn = {
 				email: user.email,
 				username: user.username,
 				name: {first: user.name.first, last: user.name.last}
 			}
-			return res.json({ok: true, Msg: 'Successful user login', User: userReturn})
+			return res.json({ok: true, Msg: 'Successful user login', User: userReturn, token: jwtSignUser(user.toJSON())})
 		})
 	}
 }
