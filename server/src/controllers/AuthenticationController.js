@@ -36,6 +36,7 @@ module.exports = {
 					email: user.email,
 					portfolio: null
 				}
+				const token = jwtSignUser(user.toJSON())
 				//Once user has _id create a portfolio instance for that user, passing _id and username
 				Portfolio.create({userId: user._id, username: user.username, isActive: true}, function(err, portfolio){
 					if(err){return next(err)};
@@ -44,7 +45,7 @@ module.exports = {
 					//Once portfolio instance created, update newly created user with portfolio _id
 					User.update({_id: returnUser._id}, {portfolio: portfolio._id} ,function(err, user){
 						if(err){return next(err);}
-						return res.json({ok: true, Msg: 'User successfuly created', user: returnUser})
+						return res.json({ok: true, Msg: 'User successfuly created', user: returnUser, token: token})
 					})
 				});
 			});
