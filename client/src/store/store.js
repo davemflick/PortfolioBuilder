@@ -9,6 +9,7 @@ export default new Vuex.Store({
 	strict: true,
 	plugins: [createPersistedState()],
 	state: {
+		token: null,
 		user: null,
 		userLoggedIn: false,
 		allSkills: allSkills
@@ -18,6 +19,10 @@ export default new Vuex.Store({
 		getSkills(state){ return state.allSkills;}
 	},
 	mutations:{
+		setToken(state, token){
+			state.token = token;
+			state.token ? state.userLoggedIn = true : state.userLoggedIn = false
+		},
 		setUser(state, user){
 			state.user = user;
 			state.user ? state.userLoggedIn = true : state.userLoggedIn = false
@@ -27,6 +32,9 @@ export default new Vuex.Store({
 		}
 	},
 	actions:{
+		setToken({commit}, token){
+			commit('setToken', token);
+		},
 		setUser({commit}, user){
 			commit('setUser', user)
 		},
