@@ -26,6 +26,9 @@ router.post('/register', AuthenticationControllerPolicy.register, Authentication
 //POST -> login
 router.post('/login', AuthenticationController.login);
 
+//GET -> Check token
+router.get('/authenticate', AuthenticationController.checkTokenExpiration)
+
 //GET -> portfolio
 router.get('/portfolio/:username', PortfolioController.findPortfolio);
 
@@ -60,5 +63,6 @@ router.put('/project/update/:projectId', PortfolioController.editProject);
 
 //DELETE -> Project
 router.put('/project/delete/:portfolioId/:projectId', PortfolioController.deleteProject);
+
 
 module.exports = router
