@@ -78,5 +78,19 @@ module.exports = {
 			}
 			return res.json({ok: true, Msg: 'Successful user login', User: userReturn, token: jwtSignUser(user.toJSON())})
 		})
+	},
+
+	checkTokenExpiration(req, res, next){
+		const token = req.body.token || req.headers['x-access-token']
+		if(token){
+			jwt.verify(token, config.authentication.jwtSecret, (err, decoded)=>{
+				if(err){
+					return next(err);
+				}
+				res.json({ok: true, msg: 'User verified'});
+			})
+		} else {
+			res.json({ok: false, hadToken: false, msg: 'No token was provided'})
+		}
 	}
 }
