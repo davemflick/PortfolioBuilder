@@ -36,6 +36,7 @@
 					const response = await AuthenticationService.login(this.user);
 					console.log("Succesful login", response.data)
 					if(response.data.ok){
+						this.$store.dispatch('setToken', response.data.token);
 						this.$store.dispatch('setUser', response.data.User);
 						this.$router.push({name: 'Portfolio'})
 					} else {
