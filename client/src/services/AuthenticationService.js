@@ -6,5 +6,13 @@ export default {
 	},
 	login(req){
 		return Api().post('login', req);//register = endpoint
+	},
+	checkToken(token){
+		return Api().get('/authenticate',{
+			headers: {
+				'Content-Type': 'application/json',
+				'x-access-token': token
+			}
+		})
 	}
 }
