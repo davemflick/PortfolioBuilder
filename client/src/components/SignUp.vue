@@ -63,6 +63,8 @@
 					const response = await AuthenticationService.register(this.user);
 					if(response.data.ok){
 						this.$store.dispatch('setUser', response.data.user);
+						this.$store.dispatch('setToken', response.data.token);
+						console.log(response.data);
 						this.$router.push({name: 'PortfolioBuild', params: {username: response.data.user.username}})
 					} else {
 						if(response.data.error.code == 11000){
