@@ -21,6 +21,7 @@
       appHeader
     },
     async mounted(){
+      //check if user token is still vaild, if not, remove user from state
       try{
         if(this.$store.state.token){
           const tokenIsValid = await AuthService.checkToken(this.$store.state.token);
