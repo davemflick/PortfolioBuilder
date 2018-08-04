@@ -62,6 +62,8 @@ router.beforeEach(async (to, from, next)=>{
         store.dispatch('setUser', null);
         store.dispatch('setToken', null);
         next();
+      } else {
+        next();
       }
     } catch(error){
       console.log("ERROR in checking token expiration");
