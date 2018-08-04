@@ -13,29 +13,13 @@
 
 <script>
   import appHeader from './components/universal/Header.vue';
-  import AuthService from './services/AuthenticationService.js';
 
   export default {
     name: 'App',
     components: {
       appHeader
-    },
-    async mounted(){
-      //check if user token is still vaild, if not, remove user from state
-      try{
-        if(this.$store.state.token){
-          const tokenIsValid = await AuthService.checkToken(this.$store.state.token);
-          console.log(tokenIsValid.data)
-          if(!tokenIsValid.data.ok){
-            this.$store.dispatch('setUser', null);
-            this.$store.dispatch('setToken', null);
-          }
-        }
-    } catch(error){
-      console.log("ERROR in checking token expiration");
     }
   }
-}
 </script>
 
 <style>
