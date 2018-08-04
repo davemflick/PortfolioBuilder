@@ -32,7 +32,7 @@
 
 <script>
   import PortfolioService from '@/services/PortfolioService';
-  import defaultProfileImg from '@/assets/emptyProfile.png';
+  import defaultProfileImg from '@/assets/images/emptyProfile.png';
   export default {
     props: ['images', 'portfolioId'],
     data(){

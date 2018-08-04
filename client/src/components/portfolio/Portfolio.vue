@@ -1,32 +1,42 @@
 <template>
-	<v-container>
-		<v-progress-linear v-show="!pageLoaded" :indeterminate="true"></v-progress-linear>
-		<v-layout wrap v-if="portfolioUser && portfolio">
-			<v-flex xs12 sm4 class="px-1">
-				<v-card class="pa-2 text-xs-center">
-					<img class="img-responsive" v-if="portfolio.profilePicture.length > 0"  :src="'http://localhost:8081/' + portfolio.profilePicture.find((p)=>{return p.isMain}).path" />
-					<img class="img-responsive" v-else :src="defaultProfileImg" />
-					<br>
-					<h2>{{ portfolioUser.name.first }} {{ portfolioUser.name.last }}</h2>
-					<i class="fa fa-github"></i>
-				</v-card>
-			</v-flex>
-			<v-flex xs12 sm8 class="px-1">
-				
-				<p>{{ portfolio.aboutUser }}</p>
-			</v-flex>
-		</v-layout>
-		<h1 v-show="noPortfolioFound.status" class="text-xs-center">
-			{{ noPortfolioFound.msg }}<br>
-			Go <router-link tag="a" to="/"><a title="Go Home">Home</a></router-link>
-		</h1>
-	</v-container>
+	<div>
+		<v-container>
+			<v-progress-linear v-show="!pageLoaded" :indeterminate="true"></v-progress-linear>
+			<v-card v-if="portfolioUser && portfolio">
+				<v-card-media :src="defaultBanner" height="250px"></v-card-media>
+				<v-layout wrap>
+					<v-flex xs8 sm4 md3 offset-xs2 offset-sm4 offset-md0 class="px-1" id="image-card-container">
+						<v-card class="pa-2 text-xs-center" id="image-card">
+							<img class="img-responsive" v-if="portfolio.profilePicture.length > 0"  :src="'http://localhost:8081/' + portfolio.profilePicture.find((p)=>{return p.isMain}).path" />
+							<img class="img-responsive" v-else :src="defaultProfileImg" />
+							<br>
+							<h2>{{ portfolioUser.name.first }} {{ portfolioUser.name.last }}</h2>
+							<div class="other-portfolios">
+								<a class="op-link mx-2" v-if="portfolio.otherProfiles.github" :href="portfolio.otherProfiles.github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+								<a class="op-link mx-2" v-if="portfolio.otherProfiles.linkedin" :href="portfolio.otherProfiles.linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
+								<a class="op-link mx-2" v-if="portfolio.otherProfiles.otherPortfolio" :href="portfolio.otherProfiles.otherPortfolio" target="_blank"><i class="fa fa-user fa-2x"></i></a>
+							</div>
+						</v-card>
+					</v-flex>
+					<v-flex xs12 md9 class="px-1">
+						<p>{{ portfolio.aboutUser }}</p>
+					</v-flex>
+				</v-layout>
+			</v-card>
+
+			<h1 v-show="noPortfolioFound.status" class="text-xs-center">
+				{{ noPortfolioFound.msg }}<br>
+				Go <router-link tag="a" to="/"><a title="Go Home">Home</a></router-link>
+			</h1>
+		</v-container>
+	</div>
 </template>
 
 <script>
 	import PortfolioService from '@/services/PortfolioService';
 	import appFormPanel from '../universal/FormPanel.vue';
-	import defaultProfileImg from '@/assets/emptyProfile.png';
+	import defaultProfileImg from '@/assets/images/emptyProfile.png';
+	import defaultBanner from '@/assets/images/default-banner.png';
 
 	export default{
 		data(){
@@ -35,6 +45,7 @@
 				portfolio: null,
 				portfolioUser: null,
 				defaultProfileImg: defaultProfileImg,
+				defaultBanner: defaultBanner,
 				noPortfolioFound: {
 					status: false,
 					msg: null
@@ -96,14 +107,80 @@
 	}
 </script>
 <style scoped>
+
+#image-card-container{
+	position: relative;
+	min-height: 220px;
+}
+
+#image-card{
+	position: absolute;
+	top: -155px;
+	box-shadow: none;
+	border-top-left-radius: 7px;
+	border-top-right-radius: 7px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-content: center;
+	align-items: center;
+}
+
+.jtron{
+	background-position: center !important;
+	background-size: cover !important;
+}
 .error-alert{
 	text-align: center;
 	color: #dd1212;
 }
 
-.img-responsive{
+img.img-responsive{
 	max-width: 100%;
-	margin: 0 auto;
+	border-radius: 7px;
+}
+
+.v-card>:first-child:not(.v-btn):not(.v-chip).img-responsive {
+	border-top-left-radius: 7px;
+	border-top-right-radius: 7px;
+}
+
+.op-link{
+	outline: none;
+	text-decoration: none;
+}
+.op-link .fa-github{
+	color: #202529;
+}
+.op-link .fa-linkedin{
+	color: #006CAC;
+}
+.op-link .fa-user{
+	color: #243641;
+}
+
+@media (min-width: 600px) and (max-width: 750px){
+	#image-card-container{
+		min-height: 150px;
+	}
+}
+
+@media (min-width: 455px) and (max-width: 599px){
+	#image-card-container{
+		min-height: 250px;
+	}
+}
+
+@media screen and (max-width: 600px){
+	.container{
+		padding: 0;
+	}
+}
+
+@media screen and (max-width: 425px){
+	#image-card-container{
+		min-height: 180px;
+	}
 }
 
 </style>

@@ -48,7 +48,7 @@
 </template>
 
 <script>
-  import defaultProfileImg from '@/assets/emptyProfile.png';
+  import defaultProfileImg from '@/assets/images/emptyProfile.png';
   export default {
     props: ['portfolio', 'success', 'error'],
     data(){
