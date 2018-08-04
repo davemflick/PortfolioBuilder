@@ -24,7 +24,7 @@
 							<v-text-field type="password" label="Password" required v-model="user.password"></v-text-field>
 						</v-flex>
 						<v-flex xs12 sm6 pr-1>
-							<v-text-field type="password" label="Confirm Password" required v-model="user.confirmPassword"></v-text-field>
+							<v-text-field type="password" label="Confirm Password" required v-model="user.confirmPassword"  @keyup.enter="register"></v-text-field>
 						</v-flex>
 					</v-layout>
 				</form>

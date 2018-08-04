@@ -4,7 +4,7 @@
 			<app-form-panel title="Login to PortBuilder">
 				<form id="login-form">
 					<v-text-field type="email" label="Email/Username" required v-model="user.emailOrUsername"></v-text-field>
-					<v-text-field type="password" label="Password" required v-model="user.password"></v-text-field>
+					<v-text-field type="password" label="Password" required v-model="user.password" @keyup.enter="login"></v-text-field>
 				</form>
 				<br>
 				<div v-if="error" class="error-alert">{{ error }}</div>
