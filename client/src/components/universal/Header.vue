@@ -36,6 +36,16 @@
 					<v-list-tile v-if="this.$store.state.userLoggedIn">
 						<v-list-tile-title class="hovlink" @click="logout">Logout</v-list-tile-title>
 					</v-list-tile>
+					<v-list-tile v-if="this.$store.state.userLoggedIn">
+						<router-link :to="{name: 'Portfolio', params: {username: this.$store.state.user.username }}"  tag="span">
+							<v-list-tile-title class="hovlink">My Portfolio</v-list-tile-title>
+						</router-link>
+					</v-list-tile>
+					<v-list-tile v-if="this.$store.state.userLoggedIn">
+						<router-link :to="{name: 'EditPortfolio', params: {username: this.$store.state.user.username }}"  tag="span">
+							<v-list-tile-title class="hovlink">Edit Portfolio</v-list-tile-title>
+						</router-link>
+					</v-list-tile>
 				</v-list>
 			</v-menu>
 		</v-toolbar>
