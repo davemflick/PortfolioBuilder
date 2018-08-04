@@ -2,32 +2,42 @@
 	<div>
 		<v-container>
 			<v-progress-linear v-show="!pageLoaded" :indeterminate="true"></v-progress-linear>
-			<v-card v-if="portfolioUser && portfolio">
+			<v-card v-if="portfolioUser && portfolio" :style="`font-family: ${portfolio.styles.fontFamily}`">
 				<v-card-media :src="defaultBanner" height="250px"></v-card-media>
 				<v-layout wrap>
 					<v-flex xs8 sm4 md3 offset-xs2 offset-sm4 offset-md0 class="px-1" id="image-card-container">
-						<v-card class="pa-2 text-xs-center" id="image-card">
-							<img class="img-responsive" v-if="portfolio.profilePicture.length > 0"  :src="'http://localhost:8081/' + portfolio.profilePicture.find((p)=>{return p.isMain}).path" />
-							<img class="img-responsive" v-else :src="defaultProfileImg" />
-							<br>
-							<h2>{{ portfolioUser.name.first }} {{ portfolioUser.name.last }}</h2>
-							<div class="other-portfolios">
-								<a class="op-link mx-2" v-if="portfolio.otherProfiles.github" :href="portfolio.otherProfiles.github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
-								<a class="op-link mx-2" v-if="portfolio.otherProfiles.linkedin" :href="portfolio.otherProfiles.linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
-								<a class="op-link mx-2" v-if="portfolio.otherProfiles.otherPortfolio" :href="portfolio.otherProfiles.otherPortfolio" target="_blank"><i class="fa fa-user fa-2x"></i></a>
-							</div>
-						</v-card>
+						<app-portfolio-image-card :portfolio="portfolio"></app-portfolio-image-card>
 					</v-flex>
-					<v-flex xs12 md9 class="px-1">
-						<p>{{ portfolio.aboutUser }}</p>
+					<v-flex xs12 md9 class="pa-3">
+						<h1>{{ portfolioUser.name.first }} {{ portfolioUser.name.last }}</h1>
+						<h3 class="mb-3"><em>{{ portfolioUser.email }}</em></h3>
+						<p id="about-user">{{ portfolio.aboutUser }}</p>
+					</v-flex>
+				</v-layout>
+				<v-layout column class="pa-3">
+					<v-flex xs12>
+						<h2>Projects</h2>
+						<v-layout wrap>
+							<v-flex xs6 sm4 md3 
+											class="pa-2 text-xs-center single-project"
+											v-for="(project, i) in portfolio.projects"
+											:key="`project-${i}`" 
+											@click="projectTarget = project; projectModal = true">
+								<div class="pa-2">
+								<img v-if="project.images.length > 0" :src="`http://localhost:8081/${project.images.find(p=>p.isMain).path}`" class="img-responsive" />
+								<img v-else :src="defaultProject" class="img-responsive" />
+								<p>{{ project.name }}</p>
+							</div>
+							</v-flex>
+						</v-layout>
 					</v-flex>
 				</v-layout>
 			</v-card>
-
 			<h1 v-show="noPortfolioFound.status" class="text-xs-center">
 				{{ noPortfolioFound.msg }}<br>
 				Go <router-link tag="a" to="/"><a title="Go Home">Home</a></router-link>
 			</h1>
+			<app-project-modal :project="projectTarget" :isOpen="projectModal" v-on:close="projectModal = false; projectTarget = null;"></app-project-modal>
 		</v-container>
 	</div>
 </template>
@@ -37,6 +47,9 @@
 	import appFormPanel from '../universal/FormPanel.vue';
 	import defaultProfileImg from '@/assets/images/emptyProfile.png';
 	import defaultBanner from '@/assets/images/default-banner.png';
+	import defaultProject from '@/assets/images/default-project.png';
+	import appPortfolioImageCard from './PortfolioImageCard.vue'
+	import appProjectModal from './ProjectModal.vue'
 
 	export default{
 		data(){
@@ -46,12 +59,19 @@
 				portfolioUser: null,
 				defaultProfileImg: defaultProfileImg,
 				defaultBanner: defaultBanner,
+				defaultProject: defaultProject,
+				projectTarget: null,
+				projectModal: false,
 				noPortfolioFound: {
 					status: false,
 					msg: null
 				},
 				pageLoaded: false
 			}
+		},
+		components:{
+			appPortfolioImageCard,
+			appProjectModal
 		},
 		methods:{
 			setNoPortfolioMsg(msg){
@@ -108,66 +128,39 @@
 </script>
 <style scoped>
 
+h1{
+	font-size: 2.25em;
+}
+
+.single-project>div{
+	border: 1px solid #eee;
+	border-radius: 2px;
+	cursor: pointer;
+}
+
 #image-card-container{
 	position: relative;
-	min-height: 220px;
-}
-
-#image-card{
-	position: absolute;
-	top: -155px;
-	box-shadow: none;
-	border-top-left-radius: 7px;
-	border-top-right-radius: 7px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	align-content: center;
-	align-items: center;
-}
-
-.jtron{
-	background-position: center !important;
-	background-size: cover !important;
-}
-.error-alert{
-	text-align: center;
-	color: #dd1212;
+	min-height: 200px;
 }
 
 img.img-responsive{
 	max-width: 100%;
-	border-radius: 7px;
+	//border-radius: 7px;
 }
 
-.v-card>:first-child:not(.v-btn):not(.v-chip).img-responsive {
-	border-top-left-radius: 7px;
-	border-top-right-radius: 7px;
-}
-
-.op-link{
-	outline: none;
-	text-decoration: none;
-}
-.op-link .fa-github{
-	color: #202529;
-}
-.op-link .fa-linkedin{
-	color: #006CAC;
-}
-.op-link .fa-user{
-	color: #243641;
+#about-user{
+	font-size: 1.2em;
 }
 
 @media (min-width: 600px) and (max-width: 750px){
 	#image-card-container{
-		min-height: 150px;
+		min-height: 110px;
 	}
 }
 
 @media (min-width: 455px) and (max-width: 599px){
 	#image-card-container{
-		min-height: 250px;
+		min-height: 200px;
 	}
 }
 
@@ -179,7 +172,7 @@ img.img-responsive{
 
 @media screen and (max-width: 425px){
 	#image-card-container{
-		min-height: 180px;
+		min-height: 130px;
 	}
 }
 
