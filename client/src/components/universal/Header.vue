@@ -2,7 +2,7 @@
 	<div>
 		<v-toolbar dark color="primary">
 			<v-menu :nudge-width="150" offset-y >
-				<v-toolbar-title slot="activator">
+				<v-toolbar-title class="pl-2" slot="activator">
 					<v-toolbar-side-icon></v-toolbar-side-icon>
 				</v-toolbar-title>
 				<v-list>
@@ -17,7 +17,7 @@
 			<v-spacer></v-spacer>
 			<v-text-field class="nav-search" color="#fff" prepend-icon="search" hide-details single-line></v-text-field>
 			<v-menu :nudge-width="150"  offset-y class="hidden-sm-and-down">
-				<v-toolbar-title slot="activator">
+				<v-toolbar-title class="pr-2" slot="activator">
 					<v-btn icon>
 						<v-icon>more_vert</v-icon>
 					</v-btn>
