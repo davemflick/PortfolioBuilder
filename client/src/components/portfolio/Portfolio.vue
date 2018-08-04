@@ -2,15 +2,17 @@
 	<v-container>
 		<v-progress-linear v-show="!pageLoaded" :indeterminate="true"></v-progress-linear>
 		<v-layout wrap v-if="portfolioUser && portfolio">
-			<v-flex xs12 sm4>
-				<v-avatar :size="150" :tile="true">
-					<img v-if="portfolio.profilePicture.length > 0"
-					:src="'http://localhost:8081/' + portfolio.profilePicture.find((p)=>{return p.isMain}).path" />
-					<img v-else :src="defaultProfileImg" />
-				</v-avatar>
+			<v-flex xs12 sm4 class="px-1">
+				<v-card class="pa-2 text-xs-center">
+					<img class="img-responsive" v-if="portfolio.profilePicture.length > 0"  :src="'http://localhost:8081/' + portfolio.profilePicture.find((p)=>{return p.isMain}).path" />
+					<img class="img-responsive" v-else :src="defaultProfileImg" />
+					<br>
+					<h2>{{ portfolioUser.name.first }} {{ portfolioUser.name.last }}</h2>
+					<i class="fa fa-github"></i>
+				</v-card>
 			</v-flex>
-			<v-flex xs12 sm8>
-				<h2>{{ portfolioUser.name.first }} {{ portfolioUser.name.last }}</h2>
+			<v-flex xs12 sm8 class="px-1">
+				
 				<p>{{ portfolio.aboutUser }}</p>
 			</v-flex>
 		</v-layout>
@@ -97,6 +99,11 @@
 .error-alert{
 	text-align: center;
 	color: #dd1212;
+}
+
+.img-responsive{
+	max-width: 100%;
+	margin: 0 auto;
 }
 
 </style>
