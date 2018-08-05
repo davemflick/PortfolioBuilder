@@ -4,7 +4,7 @@
       <v-layout wrap>
         <v-flex xs12 class="text-center">
           <div v-if="file.url && file.type.indexOf('image') >= 0" id="uploaded-image-container">
-            <vue-draggable-resizable  :active="true" :w="300" :h="300" v-on:dragging="onDrag" :resizable="false" :parent="true" id="img-crop-box">
+            <vue-draggable-resizable v-if="needImgCrop" :active="true" :w="300" :h="300" v-on:dragging="onDrag" :resizable="false" :parent="true" id="img-crop-box">
             </vue-draggable-resizable>
             <img :src="file.url" id="uploaded-img" v-if="file.url" />
           </div>
@@ -23,7 +23,7 @@
         <v-flex xs12>
           <form id="upload-form">
             <div id="upload-fields-container">
-              <v-text-field label="Select Image" @click="pickFile" @focus="$event.target.click()" v-model="file.name" prepend-icon="attach_file"></v-text-field>
+              <v-text-field label="Select Image" @focus="pickFile" v-model="file.name" prepend-icon="attach_file"></v-text-field>
               <input type="file" style="display: none;" ref="image" accept=".pdf,image/*" @change="onFilePicked" />
             </div>
           </form>
@@ -63,6 +63,7 @@
             url: null,
             file: null
           },
+          needImgCrop: true,
           imgCrop: {
             width: 300,
             height: 300,
@@ -71,6 +72,17 @@
           },
           error: null,
           success: null
+        }
+      },
+      watch:{
+        uploadTarget(){
+          if(this.uploadTarget){
+            if(this.uploadTarget.type === 'certification' || this.uploadTarget.type === 'pdf'){
+              this.needImgCrop = false;
+            } else {
+              this.needImgCrop = true;
+            }
+          }
         }
       },
       methods:{
@@ -90,8 +102,8 @@
           this.file.name = null;
           this.file.url = null;
           this.file.file = null;
-          this.error = null;
           this.success = null;
+          this.error = null;
         },
         onFilePicked(e){
           const files = e.target.files;
@@ -125,17 +137,28 @@
             boundaries = JSON.stringify({type: 'pdf', dbTarget: this.uploadTarget});
           } else {
             const myImage = document.getElementById('uploaded-img');
-            if(myImage.clientWidth < 300 || myImage.clientHeight < 300){
-              this.error = "Image does not fit boundaries, upload cancelled"
-              this.clearUploader();
-              return false;
-            }
-            boundaries = JSON.stringify({
+            boundaries = {
               type: 'image',
-              crop: this.imgCrop,
               resize: {width: myImage.clientWidth, height: myImage.clientHeight},
               dbTarget: this.uploadTarget
-            });
+            }
+            if(this.needImgCrop){
+              boundaries.crop = this.imgCrop;
+              if(myImage.clientWidth < 300 || myImage.clientHeight < 300){
+                this.clearUploader();
+                this.error = "Image does not fit boundaries, upload cancelled"
+                return false;
+              }
+            } else {
+              boundaries.crop = {
+                width: myImage.clientWidth,
+                height: myImage.clientHeight,
+                x: 0,
+                y: 0
+              }
+            }
+            
+            boundaries = JSON.stringify(boundaries);
           }
           formData.append('boundaries', boundaries);
           formData.append("myfile", this.file.file, this.file.name);
