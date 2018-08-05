@@ -170,6 +170,8 @@
               setTimeout(()=>{
                 this.$emit('close', uploadedFile.data)
               }, 500)
+            } else {
+              console.log(uploadedFile.data)
             }
             console.log("SUCCESS", uploadedFile);
           }catch(error){
