@@ -11,11 +11,14 @@
             <v-card-text>
               <form>
                 <v-layout wrap>
-                  <v-flex xs12 sm6 px-1>
+                  <v-flex xs12 px-1>
                     <v-text-field type="text" label="Name" v-model="project.name"></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 px-1>
                     <v-text-field type="text" label="Link" v-model="project.link" @input="validate('url', project.link)"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 px-1>
+                    <v-text-field type="text" label="Source Code" v-model="project.codeLink" @input="validate('url', project.link)"></v-text-field>
                   </v-flex>
                   <v-flex xs12 px-1>
                     <v-text-field type="text" label="Stack" v-model="project.stack"></v-text-field>
@@ -158,6 +161,7 @@
         this.projectSuccess = null;
         this.projectError = null;
         const thisProject = this.portfolio.projects.find(p => p._id === projectId);
+        console.log(thisProject);
         if(!this.validate('url', thisProject.link)){
           alert("Invalid Link");
           return false;
@@ -165,6 +169,7 @@
         const updateFields = {
           name: thisProject.name,
           link: thisProject.link,
+          codeLink: thisProject.codeLink,
           stack: thisProject.stack,
           description: thisProject.description
         }
