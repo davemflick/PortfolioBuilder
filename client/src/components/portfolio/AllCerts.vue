@@ -1,5 +1,5 @@
 <template>
-	<v-flex xs12>
+	<v-flex xs12 v-if="certs.length > 0">
 		<h2>Certifications</h2>
 		<v-layout wrap>
 			<v-flex xs6 sm4 md3 
