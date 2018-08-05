@@ -42,7 +42,7 @@ module.exports = {
 					if(err){
 						next(err);
 					} else {
-						console.log("DONE");
+						//remove temp file
 						fs.unlink(filePath, function(errorx){
 							if(errorx){
 								console.log(errorx);
@@ -78,7 +78,12 @@ module.exports = {
 						} else if (dbData.type === 'NewProjectImage'){
 							res.json(new uploadResponse('Image uploaded, project not yet created', 'NewProjectImage'))
 						} else if (dbData.type === 'certification'){
-							res.json(new uploadResponse('Certification image uploaded', 'CertificationImage'))
+							Portfolio.updateCertificateImage(dbData._id, dbData.cid, imageOutputPath, function(err, portfolio){
+								if(err){return next(err);}
+								let response = new uploadResponse('Certificate image uploaded, portfolio updated', 'CertificationImage')
+								response.portfolio = portfolio;
+								res.json(response);
+							});
 						} else {
 							res.json(new uploadResponse('Unknown dbData type image uploaded', 'UnknownImage'))
 						}
