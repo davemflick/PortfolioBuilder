@@ -1,0 +1,41 @@
+<template>
+	<v-flex xs12>
+		<h2>Projects</h2>
+		<v-layout wrap>
+			<v-flex xs6 sm4 md3 
+			class="pa-2 text-xs-center single-project"
+			v-for="(project, i) in projects"
+			:key="`project-${i}`" 
+			@click="$emit('open', project)">
+			<div class="pa-2">
+				<img v-if="project.images.length > 0" :src="`http://localhost:8081/${project.images.find(p=>p.isMain).path}`" class="img-responsive" />
+				<img v-else :src="defaultProject" class="img-responsive" />
+				<p>{{ project.name }}</p>
+			</div>
+		</v-flex>
+	</v-layout>
+</v-flex>
+</template>
+
+<script>
+	import defaultProject from '@/assets/images/default-project.png';
+
+	export default{
+		props: ['projects'],
+		data(){
+			return {
+				defaultProject: defaultProject
+			}
+		}
+	}
+
+</script>
+
+<style scoped>
+.single-project>div{
+	border: 1px solid #eee;
+	border-radius: 2px;
+	cursor: pointer;
+}
+
+</style>
