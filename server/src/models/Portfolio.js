@@ -95,6 +95,38 @@ PortfolioSchema.statics.removeProject = function(portfolioId, projectId, callbac
 	});
 }
 
+PortfolioSchema.statics.updateCertificateImage = function(portfolioId, certificateId, image, callback){
+	if(!portfolioId){
+		return callback(noPortfolioIdError);
+	}
+	if(!certificateId){
+		let err = new Error("Certificate ID not provided");
+		err.status = 406;
+		err.details = null;
+		return callback(err);
+	}
+	Portfolio.findOneAndUpdate({"_id": portfolioId, "certifications._id": certificateId},
+	 {$set: {'certifications.$.picturePath': image}}, {new: true}).exec(function(err, portfolio){
+	 	if(err){return callback(err);}
+		if(!portfolio){
+			return callback(noPortfolioError);
+		}
+		console.log("We made it this far", portfolio.certifications);
+		return callback(null, portfolio);
+	 });
+}
+
 const Portfolio = mongoose.model('Portfolio', PortfolioSchema);
 
 module.exports = Portfolio;
+
+
+
+
+
+
+
+
+
+
+
