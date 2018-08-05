@@ -23,6 +23,10 @@
 </script>
 
 <style>
+img.img-responsive{
+  max-width: 100%;
+}
+
 .alert{
   text-align: center;
   font-size: 15px;
