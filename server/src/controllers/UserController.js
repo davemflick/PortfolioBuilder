@@ -78,12 +78,16 @@ module.exports = {
 						} else if (dbData.type === 'NewProjectImage'){
 							res.json(new uploadResponse('Image uploaded, project not yet created', 'NewProjectImage'))
 						} else if (dbData.type === 'certification'){
-							Portfolio.updateCertificateImage(dbData._id, dbData.cid, imageOutputPath, function(err, portfolio){
-								if(err){return next(err);}
-								let response = new uploadResponse('Certificate image uploaded, portfolio updated', 'CertificationImage')
-								response.portfolio = portfolio;
-								res.json(response);
-							});
+							if(dbData.cid){
+								Portfolio.updateCertificateImage(dbData._id, dbData.cid, imageOutputPath, function(err, portfolio){
+									if(err){return next(err);}
+									let response = new uploadResponse('Certificate image uploaded, portfolio updated', 'CertificationImage')
+									response.portfolio = portfolio;
+									res.json(response);
+								});
+							} else {
+								res.json(new uploadResponse('Certificate image uploaded, portfolio not updated', 'CertificationImage'))
+							}
 						} else {
 							res.json(new uploadResponse('Unknown dbData type image uploaded', 'UnknownImage'))
 						}
