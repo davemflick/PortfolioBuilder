@@ -15,22 +15,11 @@
 					</v-flex>
 				</v-layout>
 				<v-layout column class="pa-3">
-					<v-flex xs12>
-						<h2>Projects</h2>
-						<v-layout wrap>
-							<v-flex xs6 sm4 md3 
-											class="pa-2 text-xs-center single-project"
-											v-for="(project, i) in portfolio.projects"
-											:key="`project-${i}`" 
-											@click="projectTarget = project; projectModal = true">
-								<div class="pa-2">
-								<img v-if="project.images.length > 0" :src="`http://localhost:8081/${project.images.find(p=>p.isMain).path}`" class="img-responsive" />
-								<img v-else :src="defaultProject" class="img-responsive" />
-								<p>{{ project.name }}</p>
-							</div>
-							</v-flex>
-						</v-layout>
-					</v-flex>
+					<app-all-projects v-on:open="openSinglProject" :projects="portfolio.projects"></app-all-projects>
+					<br><br>
+					<app-all-skills :skills="portfolio.skills"></app-all-skills>
+					<br><br>
+					<app-all-certs :certs="portfolio.certifications"></app-all-certs>
 				</v-layout>
 			</v-card>
 			<h1 v-show="noPortfolioFound.status" class="text-xs-center">
@@ -49,7 +38,10 @@
 	import defaultBanner from '@/assets/images/default-banner.png';
 	import defaultProject from '@/assets/images/default-project.png';
 	import appPortfolioImageCard from './PortfolioImageCard.vue'
+	import appAllProjects from './AllProjects.vue'
 	import appProjectModal from './ProjectModal.vue'
+	import appAllSkills from './AllSkills.vue'
+	import appAllCerts from './AllCerts.vue'
 
 	export default{
 		data(){
@@ -71,13 +63,20 @@
 		},
 		components:{
 			appPortfolioImageCard,
-			appProjectModal
+			appProjectModal,
+			appAllProjects,
+			appAllSkills,
+			appAllCerts
 		},
 		methods:{
 			setNoPortfolioMsg(msg){
 				this.pageLoaded = true;
 				this.noPortfolioFound.status = true;
 				this.noPortfolioFound.msg = msg;
+			},
+			openSinglProject(project){
+				this.projectTarget = project;
+				this.projectModal = true;
 			}
 		},
 		async mounted(){
@@ -132,11 +131,6 @@ h1{
 	font-size: 2.25em;
 }
 
-.single-project>div{
-	border: 1px solid #eee;
-	border-radius: 2px;
-	cursor: pointer;
-}
 
 #image-card-container{
 	position: relative;
@@ -145,7 +139,6 @@ h1{
 
 img.img-responsive{
 	max-width: 100%;
-	//border-radius: 7px;
 }
 
 #about-user{
