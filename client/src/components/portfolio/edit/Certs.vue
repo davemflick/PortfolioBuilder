@@ -1,5 +1,5 @@
 <template>
-  <app-form-panel title="Certifications" v-if="portfolio">
+  <app-form-panel class="mb-4" title="Certifications" v-if="portfolio">
     <br> <br>
     <h4>Current Certifications</h4>
     <br>
