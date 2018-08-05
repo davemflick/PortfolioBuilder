@@ -16,6 +16,11 @@
 
 	export default{
 		props:['portfolio'],
+		data(){
+			return {
+				defaultProfileImg
+			}
+		}
 	}
 </script>
 <style scoped>
