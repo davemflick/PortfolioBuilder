@@ -34,15 +34,6 @@
 				defaultCert
 			}
 		},
-		watch:{
-			isOpen(event){
-				console.log(event)
-				if(!this.isOpen){
-					console.log('fucker')
-					this.$emit('close');
-				}
-			}
-		},
 		methods:{
 			formatDate(date){
 				return moment(date).format('MM/DD/YYYY');
