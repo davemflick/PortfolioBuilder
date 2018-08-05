@@ -15,11 +15,11 @@
 					</v-flex>
 				</v-layout>
 				<v-layout column class="pa-3">
-					<app-all-projects v-on:open="openSinglProject" :projects="portfolio.projects"></app-all-projects>
+					<app-all-projects v-on:open="openSingleProject" :projects="portfolio.projects"></app-all-projects>
 					<br><br>
 					<app-all-skills :skills="portfolio.skills"></app-all-skills>
 					<br><br>
-					<app-all-certs :certs="portfolio.certifications"></app-all-certs>
+					<app-all-certs :certs="portfolio.certifications" v-on:open="openSingleCert"></app-all-certs>
 				</v-layout>
 			</v-card>
 			<h1 v-show="noPortfolioFound.status" class="text-xs-center">
@@ -27,6 +27,7 @@
 				Go <router-link tag="a" to="/"><a title="Go Home">Home</a></router-link>
 			</h1>
 			<app-project-modal :project="projectTarget" :isOpen="projectModal" v-on:close="projectModal = false; projectTarget = null;"></app-project-modal>
+			<app-cert-modal :cert="certTarget" :isOpen="certModal" v-on:close="certModal = false; certTarget = null;"></app-cert-modal>
 		</v-container>
 	</div>
 </template>
@@ -42,6 +43,7 @@
 	import appProjectModal from './ProjectModal.vue'
 	import appAllSkills from './AllSkills.vue'
 	import appAllCerts from './AllCerts.vue'
+	import appCertModal from './CertModal.vue'
 
 	export default{
 		data(){
@@ -54,6 +56,8 @@
 				defaultProject: defaultProject,
 				projectTarget: null,
 				projectModal: false,
+				certTarget: null,
+				certModal: false,
 				noPortfolioFound: {
 					status: false,
 					msg: null
@@ -66,7 +70,8 @@
 			appProjectModal,
 			appAllProjects,
 			appAllSkills,
-			appAllCerts
+			appAllCerts,
+			appCertModal
 		},
 		methods:{
 			setNoPortfolioMsg(msg){
@@ -74,9 +79,13 @@
 				this.noPortfolioFound.status = true;
 				this.noPortfolioFound.msg = msg;
 			},
-			openSinglProject(project){
+			openSingleProject(project){
 				this.projectTarget = project;
 				this.projectModal = true;
+			},
+			openSingleCert(cert){
+				this.certTarget = cert;
+				this.certModal = true;
 			}
 		},
 		async mounted(){
