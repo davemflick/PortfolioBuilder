@@ -145,6 +145,7 @@
   closeUploadModal(resp){
     console.log("NOW", resp);
     if(this.uploadTarget.cid){
+      console.log("here")
       this.portfolio.certifications.find(c => c._id === this.uploadTarget.cid).picturePath = resp.filePath;
     } else {
       this.newCert.picturePath = resp.filePath;
