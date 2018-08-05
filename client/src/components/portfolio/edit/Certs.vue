@@ -80,7 +80,7 @@
     },
     methods:{
      formatCertDates(){
-      this.portfolio.certifications.forEach(c=> c.dateObtained = moment(String(c.dateObtained)).format('MM/DD/YYYY'))
+      this.portfolio.certifications.forEach(c=> c.dateObtained = moment(String(c.dateObtained)).format('YYYY-MM-DD'))
      },
      async submitCert(cert){
       this.editError = null;
@@ -89,6 +89,8 @@
       this.newSuccess =  null;
       let curCerts = JSON.parse(JSON.stringify(this.portfolio.certifications))
       let certType = 'edit';
+
+      cert.dateObtained = new Date(cert.dateObtained);
       if(cert._id){
         curCerts = curCerts.map(c=> c._id === cert._id ? cert : c);
       } else {
