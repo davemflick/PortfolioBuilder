@@ -77,7 +77,8 @@
       watch:{
         uploadTarget(){
           if(this.uploadTarget){
-            if(this.uploadTarget.type === 'certification' || this.uploadTarget.type === 'pdf'){
+            let type = this.uploadTarget.type;
+            if(type === 'certification' || type === 'pdf' || type === 'banner' ){
               this.needImgCrop = false;
             } else {
               this.needImgCrop = true;

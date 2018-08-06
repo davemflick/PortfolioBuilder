@@ -76,6 +76,9 @@
       },
       closeUploadModal(resp){
         console.log(resp);
+        if(resp.ok){
+          this.portfolio.styles.banner = resp.portfolio.styles.banner;
+        }
         this.uploadTarget = null;
         this.uploadModal = false;
       },
