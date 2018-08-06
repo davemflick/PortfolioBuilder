@@ -88,6 +88,15 @@ module.exports = {
 							} else {
 								res.json(new uploadResponse('Certificate image uploaded, portfolio not updated', 'CertificationImage'))
 							}
+						} else if (dbData.type === 'banner'){
+							Portfolio.updatePortfolio(dbData._id, {'styles.banner': imageOutputPath}, function(err, portfolio){
+								if(err){return next(err);}
+								console.log(portfolio);
+								let response = new uploadResponse('Image uploaded, banner saved', 'BannerImage');
+								response.portfolio = portfolio;
+								res.json(response)
+							});
+							
 						} else {
 							res.json(new uploadResponse('Unknown dbData type image uploaded', 'UnknownImage'))
 						}
