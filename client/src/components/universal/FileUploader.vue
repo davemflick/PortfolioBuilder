@@ -1,9 +1,14 @@
   <template>
-    <v-card style="max-width: 500px;">
+    <v-card style="max-width: 1000px;">
       <v-card-title class="headline grey lighten-2" primary-title> File Uploader </v-card-title>
       <v-layout wrap>
         <v-flex xs12 class="text-center">
-          <div v-if="file.url && file.type.indexOf('image') >= 0" id="uploaded-image-container">
+          <div v-if="file.url && file.type.indexOf('image') >= 0" 
+                id="uploaded-image-container"
+                :style="{
+                  'max-width': imgContainer.width ? imgContainer.width : '400px',
+                  'max-height': imgContainer.height ? imgContainer.height: '400px',
+                }">
             <vue-draggable-resizable v-if="needImgCrop" :active="true" :w="300" :h="300" v-on:dragging="onDrag" :resizable="false" :parent="true" id="img-crop-box">
             </vue-draggable-resizable>
             <img :src="file.url" id="uploaded-img" v-if="file.url" />
@@ -63,6 +68,10 @@
             url: null,
             file: null
           },
+          imgContainer:{
+            width: null,
+            height: null
+          },
           needImgCrop: true,
           imgCrop: {
             width: 300,
@@ -78,9 +87,13 @@
         uploadTarget(){
           if(this.uploadTarget){
             let type = this.uploadTarget.type;
-            if(type === 'certification' || type === 'pdf' || type === 'banner' ){
+            if(type === 'certification' || type === 'banner' ){
               this.needImgCrop = false;
-            } else {
+              this.imgContainer.width = '1000px';
+              this.imgContainer.height = '800px';
+            } else if(type === 'pdf'){
+              this.needImgCrop = false;
+            }else {
               this.needImgCrop = true;
             }
           }
@@ -119,7 +132,6 @@
               let randStr = randomString(12, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
               this.file.name = newFileName(this.file.name, randStr, lastDot);
             }
-
             const fr = new FileReader();
             fr.readAsDataURL(file);
             fr.addEventListener('load', ()=>{
@@ -187,9 +199,7 @@
   #uploaded-image-container{
     width: 100%;
     height: 100%;
-    max-width: 400px;
     min-width: 310px;
-    max-height: 400px;
     min-height: 310px;
     border: 2px solid #aaa;
     padding: 5px;
