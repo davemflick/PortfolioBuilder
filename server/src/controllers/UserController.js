@@ -91,7 +91,6 @@ module.exports = {
 						} else if (dbData.type === 'banner'){
 							Portfolio.updatePortfolio(dbData._id, {'styles.banner': imageOutputPath}, function(err, portfolio){
 								if(err){return next(err);}
-								console.log(portfolio);
 								let response = new uploadResponse('Image uploaded, banner saved', 'BannerImage');
 								response.portfolio = portfolio;
 								res.json(response)

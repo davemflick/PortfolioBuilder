@@ -87,7 +87,7 @@ PortfolioSchema.statics.removeProject = function(portfolioId, projectId, callbac
 	if(!portfolioId){
 		return callback(noPortfolioIdError);
 	}
-	Portfolio.findOneAndUpdate({_id: portfolioId}, {$pull: {projects: {_id: projectId}}}, {new: true}).exec(function(error, portfolio){
+	Portfolio.findOneAndUpdate({_id: portfolioId}, {$pull: {"projects":  Object(projectId)}}, {new: true}).exec(function(error, portfolio){
 		if(error){return callback(error);}
 		if(!portfolio){
 			return callback(noPortfolioError);
