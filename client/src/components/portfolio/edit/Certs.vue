@@ -31,7 +31,7 @@
       :success="newSuccess"
       ></app-cert-form>
     </div>
-    <v-dialog v-model="uploadModal" width="500" >
+    <v-dialog v-model="uploadModal" width="800" >
       <app-file-uploader :uploadTarget="uploadTarget" ref="fileUploadComponent" v-on:close="closeUploadModal"></app-file-uploader>
     </v-dialog>
   </app-form-panel>
