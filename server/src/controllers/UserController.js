@@ -36,6 +36,8 @@ module.exports = {
 			const filePath = req.file.path;
 			const imageOutputPath = "src/uploads/images/" + req.file.originalname;
 			if(fileType == 'image'){
+				let resizeWidth = dbData.type === 'banner' ? null : resizeOps.width;
+				let resizeHeight = dbData.type === 'banner' ? null : resizeOps.height;
 				gm(filePath)
 				.resize(resizeOps.width, resizeOps.height)
 				.crop(cropOps.width, cropOps.height, cropOps.x, cropOps.y).write(imageOutputPath, function(err){
