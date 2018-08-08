@@ -4,9 +4,15 @@
    <br>
    <v-layout wrap>
     <v-flex xs12 pr-1>
-      <v-expansion-panel>
-        <v-expansion-panel-content v-for="(project, i) in portfolio.projects" :key="`project-${i}`">
-          <div slot="header">{{ project.name }}</div>
+      <v-expansion-panel popout>
+        <v-expansion-panel-content v-for="(project, i) in portfolio.projects" :key="`project-${i}`" :class="{'fade-out': fadeOut.indexOf(`project-${i}`) >= 0, 'fade-in': fadeIn.indexOf(`project-${i}`) >= 0 }">
+          <div slot="header" :key="`transitionProject-${i}`">
+            <v-icon v-if="i !== 0 && portfolio.projects.length > 1" @click="adjustProjectOrder(true, i)" class="project-up">arrow_upward</v-icon>
+            <v-icon v-else color="transparent" >arrow_upward</v-icon>
+            <v-icon v-if="i !== portfolio.projects.length - 1" @click="adjustProjectOrder(false, i)" class="project-down">arrow_downward</v-icon>
+            <v-icon v-else color="transparent" >arrow_upward</v-icon>
+            <h3 class="text-xs-center ma-0 pa-0" style="display: inline-block">{{ project.name }}</h3>
+          </div>
           <v-card>
             <v-card-text>
               <form>
@@ -95,7 +101,9 @@
         projectSuccess: null,
         uploadModal: false,
         uploadTarget: null,
-        newProjectImages: []
+        newProjectImages: [],
+        fadeOut: 'no no no',
+        fadeIn: 'no no no'
       }
     },
     components:{
@@ -112,6 +120,29 @@
       }
     },
     methods: {
+      async adjustProjectOrder(up, index){
+        event.stopPropagation();
+        let tempProjects = [...this.portfolio.projects];
+        let changingProject = tempProjects[index];
+        let newIndex = up ? index - 1 : index + 1
+        this.fadeOut = `project-${index} project-${newIndex}`;
+        tempProjects.splice(index, 1);
+        tempProjects.splice(newIndex, 0, changingProject);
+        try{
+          const updatedPortfolio = await PortfolioService.updatePortfolio(this.portfolio._id, {projects: tempProjects});
+          console.log(updatedPortfolio);
+          if(updatedPortfolio.data.ok){
+            this.portfolio.projects = tempProjects;
+            this.fadeOut = 'no no no';
+            this.fadeIn = `project-${index} project-${newIndex}`;
+            setTimeout(function(){this.fadeIn = 'no no no'}, 500);
+          } else {
+            this.projectError = "Something has gone terribly wrong. It's all your fault."
+          }
+        }catch(error){
+          console.log("ERROR", error);
+        }
+      },
       validate(type, value){
         const validations = {
           url: {
@@ -225,6 +256,46 @@
 .new-project{
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+.project-up{
+  color: #16a74b;
+  transition: color .2s linear;
+}
+.project-up:hover{
+  color: #087731;
+}
+
+.project-down{
+  color: #e81818;
+  transition: color .2s linear;
+}
+.project-down:hover{
+  color: #7b0707;
+}
+
+.fade-in{
+  animation: fade-in 0.75s forwards;
+}
+.fade-out{
+  animation: fade-out 0.5s forwards;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fade-out {
+ 0% {
+  opacity: 1
+}
+100% {
+  opacity: 0;
+}
 }
 
 </style>
