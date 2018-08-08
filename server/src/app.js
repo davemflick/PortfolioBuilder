@@ -10,6 +10,8 @@ var MongoStore = require('connect-mongo')(session);
 const config = require('./config/config');
 const app = express();
 
+require('dotenv').config();
+
 
 //set up mongodb / mongoose
 mongoose.connect("mongodb://localhost:27017/portbuilder");
