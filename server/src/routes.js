@@ -7,6 +7,7 @@ var UserController = require('./controllers/UserController.js');
 var fs = require('fs');
 
 const multer = require('multer');
+const nodemailer = require('nodemailer');
 
 let imgStorage = multer.diskStorage({
 	destination: function(req, file, cb){
@@ -63,6 +64,11 @@ router.put('/project/update/:projectId', PortfolioController.editProject);
 
 //DELETE -> Project
 router.put('/project/delete/:portfolioId/:projectId', PortfolioController.deleteProject);
+
+router.post('/mailer/send', function(req, res){
+	// Do mailing stuff here
+	res.json({ok: true, body: req.body});
+});
 
 
 module.exports = router
