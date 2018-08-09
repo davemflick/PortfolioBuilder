@@ -66,7 +66,50 @@ router.put('/project/update/:projectId', PortfolioController.editProject);
 router.put('/project/delete/:portfolioId/:projectId', PortfolioController.deleteProject);
 
 router.post('/mailer/send', function(req, res){
-	// Do mailing stuff here
+	//Do mailing stuff here
+	let transporter = nodemailer.createTransport({
+        host: process.env.AWS_HOST,
+        port: 587,
+        secure: false, // true for 465, false for other ports
+        auth: {
+            user: process.env.AWS_USER_AUTH, // generated ethereal user
+            pass: process.env.AWS_PASSWORD_AUTH // generated ethereal password
+        }
+    });
+
+	//html for email
+	let html = `<div style="width: 360px; padding: 10px;">
+							<h2 style="padding: 5px;">Somebody has emailed you on Porteloper!</h2>
+							<div style="width: 100px; padding: 5px; background-color: #ddd; display: inline-block;">Contact</div>
+							<div style="width: 240px; padding: 5px; display: inline-block;">Billy Zain</div>
+							<br>
+							<div style="width: 100px; padding: 5px; background-color: #ddd; display: inline-block;">Message</div>
+							<div style="width: 240px; padding: 5px; display: inline-block;">I like your portfolio, you sexy bitch</div>
+							</div>`
+
+    // setup email data 
+    let mailOptions = {
+        from: '"David Flick" <david@bluetonemedia.com>', // sender address
+        to: 'davemflick@gmail.com', // list of receivers
+        subject: 'Hello David', // Subject line
+        text: 'Hello world? Yo', // plain text body
+        html: html // html body
+    };
+
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+        console.log(info);
+        console.log('Message sent: %s', info.messageId);
+        // Preview only available when sending through an Ethereal account
+        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
+        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+        // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+    });
+ 	console.log(process.env.TEST_ABC)
 	res.json({ok: true, body: req.body});
 });
 
