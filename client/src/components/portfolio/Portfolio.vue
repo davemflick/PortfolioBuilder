@@ -2,6 +2,7 @@
 	<div>
 		<v-container>
 			<v-progress-linear v-show="!pageLoaded" :indeterminate="true"></v-progress-linear>
+			<v-btn flat primary @click="emailSheet = !emailSheet">EmailSheet</v-btn>
 			<v-card v-if="portfolioUser && portfolio" :style="`font-family: ${portfolio.styles.fontFamily}`">
 				<v-card-media v-if="portfolio.styles.banner" :src="`http://localhost:8081/${portfolio.styles.banner}`" height="250px"></v-card-media>
 				<v-card-media v-else :src="defaultBanner" height="250px"></v-card-media>
@@ -29,6 +30,7 @@
 			</h1>
 			<app-project-modal :project="projectTarget" :isOpen="projectModal" v-on:close="projectModal = false; projectTarget = null;"></app-project-modal>
 			<app-cert-modal :cert="certTarget" :isOpen="certModal" v-on:close="certModal = false; certTarget = null;"></app-cert-modal>
+			<app-email-form :emailSheet="emailSheet" :username="portfolio.username"></app-email-form>
 		</v-container>
 	</div>
 </template>
@@ -36,6 +38,7 @@
 <script>
 	import PortfolioService from '@/services/PortfolioService';
 	import appFormPanel from '../universal/FormPanel.vue';
+	import appEmailForm from '../universal/EmailForm.vue';
 	import defaultProfileImg from '@/assets/images/emptyProfile.png';
 	import defaultBanner from '@/assets/images/default-banner.png';
 	import defaultProject from '@/assets/images/default-project.png';
@@ -63,7 +66,8 @@
 					status: false,
 					msg: null
 				},
-				pageLoaded: false
+				pageLoaded: false,
+				emailSheet: false
 			}
 		},
 		components:{
@@ -72,7 +76,8 @@
 			appAllProjects,
 			appAllSkills,
 			appAllCerts,
-			appCertModal
+			appCertModal,
+			appEmailForm
 		},
 		methods:{
 			setNoPortfolioMsg(msg){
