@@ -31,8 +31,11 @@
 							<p class="my-0 alert error-alert" v-show="emailError">{{ emailError }}</p>
 							<p class="my-0 alert error-alert" v-show="error">{{ error }}</p>
 						</v-flex>
-						<v-flex xs12 class="text-xs-right">
+						<v-flex xs12 class="text-xs-right" v-if="captchaGood">
 							<v-btn flat color="primary" @click="sendEmail">Send</v-btn>
+						</v-flex>
+						<v-flex xs12 class="text-xs-center" v-if="!captchaGood">
+							<app-recaptcha v-on:verify="verifyCaptcha" v-on:reset="captchaGood = false"></app-recaptcha>
 						</v-flex>
 					</v-layout>
 				</v-container>
@@ -43,10 +46,14 @@
 
 <script>
 	import UserService from '@/services/UserService.js';
+	import appRecaptcha from './ReCaptcha.vue';
 
 	require('dotenv').config();
 	export default{
 		props: ["emailSheet", "user"],
+		components:{
+			appRecaptcha
+		},
 		data(){
 			return{
 				emailMsg: {
@@ -60,7 +67,8 @@
 				},
 				nameError: null,
 				emailError: null,
-				error: null
+				error: null,
+				captchaGood: false
 			}
 		},
 		mounted(){
@@ -70,6 +78,14 @@
 			}
 		},
 		methods:{
+			verifyCaptcha(resp){
+				if(resp.length > 200){
+					const self = this;
+					setTimeout(function(){
+						self.captchaGood = true;
+					}, 1000);
+				}
+			},
 			async sendEmail(){
 				let goodEmail = this.validate('email', this.emailMsg.fromEmail);
 				let goodName = this.validate('name', this.emailMsg.fromName);
@@ -86,23 +102,23 @@
 				}
 			},
 			validate(type, value){
-        const validations = {
-          email: {
-            re: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            required: true
-          },
-          name:{
-            re: /^[a-z\s\-\.]+$/i,
-            required: true
-          }
-        }
-        if(!value){
-          return !validations[type].required
-        }
-        let valid = validations[type].re.test(value.toLowerCase());
-        this[`${type}Error`] = valid ? null : `${type} is invalid`;
-        return valid;
-      }
+				const validations = {
+					email: {
+						re: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+						required: true
+					},
+					name:{
+						re: /^[a-z\s\-\.]+$/i,
+						required: true
+					}
+				}
+				if(!value){
+					return !validations[type].required
+				}
+				let valid = validations[type].re.test(value.toLowerCase());
+				this[`${type}Error`] = valid ? null : `${type} is invalid`;
+				return valid;
+			}
 		}
 	}
 </script>
