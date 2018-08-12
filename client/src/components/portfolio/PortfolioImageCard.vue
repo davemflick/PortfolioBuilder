@@ -8,6 +8,9 @@
 			<a class="op-link mx-2" v-if="portfolio.otherProfiles.linkedin" :href="portfolio.otherProfiles.linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
 			<a class="op-link mx-2" v-if="portfolio.otherProfiles.otherPortfolio" :href="portfolio.otherProfiles.otherPortfolio" target="_blank"><i class="fa fa-user fa-2x"></i></a>
 		</div>
+		<div v-if="portfolio.canEmail">
+			<v-btn flat primary @click="$emit('showEmail')">Contact Me</v-btn>
+		</div>
 	</v-card>
 </template>
 
