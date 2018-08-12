@@ -8,6 +8,7 @@ import store from './store/store.js';
 import VueDraggableResizable from 'vue-draggable-resizable'
 import Devicon from 'devicon';
 
+
 Vue.component('vue-draggable-resizable', VueDraggableResizable);
 
 Vue.config.productionTip = false
