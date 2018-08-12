@@ -2,13 +2,12 @@
 	<div>
 		<v-container>
 			<v-progress-linear v-show="!pageLoaded" :indeterminate="true"></v-progress-linear>
-			<v-btn flat primary @click="emailSheet = !emailSheet">EmailSheet</v-btn>
 			<v-card v-if="portfolioUser && portfolio" :style="`font-family: ${portfolio.styles.fontFamily}`">
 				<v-card-media v-if="portfolio.styles.banner" :src="`http://localhost:8081/${portfolio.styles.banner}`" height="250px"></v-card-media>
 				<v-card-media v-else :src="defaultBanner" height="250px"></v-card-media>
 				<v-layout wrap>
 					<v-flex xs8 sm4 md3 offset-xs2 offset-sm4 offset-md0 class="px-1" id="image-card-container">
-						<app-portfolio-image-card :portfolio="portfolio"></app-portfolio-image-card>
+						<app-portfolio-image-card :portfolio="portfolio" v-on:showEmail="showEmail"></app-portfolio-image-card>
 					</v-flex>
 					<v-flex xs12 md9 class="pa-3">
 						<h1>{{ portfolioUser.name.first }} {{ portfolioUser.name.last }}</h1>
@@ -30,7 +29,7 @@
 			</h1>
 			<app-project-modal :project="projectTarget" :isOpen="projectModal" v-on:close="projectModal = false; projectTarget = null;"></app-project-modal>
 			<app-cert-modal :cert="certTarget" :isOpen="certModal" v-on:close="certModal = false; certTarget = null;"></app-cert-modal>
-			<app-email-form :emailSheet="emailSheet" :username="portfolio.username"></app-email-form>
+			<app-email-form v-if="portfolioUser" :emailSheet="emailSheet" :user="portfolioUser" v-on:close="showEmail"></app-email-form>
 		</v-container>
 	</div>
 </template>
@@ -92,6 +91,9 @@
 			openSingleCert(cert){
 				this.certTarget = cert;
 				this.certModal = true;
+			},
+			showEmail(){
+				this.emailSheet = !this.emailSheet;
 			}
 		},
 		async mounted(){
