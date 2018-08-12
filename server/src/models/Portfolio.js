@@ -7,6 +7,7 @@ const PortfolioSchema = new mongoose.Schema({
 	username: {type: String, required: true, unique: true, trim: true},
 	isSetUp: {type: Boolean, default: false},
 	isActive: {type: Boolean, deafult: true, required: true},
+	canEmail: {type: Boolean, default: true},
 	aboutUser: {type: String, trim: true},
 	otherProfiles: {
 		github: {type: String, trim: true},
