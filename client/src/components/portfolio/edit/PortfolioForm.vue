@@ -3,7 +3,12 @@
     <v-switch
     :label="portfolio.isActive ? 'Portfolio Active' : 'Portfolio Deactivated'"
     v-model="portfolio.isActive"
-    @change="portfolioActivation"
+    @change="portfolioActivation('active')"
+    ></v-switch>
+    <v-switch
+    :label="portfolio.canEmail ? 'Can be emailed' : 'Can\'t be emailed'"
+    v-model="portfolio.canEmail"
+    @change="portfolioActivation('email')"
     ></v-switch>
     <edit-portfolio-general 
     :portfolio="portfolio" 
@@ -84,9 +89,21 @@
       profilePicsUpdated(pics){
         this.portfolio.profilePicture = pics;
       },
-      async portfolioActivation(){
+      async portfolioActivation(type){
+       let updateInfo = {};
+       if(type === 'active'){
+        updateInfo.isActive = this.portfolio.isActive;
+       } else if(type === 'email'){
+        updateInfo.canEmail = this.portfolio.canEmail;
+       }else{
+        alert("Type change not detected");
+        return false;
+       }
        try{
-        const updatedPortfolio = await PortfolioService.updatePortfolio(this.portfolio._id, {isActive: this.portfolio.isActive});
+        const updatedPortfolio = await PortfolioService.updatePortfolio(this.portfolio._id, updateInfo);
+        if(!updatedPortfolio.data.ok){
+          alert("Something has gone wrong updating your account.");
+        }
       } catch(error){
         console.log("ERROR", error);
         alert("Something has gone wrong updating active state");
