@@ -20,8 +20,8 @@ module.exports = {
 
         // setup email data 
         let mailOptions = {
-            from: '"Porteloper" <david@bluetonemedia.com>', // sender address
-            to: 'davemflick@gmail.com', // list of receivers
+            from: '"Porteloper" <porteloper@gmail.com>', // sender address
+            to: req.body.toEmail, // list of receivers
             subject: 'Someone likes your Portfolio!', // Subject line
             html: html // html body
         };
@@ -31,9 +31,8 @@ module.exports = {
             if (error) {
                 return console.log(error);
             }
-            console.log(info);
+            res.json({ok: true, data: info});
         });
-
-        res.json({ok: true, body: req.body});
+        
     }
 }
