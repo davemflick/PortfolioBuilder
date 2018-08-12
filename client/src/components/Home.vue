@@ -1,7 +1,14 @@
 <template>
-  <div class="container">
-    <h1>Home Page</h1>
-  </div>
+  <section id="home-head">
+    <v-container container>
+      <h1 class="text-xs-center">
+        Porteloper
+      </h1>
+      <h3 class="text-xs-center">
+        Portfolios for Devlopers
+      </h3>
+    </v-container>
+  </section>
 </template>
 
 <script>
@@ -17,18 +24,29 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
+h1{
+  color: #fff;
+  font-size: 6em;
+  margin-bottom: 5px;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+h3{
+  font-size: 2em;
+  color: #fff;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+
+#home-head{
+  background: url('../assets/images/home-background.png') no-repeat;
+  background-position: center center;
+  background-size: cover;
+  min-height: 800px;
 }
-a {
-  color: #42b983;
+
+@media screen and (max-width: 600px){
+  h1{
+    font-size: 3.5em;
+  }
+  h3{
+    font-size: 1.75em;
+  }
 }
 </style>
