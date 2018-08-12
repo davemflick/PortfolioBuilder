@@ -15,16 +15,24 @@
 					</v-layout>
 					<v-layout wrap class="pa-2 email-form-layout">
 						<v-flex xs12 sm6 class="pa-1">
-							<v-text-field  v-model="emailMsg.from" label="From" required ></v-text-field>
+							<v-text-field  v-model="emailMsg.fromName" label="Name" :class="{'invalidInput': emailMsg.fromName ? validate('name', emailMsg.fromName) ? false : true : false}"></v-text-field>
 						</v-flex>
 						<v-flex xs12 sm6 class="pa-1">
-							<v-text-field  v-model="emailMsg.about" label="About" required ></v-text-field>
+							<v-text-field  v-model="emailMsg.fromEmail" label="Email" :class="{'invalidInput': emailMsg.fromEmail ? validate('email', emailMsg.fromEmail) ? false : true : false}"></v-text-field>
 						</v-flex>
 						<v-flex xs12 class="pa-1">
-							<v-textarea  v-model="emailMsg.msg" label="Message" required ></v-textarea>
+							<v-text-field  v-model="emailMsg.about" label="About"></v-text-field>
+						</v-flex>
+						<v-flex xs12 class="pa-1">
+							<v-textarea  v-model="emailMsg.message" label="Message"></v-textarea>
+						</v-flex>
+						<v-flex xs12 class="text-xs-left">
+							<p class="my-0 alert error-alert" v-show="nameError">{{ nameError }}</p>
+							<p class="my-0 alert error-alert" v-show="emailError">{{ emailError }}</p>
+							<p class="my-0 alert error-alert" v-show="error">{{ error }}</p>
 						</v-flex>
 						<v-flex xs12 class="text-xs-right">
-							<v-btn flat color="primary">Send</v-btn>
+							<v-btn flat color="primary" @click="sendEmail">Send</v-btn>
 						</v-flex>
 					</v-layout>
 				</v-container>
@@ -34,6 +42,9 @@
 </template>
 
 <script>
+	import UserService from '@/services/UserService.js';
+
+	require('dotenv').config();
 	export default{
 		props: ["emailSheet", "user"],
 		data(){
@@ -42,10 +53,56 @@
 					toUsername: this.user.username,
 					toEmail: this.user.email,
 					fromEmail: null,
+					fromName: null,
 					about: null,
-					message: null
-				}
+					message: null,
+					secret: process.env.EMAIL_SECRET
+				},
+				nameError: null,
+				emailError: null,
+				error: null
 			}
+		},
+		mounted(){
+			if(this.$store.state.user){
+				this.emailMsg.fromEmail = JSON.parse(JSON.stringify(this.$store.state.user.email));
+				this.emailMsg.fromName = JSON.parse(JSON.stringify(`${this.$store.state.user.name.first} ${this.$store.state.user.name.last}`));
+			}
+		},
+		methods:{
+			async sendEmail(){
+				let goodEmail = this.validate('email', this.emailMsg.fromEmail);
+				let goodName = this.validate('name', this.emailMsg.fromName);
+				if(!goodEmail){this.emailError = "email is invalid"; return;};
+				if(!goodName){this.nameError = "name is invalid"; return;};
+				try{
+					const emailSent = await UserService.sendUserEmail(this.emailMsg);
+					console.log(emailSent);
+					this.emailMsg.about = null;
+					this.emailMsg.message = null;
+					this.$emit('close');
+				} catch(error){
+					this.error = error;
+				}
+			},
+			validate(type, value){
+        const validations = {
+          email: {
+            re: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            required: true
+          },
+          name:{
+            re: /^[a-z\s\-\.]+$/i,
+            required: true
+          }
+        }
+        if(!value){
+          return !validations[type].required
+        }
+        let valid = validations[type].re.test(value.toLowerCase());
+        this[`${type}Error`] = valid ? null : `${type} is invalid`;
+        return valid;
+      }
 		}
 	}
 </script>
