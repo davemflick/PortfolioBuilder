@@ -20,6 +20,7 @@
     "moment": "^2.22.2",
     "vue": "^2.5.2",
     "vue-draggable-resizable": "^1.7.1",
+    "vue-recaptcha": "^1.1.1",
     "vue-router": "^3.0.1",
     "vuelidate": "^0.7.4",
     "vuetify": "^1.1.1",
