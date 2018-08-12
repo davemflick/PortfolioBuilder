@@ -12,7 +12,7 @@
 				</v-list>
 			</v-menu>
 			<v-toolbar-title class="white--text">
-				<router-link :to="{name: 'Home'}" tag="span" class="hovlink">PortBuilder</router-link>
+				<router-link :to="{name: 'Home'}" tag="span" class="hovlink">Porteloper</router-link>
 			</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<v-text-field class="nav-search" color="#fff" prepend-icon="search" hide-details single-line></v-text-field>
