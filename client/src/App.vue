@@ -45,6 +45,10 @@ img.img-responsive{
   max-width: 100%;
 }
 
+.invalidInput div.v-text-field__slot input{
+  color: #dd1122 !important;
+}
+
 @media screen and (max-width: 600px){
   .v-bottom-nav{
     flex-wrap: wrap;
@@ -53,6 +57,10 @@ img.img-responsive{
   .v-bottom-nav button.v-btn{
     max-height: 50px;
     max-width: 32%;
+  }
+
+  .v-bottom-sheet.v-dialog--active{
+    overflow: scroll;
   }
 }
 
