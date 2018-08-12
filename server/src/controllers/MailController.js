@@ -28,7 +28,7 @@ module.exports = {
         // setup email data 
         let mailOptions = {
             from: '"Porteloper" <porteloper@gmail.com>', // sender address
-            to: 'davemflick@gmail.com', // list of receivers
+            to: req.body.toEmail, // list of receivers
             subject: 'Someone likes your Portfolio!', // Subject line
             html: html // html body
         };
