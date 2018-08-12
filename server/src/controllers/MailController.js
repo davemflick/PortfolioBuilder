@@ -3,7 +3,14 @@ const emailTemplate = require("../emailTemplates/general.js");
 
 module.exports = {
     sendEmail(req, res, next){
-        console.log("HERE");
+     if(req.body.secret !== process.env.EMAIL_SECRET){
+        let err = new Error();
+        err.status = 401;
+        err.msg = 'Email secret incorrect';
+        return next(err);
+     }
+
+
      let transporter = nodemailer.createTransport({
         host: process.env.AWS_HOST,
         port: 587,
@@ -21,7 +28,7 @@ module.exports = {
         // setup email data 
         let mailOptions = {
             from: '"Porteloper" <porteloper@gmail.com>', // sender address
-            to: req.body.toEmail, // list of receivers
+            to: 'davemflick@gmail.com', // list of receivers
             subject: 'Someone likes your Portfolio!', // Subject line
             html: html // html body
         };
