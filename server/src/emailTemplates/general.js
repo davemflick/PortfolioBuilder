@@ -87,7 +87,8 @@ module.exports = {
 		<td style="font-family: sans-serif; font-size: 15px; vertical-align: top;">
 		<h5 style="font-family: sans-serif; font-size: 20px; font-weight: normal; margin: 0; Margin-bottom: 5px; text-align: center;">Today's a good day, ${body.toUsername}!</h5>
 		<p style="font-family: sans-serif; font-size: 13px; font-weight: normal; margin: 0; Margin-bottom: 20px; text-align: center">Somebody has reached out to you via Porteloper.</p>
-		<p style="font-family: sans-serif; font-size: 15px; font-weight: normal; margin: 0; Margin-bottom: 10px; text-align: left"><span style="font-weight: bold;">From</span>: ${body.fromEmail}</p>
+		<p style="font-family: sans-serif; font-size: 15px; font-weight: normal; margin: 0; Margin-bottom: 10px; text-align: left"><span style="font-weight: bold;">From Name</span>: ${body.fromName}</p>
+		<p style="font-family: sans-serif; font-size: 15px; font-weight: normal; margin: 0; Margin-bottom: 10px; text-align: left"><span style="font-weight: bold;">From Email</span>: ${body.fromEmail}</p>
 		<p style="font-family: sans-serif; font-size: 15px; font-weight: normal; margin: 0; Margin-bottom: 10px; text-align: left"><span style="font-weight: bold;">About</span>: ${body.about}</p>
 		<p style="font-family: sans-serif; font-size: 15px; font-weight: normal; margin: 0; Margin-bottom: 10px; text-align: left"><span style="font-weight: bold;">Message</span>: ${body.message}</p>
 		</td>
