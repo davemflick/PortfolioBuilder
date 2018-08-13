@@ -1,5 +1,5 @@
 <template>
-	<v-layout row>
+	<v-layout row class="my-4">
 		<v-flex xs10 offset-xs1 sm6 offset-sm3 md4 offset-md4 >
 			<app-form-panel title="Login to PortBuilder">
 				<form id="login-form">

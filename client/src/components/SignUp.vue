@@ -1,7 +1,7 @@
 <template>
-	<v-layout row>
+	<v-layout row class="my-4">
 		<v-flex xs10 offset-xs1 sm8 offset-sm2 md6 offset-md3 >
-			<app-form-panel title="Register with PortBuilder">
+			<app-form-panel title="Sign Up">
 				<form id="login-form">
 					<v-layout wrap>
 						<v-flex xs12 sm6 pr-1>
