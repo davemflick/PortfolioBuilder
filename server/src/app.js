@@ -14,7 +14,7 @@ require('dotenv').config();
 
 
 //set up mongodb / mongoose
-mongoose.connect("mongodb://localhost:27017/portbuilder");
+mongoose.connect(config.db);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
