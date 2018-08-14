@@ -36,19 +36,30 @@
         </v-layout>
       </v-container>
     </section>
-    <section class="pa-5 text-xs-center" id="about-section">
+    <section class="py-5 px-3 text-xs-center" id="about-section">
       <v-container container>
-        <h2>What is Porteloper?</h2>
-        <h3 class="mb-4 mt-2">
-        Porteloper is a website designed to provide developers with a free, quick, and easy way to show off their work and accomplishments.
-        </h3>
-        <h2>Why use Porteloper?</h2>
-        <h3 class="mb-4 mt-2">
-        Don't have a place to show off your work? Is your current portfolio is a bit outdated and / or dificult to maintain? Don't have the time to build your own site from scratch? Whatever the reason, Porteloper is here to help. Just create an account, build your portfolio, and share it with the world!
-        </h3>
-      </v-container>
-    </section>
-  </div>
+        <v-layout row wrap align-center>
+          <v-flex xs12 sm7 md8>
+            <div class="pa-3">
+             <h2>What is Porteloper?</h2>
+             <h3 class="mb-4 mt-2">
+              Porteloper is a website designed to provide developers with a free, quick, and easy way to show off their work and accomplishments.
+            </h3>
+            <h2>Why use Porteloper?</h2>
+            <h3 class="mb-4 mt-2">
+              Don't have a place to show off your work? Is your current portfolio is a bit outdated and / or dificult to maintain? Don't have the time to build your own site from scratch? Whatever the reason, Porteloper is here to help. Just create an account, build your portfolio, and share it with the world!
+            </h3>
+          </div>
+        </v-flex>
+        <v-flex xs0 sm5 md4>
+          <div class="pa-2 tilted">
+            <img class="iphone img-responsive" src="../assets/images/iphone-home.png">
+          </div>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </section>
+</div>
 </template>
 
 <script>
@@ -74,6 +85,11 @@ h3{
   color: #fff;
 }
 
+.iphone.img-responsive{
+  width: 100%;
+  max-width: 250px;
+}
+
 #home-head{
   background: url('../assets/images/home-background.png') no-repeat;
   background-position: center center;
@@ -85,13 +101,19 @@ h3{
   background-color: #fff;
 }
 
+#about-section .container{
+  background-color: #fff;
+  box-shadow: 0px 11px 15px -7px rgba(0,0,0,0.2), 0px 24px 38px 3px rgba(0,0,0,0.14), 0px 9px 46px 8px rgba(0,0,0,0.12);
+  border-radius: 10px;
+}
+
 #about-section h2{
-  font-size: 2.5em;
+  font-size: 2.25em;
   color: #444;
 }
 
 #about-section h3{
-  font-size: 1.5em;
+  font-size: 1.3em;
   color: #444;
 }
 
