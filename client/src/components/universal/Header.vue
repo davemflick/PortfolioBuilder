@@ -44,8 +44,7 @@
 	export default {
 		data(){
 			return {
-				searchBar: false,
-				items: ['itemOne', 'itemTwo']
+				searchBar: false
 			}
 		},
 		methods:{
