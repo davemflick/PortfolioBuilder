@@ -151,7 +151,7 @@ h1{
 
 #image-card-container{
 	position: relative;
-	min-height: 200px;
+	min-height: 220px;
 }
 
 img.img-responsive{
@@ -162,15 +162,21 @@ img.img-responsive{
 	font-size: 1.2em;
 }
 
+@media screen and (min-width: 1200px){
+	#image-card-container{
+		min-height: 260px;
+	}
+}
+
 @media (min-width: 600px) and (max-width: 750px){
 	#image-card-container{
-		min-height: 110px;
+		min-height: 140px;
 	}
 }
 
 @media (min-width: 455px) and (max-width: 599px){
 	#image-card-container{
-		min-height: 200px;
+		min-height: 245px;
 	}
 }
 
@@ -180,9 +186,15 @@ img.img-responsive{
 	}
 }
 
+@media (min-width: 426px) and (max-width: 454px){
+	#image-card-container{
+		min-height: 220px;
+	}
+}
+
 @media screen and (max-width: 425px){
 	#image-card-container{
-		min-height: 130px;
+		min-height: 185px;
 	}
 }
 
