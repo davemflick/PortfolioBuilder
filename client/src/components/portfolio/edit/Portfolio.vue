@@ -101,6 +101,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
+
 .delete-badge{
   cursor: pointer;
   transform: rotate(0deg);

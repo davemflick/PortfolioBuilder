@@ -47,6 +47,11 @@ img.img-responsive{
   color: #dd1122 !important;
 }
 
+div.v-expansion-panel__container .header__icon {
+  text-align: right;
+  width: 40%;
+}
+
 @media screen and (max-width: 600px){
   .v-bottom-nav{
     flex-wrap: wrap;
