@@ -7,10 +7,10 @@
       <v-expansion-panel popout>
         <v-expansion-panel-content v-for="(project, i) in portfolio.projects" :key="`project-${i}`" :class="{'fade-out': fadeOut.indexOf(`project-${i}`) >= 0, 'fade-in': fadeIn.indexOf(`project-${i}`) >= 0 }">
           <div slot="header" :key="`transitionProject-${i}`">
-            <v-icon v-if="i !== 0 && portfolio.projects.length > 1" @click="adjustProjectOrder(true, i)" class="project-up">arrow_upward</v-icon>
-            <v-icon v-else color="transparent" >arrow_upward</v-icon>
-            <v-icon v-if="i !== portfolio.projects.length - 1" @click="adjustProjectOrder(false, i)" class="project-down">arrow_downward</v-icon>
-            <v-icon v-else color="transparent" >arrow_upward</v-icon>
+            <div class="project-order-btns">
+              <v-icon v-if="i !== 0 && portfolio.projects.length > 1" @click="adjustProjectOrder(true, i)" class="project-up">arrow_upward</v-icon>
+              <v-icon v-if="i !== portfolio.projects.length - 1" @click="adjustProjectOrder(false, i)" class="project-down">arrow_downward</v-icon>
+            </div>
             <h3 class="text-xs-center ma-0 pa-0" style="display: inline-block">{{ project.name }}</h3>
           </div>
           <v-card>
@@ -69,6 +69,7 @@
       </v-expansion-panel-content>
     </v-expansion-panel>
   </v-flex>
+  <br>
   <br>
   <h4 class="py-3">Add New Project</h4>
   <br>
@@ -258,20 +259,25 @@
   border-radius: 5px;
 }
 
+.project-order-btns{
+  display: inline-block;
+  min-width: 100px;
+}
+
 .project-up{
-  color: #16a74b;
+  color: #1976d2;
   transition: color .2s linear;
 }
 .project-up:hover{
-  color: #087731;
+  color: #7ca8d4;
 }
 
 .project-down{
-  color: #e81818;
+  color: #808080;
   transition: color .2s linear;
 }
 .project-down:hover{
-  color: #7b0707;
+  color: #bfbfbf;
 }
 
 .fade-in{
