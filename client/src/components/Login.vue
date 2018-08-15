@@ -38,7 +38,7 @@
 					if(response.data.ok){
 						this.$store.dispatch('setToken', response.data.token);
 						this.$store.dispatch('setUser', response.data.User);
-						this.$router.push({name: 'Portfolio'})
+						this.$router.push({name: 'Portfolio', params: {username: response.data.User.username}})
 					} else {
 						if(response.data.error.code == 11000){
 							this.error = 'Email address provided is already registered with this site.'
