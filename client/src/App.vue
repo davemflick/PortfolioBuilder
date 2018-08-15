@@ -3,7 +3,9 @@
     <v-app>
       <app-header></app-header>
       <v-content>
+        <transition name="fade" mode="out-in">
         <router-view/>
+      </transition>
       </v-content>
     </v-app>
   </div>
@@ -47,9 +49,17 @@ img.img-responsive{
   color: #dd1122 !important;
 }
 
-div.v-expansion-panel__container .header__icon {
-  text-align: right;
-  width: 40%;
+.fade-enter-active, .fade-leave-active {
+  transition-property: opacity;
+  transition-duration: .25s;
+}
+
+.fade-enter-active {
+  transition-delay: .25s;
+}
+
+.fade-enter, .fade-leave-active {
+  opacity: 0
 }
 
 @media screen and (max-width: 600px){
