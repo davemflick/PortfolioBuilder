@@ -3,7 +3,7 @@
 		<img class="img-responsive" v-if="portfolio.profilePicture.length > 0"  :src="'http://localhost:8081/' + portfolio.profilePicture.find((p)=>{return p.isMain}).path" />
 		<img class="img-responsive" v-else :src="defaultProfileImg" />
 		<br>
-		<div class="other-portfolios">
+		<div class="other-portfolios" v-if="portfolio.otherProfiles">
 			<a class="op-link mx-2" v-if="portfolio.otherProfiles.github" :href="portfolio.otherProfiles.github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
 			<a class="op-link mx-2" v-if="portfolio.otherProfiles.linkedin" :href="portfolio.otherProfiles.linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
 			<a class="op-link mx-2" v-if="portfolio.otherProfiles.otherPortfolio" :href="portfolio.otherProfiles.otherPortfolio" target="_blank"><i class="fa fa-user fa-2x"></i></a>
