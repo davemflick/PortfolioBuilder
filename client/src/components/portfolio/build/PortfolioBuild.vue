@@ -1,10 +1,10 @@
 <template>
 	<div>
-		<v-jumbotron>
+		<v-jumbotron style="height: 250px;">
 			<v-container fill-height>
 				<v-layout align-center text-xs-center>
 					<v-flex>
-						<h3 class="display-3">Welcome to PortBuilder<span v-if="user"> {{ user.name.first }}</span>!</h3>
+						<h3 class="display-2">Welcome to PortBuilder<span v-if="user"> {{ user.name.first }}</span>!</h3>
 						<p>
 							Let's get started by creating your profile.
 						</p>
