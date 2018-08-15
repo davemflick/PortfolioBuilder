@@ -67,6 +67,7 @@
 				try{
 					let newProject = this.project;
 					newProject.portfolioId = this.portfolioId;
+					if(!newProject.images[0].path){newProject.images = [];}
 					const project = await PortfolioService.addUserProject(this.portfolioId, newProject);
 					if(!project.data.ok){
 						this.error = project.data.message;
