@@ -26,6 +26,9 @@
 			return {
 				defaultProject: defaultProject
 			}
+		},
+		mounted(){
+			console.log(this.projects);
 		}
 	}
 
