@@ -18,42 +18,52 @@ const router = new Router({
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: {title: 'Porteloper'}
   },
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta: {title: 'Porteloper - Login'}
   },
   {
     path: '/signup',
     name: 'SignUp',
-    component: SignUp
+    component: SignUp,
+    meta: {title: 'Porteloper - Sign Up'}
   },
   {
     path: '/portfolio/:username?',
     name: 'Portfolio',
-    component: Portfolio
+    component: Portfolio,
+    meta: {title: 'Portfolio - '}
   },
   {
     path: '/portfolio/:username/build',
     name: 'PortfolioBuild',
-    component: PortfolioBuild
+    component: PortfolioBuild,
+    meta: {title: 'Build Portfolio -'}
   },
   {
     path: '/portfolio/:username/edit',
     name: 'EditPortfolio',
-    component: EditPortfolio
+    component: EditPortfolio,
+    meta: {title: 'Edit Portfolio -'}
   },
   {
     path: '/file-uploader',
     name: 'FileUploader',
-    component: FileUploader
+    component: FileUploader,
+    meta: {title: 'Porteloper File Uploader'}
   }
   ]
 });
 
 router.beforeEach(async (to, from, next)=>{
+  //Change title
+  let isUser = to.params.username;
+  document.title = isUser ? `${to.meta.title} ${to.params.username}` : to.meta.title;
   //check if user token is still vaild, if not, remove user from state
   if(store.state.token){
     try{
