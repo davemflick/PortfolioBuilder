@@ -6,7 +6,7 @@ import SignUp from '@/components/SignUp.vue'
 import Portfolio from '@/components/portfolio/Portfolio.vue'
 import PortfolioBuild from '@/components/portfolio/build/PortfolioBuild.vue'
 import EditPortfolio from '@/components/portfolio/edit/Portfolio.vue'
-import FileUploader from '@/components/universal/FileUploader.vue'
+import Contact from '@/components/Contact.vue'
 import AuthService from '../services/AuthenticationService.js';
 import store from '../store/store.js';
 
@@ -52,10 +52,10 @@ const router = new Router({
     meta: {title: 'Edit Portfolio -'}
   },
   {
-    path: '/file-uploader',
-    name: 'FileUploader',
-    component: FileUploader,
-    meta: {title: 'Porteloper File Uploader'}
+    path: '/contact',
+    name: 'Contact',
+    component: Contact,
+    meta: {title: 'Porteloper - Contact'}
   }
   ]
 });
