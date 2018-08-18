@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const emailTemplate = require("../emailTemplates/general.js");
+const emailContactTemplate = require("../emailTemplates/contact.js");
 
 module.exports = {
     sendEmail(req, res, next){
@@ -9,7 +10,6 @@ module.exports = {
         err.msg = 'Email secret incorrect';
         return next(err);
      }
-
 
      let transporter = nodemailer.createTransport({
         host: process.env.AWS_HOST,
@@ -23,7 +23,8 @@ module.exports = {
 
         console.log(req.body);
         //html for email
-        let html = emailTemplate.generalEmail(req.body);
+
+        let html = req.body.template === 'contact' ? emailContactTemplate.contactEmail(req.body) : emailTemplate.generalEmail(req.body);
 
         // setup email data 
         let mailOptions = {
