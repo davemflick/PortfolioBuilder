@@ -29,7 +29,11 @@
 			</h1>
 			<app-project-modal :project="projectTarget" :isOpen="projectModal" v-on:close="projectModal = false; projectTarget = null;"></app-project-modal>
 			<app-cert-modal :cert="certTarget" :isOpen="certModal" v-on:close="certModal = false; certTarget = null;"></app-cert-modal>
-			<app-email-form v-if="portfolioUser" :emailSheet="emailSheet" :user="portfolioUser" v-on:close="showEmail"></app-email-form>
+			<div class="text-xs-center">
+				<v-bottom-sheet v-model="emailSheet" persistent>
+					<app-email-form v-if="portfolioUser" :user="portfolioUser" :closeBtn="true" v-on:close="showEmail" :template="'general'"></app-email-form>
+				</v-bottom-sheet>
+			</div>
 		</v-container>
 	</div>
 </template>
