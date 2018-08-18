@@ -1,5 +1,5 @@
 module.exports = {
-	generalEmail(body){
+	contactEmail(body){
 		return `<!doctype html>
 		<html>
 		<!-- HTML based off of https://github.com/leemunroe/responsive-html-email-template -->
