@@ -1,46 +1,48 @@
 <template>
-	<div class="text-xs-center">
-		<v-bottom-sheet v-model="emailSheet" persistent>
-			<div class="py-3" style="width: 100%; background-color: #fff;">
-				<v-container>
-					<v-layout row>
-						<v-flex xs10>
-							<h2 class="text-xs-left mb-2 primary--text">
-								Send {{ emailMsg.toUsername }} an Email
-							</h2>
-						</v-flex>
-						<v-flex xs2 class="text-xs-right close-icon">
-							<v-icon color="red" @click="$emit('close')">cancel</v-icon>
-						</v-flex>
-					</v-layout>
-					<v-layout wrap class="pa-2 email-form-layout">
-						<v-flex xs12 sm6 class="pa-1">
-							<v-text-field  v-model="emailMsg.fromName" label="Name" :class="{'invalidInput': emailMsg.fromName ? validate('name', emailMsg.fromName) ? false : true : false}"></v-text-field>
-						</v-flex>
-						<v-flex xs12 sm6 class="pa-1">
-							<v-text-field  v-model="emailMsg.fromEmail" label="Email" :class="{'invalidInput': emailMsg.fromEmail ? validate('email', emailMsg.fromEmail) ? false : true : false}"></v-text-field>
-						</v-flex>
-						<v-flex xs12 class="pa-1">
-							<v-text-field  v-model="emailMsg.about" label="About"></v-text-field>
-						</v-flex>
-						<v-flex xs12 class="pa-1">
-							<v-textarea  v-model="emailMsg.message" label="Message"></v-textarea>
-						</v-flex>
-						<v-flex xs12 class="text-xs-left">
-							<p class="my-0 alert error-alert" v-show="nameError">{{ nameError }}</p>
-							<p class="my-0 alert error-alert" v-show="emailError">{{ emailError }}</p>
-							<p class="my-0 alert error-alert" v-show="error">{{ error }}</p>
-						</v-flex>
-						<v-flex xs12 class="text-xs-right" v-if="captchaGood">
-							<v-btn flat color="primary" @click="sendEmail">Send</v-btn>
-						</v-flex>
-						<v-flex xs12 class="text-xs-center" v-if="!captchaGood">
-							<app-recaptcha v-on:verify="verifyCaptcha" v-on:reset="captchaGood = false"></app-recaptcha>
-						</v-flex>
-					</v-layout>
-				</v-container>
-			</div>
-		</v-bottom-sheet>
+	<div class="py-3" style="width: 100%; background-color: #fff;">
+		<v-container>
+			<v-layout row>
+				<v-flex xs10>
+					<h2 class="text-xs-left mb-2 primary--text">
+						Send {{ emailMsg.toUsername }} an Email
+					</h2>
+				</v-flex>
+				<v-flex v-show="closeBtn" xs2 class="text-xs-right close-icon">
+					<v-icon color="red" @click="$emit('close')">cancel</v-icon>
+				</v-flex>
+			</v-layout>
+			<v-layout wrap class="pa-2 email-form-layout">
+				<v-flex xs12 sm6 class="pa-1">
+					<v-text-field  v-model="emailMsg.fromName" label="Name" :class="{'invalidInput': emailMsg.fromName ? validate('name', emailMsg.fromName) ? false : true : false}"></v-text-field>
+				</v-flex>
+				<v-flex xs12 sm6 class="pa-1">
+					<v-text-field  v-model="emailMsg.fromEmail" label="Email" :class="{'invalidInput': emailMsg.fromEmail ? validate('email', emailMsg.fromEmail) ? false : true : false}"></v-text-field>
+				</v-flex>
+				<v-flex xs12 class="pa-1">
+					<v-text-field  v-model="emailMsg.about" label="About"></v-text-field>
+				</v-flex>
+				<v-flex xs12 class="pa-1">
+					<v-textarea  v-model="emailMsg.message" label="Message"></v-textarea>
+				</v-flex>
+				<v-flex xs12 class="text-xs-left">
+					<p class="my-0 alert error-alert" v-show="nameError">{{ nameError }}</p>
+					<p class="my-0 alert error-alert" v-show="emailError">{{ emailError }}</p>
+					<p class="my-0 alert error-alert" v-show="error">{{ error }}</p>
+				</v-flex>
+				<v-flex xs12 class="text-xs-right" v-if="captchaGood">
+					<v-btn flat color="primary" @click="sendEmail">Send</v-btn>
+				</v-flex>
+				<v-flex xs12 class="text-xs-center" v-if="!captchaGood">
+					<app-recaptcha v-on:verify="verifyCaptcha" v-on:reset="captchaGood = false"></app-recaptcha>
+				</v-flex>
+				<v-flex v-if="emailSending" xs12 class="text-xs-center">
+					<v-progress-circular :size="50" color="primary" indeterminate ></v-progress-circular>
+				</v-flex>
+				<v-flex v-if="successfullySent" xs12 class="text-xs-center">
+					<p class="alert success-alert"> Your message has been sent! </p>
+				</v-flex>
+			</v-layout>
+		</v-container>
 	</div>
 </template>
 
@@ -50,7 +52,7 @@
 
 	require('dotenv').config();
 	export default{
-		props: ["emailSheet", "user"],
+		props: ["user", "closeBtn", "template"],
 		components:{
 			appRecaptcha
 		},
@@ -63,12 +65,15 @@
 					fromName: null,
 					about: null,
 					message: null,
-					secret: process.env.EMAIL_SECRET
+					secret: process.env.EMAIL_SECRET,
+					template: this.template
 				},
 				nameError: null,
 				emailError: null,
 				error: null,
-				captchaGood: false
+				captchaGood: false,
+				emailSending: false,
+				successfullySent: false
 			}
 		},
 		mounted(){
@@ -91,14 +96,22 @@
 				let goodName = this.validate('name', this.emailMsg.fromName);
 				if(!goodEmail){this.emailError = "email is invalid"; return;};
 				if(!goodName){this.nameError = "name is invalid"; return;};
+				this.emailSending = true;
 				try{
 					const emailSent = await UserService.sendUserEmail(this.emailMsg);
-					console.log(emailSent);
+					console.log(emailSent)
+					this.emailSending = false;
+					if(emailSent.data.ok){
+						this.successfullySent = true;
+					} else {
+						this.error = "Something has gone wrong trying to send your message";
+					}
 					this.emailMsg.about = null;
 					this.emailMsg.message = null;
-					this.$emit('close');
+					if(this.closeBtn){this.$emit('close')};
 				} catch(error){
 					this.error = error;
+					this.emailSending = false;
 				}
 			},
 			validate(type, value){
