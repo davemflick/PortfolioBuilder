@@ -20,12 +20,8 @@ module.exports = {
                 pass: process.env.AWS_PASSWORD_AUTH // generated ethereal password
             }
         });
-
-        console.log(req.body);
         //html for email
-
         let html = req.body.template === 'contact' ? emailContactTemplate.contactEmail(req.body) : emailTemplate.generalEmail(req.body);
-
         // setup email data 
         let mailOptions = {
             from: '"Porteloper" <porteloper@gmail.com>', // sender address
