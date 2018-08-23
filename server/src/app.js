@@ -12,7 +12,6 @@ const app = express();
 
 require('dotenv').config();
 
-
 //set up mongodb / mongoose
 mongoose.connect(config.db);
 const db = mongoose.connection;
