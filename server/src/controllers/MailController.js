@@ -10,7 +10,6 @@ module.exports = {
         err.msg = 'Email secret incorrect';
         return next(err);
      }
-     //comment
 
      let transporter = nodemailer.createTransport({
         host: process.env.AWS_HOST,
