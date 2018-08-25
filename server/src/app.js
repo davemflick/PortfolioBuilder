@@ -13,7 +13,7 @@ const app = express();
 require('dotenv').config();
 
 //set up mongodb / mongoose
-mongoose.connect(config.db);
+mongoose.connect(config.db, { useNewUrlParser: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
