@@ -8,7 +8,7 @@
 			:key="`project-${i}`" 
 			@click="$emit('open', project)">
 			<div class="pa-2">
-				<img v-if="project.images.length > 0" :src="`http://localhost:8081/${project.images.find(p=>p.isMain).path}`" class="img-responsive" />
+				<img v-if="project.images.length > 0" :src="`http://porteloper.net/${project.images.find(p=>p.isMain).path}`" class="img-responsive" />
 				<img v-else :src="defaultProject" class="img-responsive" />
 				<p>{{ project.name }}</p>
 			</div>

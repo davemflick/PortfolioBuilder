@@ -8,7 +8,7 @@
 			:key="`project-${i}`" 
 			@click="$emit('open', cert)">
 			<div class="pa-2">
-				<img v-if="cert.picturePath" :src="`http://localhost:8081/${cert.picturePath}`" class="img-responsive" />
+				<img v-if="cert.picturePath" :src="`http://porteloper.net/${cert.picturePath}`" class="img-responsive" />
 				<img v-else :src="defaultCert" class="img-responsive" />
 				<p>{{ cert.name }}</p>
 			</div>

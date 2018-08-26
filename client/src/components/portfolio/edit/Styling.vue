@@ -8,7 +8,7 @@
             <v-flex xs-12 sm-4>
               <div v-if="portfolio.styles.banner">
                 <p>Current</p>
-                <img class="img-responsive banner" :src="`http://localhost:8081/${portfolio.styles.banner}`" />
+                <img class="img-responsive banner" :src="`http://porteloper.net/${portfolio.styles.banner}`" />
               </div>
               <div v-else>
                 <p>Current (default banner)</p>

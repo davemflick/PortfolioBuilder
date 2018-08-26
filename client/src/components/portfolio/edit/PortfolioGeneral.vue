@@ -15,7 +15,7 @@
             </v-flex>
             <v-flex xs6>
               <h3  v-if="portfolio.resume">
-                <a class="view-resume mx-2" :href="`http://localhost:8081/${portfolio.resume}`" target="_blank">
+                <a class="view-resume mx-2" :href="`http://porteloper.net/${portfolio.resume}`" target="_blank">
                   <v-icon color="green">get_app</v-icon>
                 </a>
                 My Resume 
@@ -34,7 +34,7 @@
         <v-flex xs12 sm6 px-1 text-xs-center>
           <v-avatar :size="200" :tile="true">
             <img v-if="portfolio.profilePicture.length > 0"
-            :src="'http://localhost:8081/' + portfolio.profilePicture.find((p)=>{return p.isMain}).path" />
+            :src="'http://porteloper.net/' + portfolio.profilePicture.find((p)=>{return p.isMain}).path" />
             <img v-else :src="defaultProfileImg" />
           </v-avatar>
           <br><br>

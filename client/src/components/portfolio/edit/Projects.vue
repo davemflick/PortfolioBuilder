@@ -49,7 +49,7 @@
                           @click="deleteProjectImage({projectId: project._id, imageId: img._id})"
                           >close</v-icon>
                           <v-avatar :size="50" :tile="true">
-                            <img :src="'http://localhost:8081/' + img.path" alt="Project Image" />
+                            <img :src="'http://porteloper.net/' + img.path" alt="Project Image" />
                           </v-avatar>
                         </v-badge>
                       </div>
