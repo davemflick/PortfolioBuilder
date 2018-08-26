@@ -27,7 +27,7 @@
               <v-badge color="red" small overlap>
                 <v-icon slot="badge" dark small @click="removeImage(i)" >close</v-icon>
                 <v-avatar :size="50" :tile="true">
-                  <img :src="'http://porteloper.net/' + img.path" alt="Project Image" />
+                  <img :src="serverImageHost + img.path" alt="Project Image" />
                 </v-avatar>
               </v-badge>
             </div>

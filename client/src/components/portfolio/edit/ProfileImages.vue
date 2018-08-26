@@ -4,7 +4,7 @@
       <v-card class="pa-2">
         <v-layout wrap>
           <v-flex xs12 sm6 md4 class="text-xs-center pa-1">
-            <img v-if="hasImages" class="boxey-boy" :src="`http://porteloper.net/${mainImage.path}`" />
+            <img v-if="hasImages" class="boxey-boy" :src="`${serverImageHost}${mainImage.path}`" />
             <img v-else class="boxey-boy" :src="`${defaultProfileImg}`" />
           </v-flex>
           <v-flex v-if="images" xs12 sm6 md8 class="pa-1 text-xs-center">
@@ -12,7 +12,7 @@
               <v-flex xs4 sm3 class="pa-2 mx-2" v-for="(img, i) in images" :key="`img-thumb-${i}`">
                <v-avatar :size="80" :tile="true">
                 <img class="boxey-boy" 
-                     :src="'http://porteloper.net/' + img.path" alt="Project Image"
+                     :src="serverImageHost + img.path" alt="Project Image"
                      @click="mainImage = img"/>
               </v-avatar>
             </v-flex>

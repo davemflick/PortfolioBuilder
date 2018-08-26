@@ -3,7 +3,7 @@
 		<v-container>
 			<v-progress-linear v-show="!pageLoaded" :indeterminate="true"></v-progress-linear>
 			<v-card v-if="portfolioUser && portfolio" :style="`font-family: ${portfolio.styles.fontFamily}`">
-				<v-card-media v-if="portfolio.styles.banner" :src="`http://porteloper.net/${portfolio.styles.banner}`" height="250px"></v-card-media>
+				<v-card-media v-if="portfolio.styles.banner" :src="`${serverImageHost}${portfolio.styles.banner}`" height="250px"></v-card-media>
 				<v-card-media v-else :src="defaultBanner" height="250px"></v-card-media>
 				<v-layout wrap>
 					<v-flex xs8 sm4 md3 offset-xs2 offset-sm4 offset-md0 class="px-1" id="image-card-container">

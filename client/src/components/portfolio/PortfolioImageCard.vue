@@ -1,6 +1,6 @@
 <template>
 	<v-card class="pa-2 text-xs-center" id="image-card">
-		<img class="img-responsive" v-if="portfolio.profilePicture.length > 0"  :src="'http://porteloper.net/' + portfolio.profilePicture.find((p)=>{return p.isMain}).path" />
+		<img class="img-responsive" v-if="portfolio.profilePicture.length > 0"  :src="serverImageHost + portfolio.profilePicture.find((p)=>{return p.isMain}).path" />
 		<img class="img-responsive" v-else :src="defaultProfileImg" />
 		<br>
 		<div class="other-portfolios" v-if="portfolio.otherProfiles">

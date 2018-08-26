@@ -12,13 +12,13 @@
 				<v-container v-if="project">
 					<v-layout wrap>
 						<v-flex xs12 sm5 class="pa-2 text-xs-center">
-							<img v-if="mainImage" :src="`http://porteloper.net/${mainImage.path}`" class="img-responsive main-image" />
+							<img v-if="mainImage" :src="`${serverImageHost}${mainImage.path}`" class="img-responsive main-image" />
 							<img v-else :src="defaultProjectImage" class="img-responsive" />
 							<br>
 							<v-layout wrap v-if="imageThumbs" align-content-center class="text-xs-center project-images">
 								<v-flex xs4 md3 class="pa-1 text-xs-center" v-for="(img, i) in imageThumbs" :key="`p-img-${i}`">
 									<v-avatar :size="70" :tile="true">
-										<img class="project-thumb" :src="`http://porteloper.net/${img.path}`" alt="Project Image" @click="mainImage = img" />
+										<img class="project-thumb" :src="`${serverImageHost}${img.path}`" alt="Project Image" @click="mainImage = img" />
 									</v-avatar>
 								</v-flex>
 							</v-layout>

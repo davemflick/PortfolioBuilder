@@ -16,6 +16,17 @@ Vue.config.productionTip = false
 Vue.use(Vuetify);
 sync(store, router);
 
+Vue.mixin({
+  data: function() {
+    return {
+      get serverImageHost() {
+      	return "http://localhost:8081/"
+        //return "http://porteloper.net/";
+      }
+    }
+  }
+})
+
 new Vue({
   el: '#app',
   router,

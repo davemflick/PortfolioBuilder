@@ -6,7 +6,7 @@
 					<span class="headline">Certification</span>
 				</v-card-title>
 				<div class="pa-2 text-xs-center">
-					<img v-if="cert.picturePath" :src="`http://porteloper.net/${cert.picturePath}`" class="img-responsive" />
+					<img v-if="cert.picturePath" :src="`${serverImageHost}${cert.picturePath}`" class="img-responsive" />
 					<img v-else :src="defaultCert" class="img-responsive" />
 					<h3>
 						{{ cert.name }}

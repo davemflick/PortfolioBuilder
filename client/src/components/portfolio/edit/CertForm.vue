@@ -33,7 +33,7 @@
           slot="badge" dark small 
           >close</v-icon>
           <v-avatar :size="50" :tile="true">
-            <img :src="'http://porteloper.net/' + cert.picturePath" alt="Project Image" />
+            <img :src="serverImageHost + cert.picturePath" alt="Project Image" />
           </v-avatar>
         </v-badge>
       </v-flex>
