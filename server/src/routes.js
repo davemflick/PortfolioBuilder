@@ -5,20 +5,67 @@ var AuthenticationController = require('./controllers/AuthenticationController.j
 var PortfolioController = require('./controllers/PortfolioController.js');
 var UserController = require('./controllers/UserController.js');
 var MailController = require('./controllers/MailController.js');
+var gm = require('gm');
+const bodyParser = require('body-parser');
 var fs = require('fs');
-
+var aws = require('aws-sdk');
 const multer = require('multer');
+const multerS3 = require('multer-s3');
 
+require('dotenv').config();
+
+//---------------------------------------------------------------
+//saving files locally
 let imgStorage = multer.diskStorage({
 	destination: function(req, file, cb){
 		file.mimetype == 'application/pdf' ? cb(null, './src/tempUploads/pdfs') : cb(null, './src/tempUploads/images');
 	},
 	filename: function(req, file, cb){
-		cb(null, file.originalname );
+		cb(null, file.originalname);
 	}
 });
+const upload= multer({ storage: imgStorage })
+//---------------------------------------------------------------
 
-const upload = multer({ storage: imgStorage })
+
+//---------------------------------------------------------------
+// Saving files to AWS S3
+// aws.config.update({
+// 	secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
+// 	accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
+// 	region: 'us-east-1'
+// })
+
+
+// const s3 = new aws.S3();
+
+// const uploadS3 = multer({
+// 	storage: multerS3({
+// 		s3: s3,
+// 		bucket: 'porteloper',
+// 		acl: 'public-read',
+// 		contentType: multerS3.AUTO_CONTENT_TYPE,
+// 		key: function (req, file, cb) {
+// 			console.log("GOING TO S3", file)
+// 			const path = `images/${file.originalname}`
+// 			cb(null, path);
+// 		}
+// 	})
+// });
+
+
+// const uploadMiddlewareTwo = function(req, res, next){
+// 	console.log("MIDDLEWARE TWO");
+// 	res.json({ok: 'maybe, idk'})
+// }
+
+//---------------------------------------------------------------
+
+//PUT -> Uploading a user portfolio image
+router.post('/user/upload/img', upload.single('myfile'), UserController.uploadPortfolioImage);
+//router.post('/user/upload/img', upload.single('myfile'), UserController.uploadPortfolioImage);
+
+//---------------------------------------------------------------
 
 //comment
 //POST -> Register
@@ -43,17 +90,16 @@ router.put('/user/update', AuthenticationControllerPolicy.updateUserInfo, UserCo
 //POST -> First post a new project, then update correct portfolio
 router.post('/project/add/:portfolioId', PortfolioController.addUserProject)
 
-//PUT -> Uploading a user portfolio image
-router.post('/user/upload/img', upload.single('myfile'), UserController.uploadPortfolioImage);
+
 
 //GET IMAGES
 router.get('/src/uploads/:folder/:file', function(req, res){
 	const file = `${__dirname}/uploads/${req.params.folder}/${req.params.file}`;
 	if (fs.existsSync(file)) {
-    res.sendFile(file);
-  } else {
-  	res.json({ok: false, msg: 'bad pathway'});
-  }
+		res.sendFile(file);
+	} else {
+		res.json({ok: false, msg: 'bad pathway'});
+	}
 });
 
 //DELETE -> Project Image
