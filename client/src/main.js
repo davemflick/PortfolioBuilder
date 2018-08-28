@@ -20,8 +20,8 @@ Vue.mixin({
   data: function() {
     return {
       get serverImageHost() {
-      	return "http://localhost:8081/"
-        //return "http://porteloper.net/";
+      	//return "http://localhost:8081/"
+        return "http://porteloper.net/";
       }
     }
   }
