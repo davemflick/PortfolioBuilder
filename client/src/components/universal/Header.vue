@@ -5,7 +5,16 @@
 				<router-link :to="{name: 'Home'}" tag="span" class="hovlink">Porteloper</router-link>
 			</v-toolbar-title>
 			<v-spacer></v-spacer>
-			<v-text-field class="nav-search" color="#fff" prepend-icon="search" hide-details single-line></v-text-field>
+			<v-text-field class="nav-search" 
+										color="#fff" 
+										prepend-icon="search" 
+										hide-details 
+										single-line
+										@focus="searchTerm = 'Currently Unavailable'"
+										@blur="searchTerm = ''"
+										@keypress.prevent
+										v-model="searchTerm"
+										 ></v-text-field>
 			<v-menu :nudge-width="150" offset-y >
 				<v-toolbar-title class="pr-2" slot="activator">
 					<v-toolbar-side-icon></v-toolbar-side-icon>
@@ -44,7 +53,8 @@
 	export default {
 		data(){
 			return {
-				searchBar: false
+				searchBar: false,
+				searchTerm: ""
 			}
 		},
 		methods:{
