@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="portfolio && user" :style="`font-family: ${portfolio.styles.fontFamily}`">
+  <v-container v-if="portfolio && user" :style="`font-family: ${portfolio.styles.fontFamily}; padding-bottom: 80px;`">
     <transition name="slide" mode="out-in">
       <app-edit-user v-if="bottomNav === 'user'" :user="user" :portfolioId="portfolio._id"></app-edit-user>
       <app-edit-portfolio  v-if="bottomNav === 'portfolio'" :portfolio="portfolio"></app-edit-portfolio>
@@ -80,6 +80,9 @@
       const portfolio = userData.data.portfolio;
       const user = userData.data.user;
       this.portfolio = portfolio;
+      if(!this.portfolio.otherProfiles){
+        this.portfolio.otherProfiles = {};
+      }
       if(this.$store.state.user.username !== user.username){
        this.$router.push({name: 'Portfolio', params: {username}});
        return;
