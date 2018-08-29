@@ -4,7 +4,7 @@
       <v-layout wrap>
         <v-flex xs12 sm6 px-1>
           <v-textarea label="About" v-model="portfolio.aboutUser"></v-textarea>
-          <div v-if="portfolio.otherProfiles">
+          <div v-if="portfolio">
             <v-text-field label="Github Account" v-model="portfolio.otherProfiles.github"></v-text-field>
             <v-text-field label="Linkedin Account" v-model="portfolio.otherProfiles.linkedin"></v-text-field>
             <v-text-field label="Other Portfolio" v-model="portfolio.otherProfiles.otherPortfolio"></v-text-field>
