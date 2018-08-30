@@ -9,7 +9,7 @@
 			<a class="op-link mx-2" v-if="portfolio.otherProfiles.otherPortfolio" :href="portfolio.otherProfiles.otherPortfolio" target="_blank"><i class="fa fa-user fa-2x"></i></a>
 		</div>
 		<div v-if="portfolio.canEmail">
-			<v-btn color="secondary" @click="$emit('showEmail')">Contact Me</v-btn>
+			<v-btn flat color="primary" @click="$emit('showEmail')">Contact Me</v-btn>
 		</div>
 		<div v-if="portfolio.resume">
 			<v-btn color="primary" :href="portfolio.resume" target="_blank">View Resume</v-btn>
