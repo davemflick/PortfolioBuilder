@@ -12,7 +12,7 @@
 			<v-btn flat color="primary" @click="$emit('showEmail')">Contact Me</v-btn>
 		</div>
 		<div v-if="portfolio.resume">
-			<v-btn color="primary" :href="portfolio.resume" target="_blank">View Resume</v-btn>
+			<v-btn color="primary" :href="`${serverImageHost}${portfolio.resume}`" target="_blank">View Resume</v-btn>
 		</div>
 	</v-card>
 </template>
