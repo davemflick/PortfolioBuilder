@@ -2,7 +2,7 @@
 	<div>
 		<v-toolbar dark color="primary">
 			<v-toolbar-title class="white--text">
-				<router-link :to="{name: 'Home'}" tag="span" class="hovlink">Porteloper</router-link>
+				<router-link :to="{name: 'Home'}" tag="span" class="hovlink">Porteloper (beta)</router-link>
 			</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<v-text-field class="nav-search" 
