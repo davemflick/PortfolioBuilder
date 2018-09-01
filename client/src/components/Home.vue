@@ -30,12 +30,14 @@
           </router-link>
           </v-flex>
           <v-flex xs12 sm6 md4 class="pa-2 text-xs-center">
+            <router-link :to="{name: toPortfolio.name , params: toPortfolio.params}"  tag="span">
             <div class="hp-block">
               <v-icon class="hp-icon pa-3" color="primary">public</v-icon>
               <h4 class="pa-3">
                 Share your Work
               </h4>
             </div>
+          </router-link>
           </v-flex>
         </v-layout>
       </v-container>
@@ -70,7 +72,8 @@
   export default{
     data(){
       return{
-        toBuild: {name: 'Login', params: null}
+        toBuild: {name: 'Login', params: null},
+        toPortfolio: {name: 'Login', params: null}
       }
     },
     mounted(){
@@ -79,6 +82,8 @@
       if(loggedUser){
         this.toBuild.name = 'EditPortfolio';
         this.toBuild.params = {username: loggedUser}
+        this.toPortfolio.name = 'Portfolio';
+        this.toPortfolio.params = {username: loggedUser}
       }
     }
   }
