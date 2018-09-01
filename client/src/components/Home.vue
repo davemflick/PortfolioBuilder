@@ -10,20 +10,24 @@
         </h3>
         <v-layout class="my-4" wrap>
           <v-flex xs12 sm6 md4 class="pa-2 text-xs-center">
+            <router-link :to="{name: 'Login'}"  tag="span">
             <div class="hp-block">
               <v-icon class="hp-icon pa-3" color="primary">person_add</v-icon>
               <h4 class="pa-3">
                 Create an Account
               </h4>
             </div>
+          </router-link>
           </v-flex>
           <v-flex xs12 sm6 md4 class="pa-2 text-xs-center">
+            <router-link :to="{name: toBuild.name , params: toBuild.params}"  tag="span">
             <div class="hp-block">
               <v-icon class="hp-icon pa-3" color="primary">build</v-icon>
               <h4 class="pa-3">
                 Build your Portfolio
               </h4>
             </div>
+          </router-link>
           </v-flex>
           <v-flex xs12 sm6 md4 class="pa-2 text-xs-center">
             <div class="hp-block">
@@ -63,6 +67,21 @@
 </template>
 
 <script>
+  export default{
+    data(){
+      return{
+        toBuild: {name: 'Login', params: null}
+      }
+    },
+    mounted(){
+      let loggedUser = this.$store.state.user.username
+      console.log(loggedUser)
+      if(loggedUser){
+        this.toBuild.name = 'EditPortfolio';
+        this.toBuild.params = {username: loggedUser}
+      }
+    }
+  }
   
 </script>
 
@@ -115,6 +134,7 @@ h3{
   padding: 10px;
   background-color: #fff;
   box-shadow: 0px 11px 15px -7px rgba(0,0,0,0.2), 0px 24px 38px 3px rgba(0,0,0,0.14), 0px 9px 46px 8px rgba(0,0,0,0.12);
+  cursor: pointer;
 }
 
 .hp-icon{
