@@ -39,6 +39,7 @@
 	border: 1px solid #eee;
 	border-radius: 2px;
 	cursor: pointer;
+	height: 100%;
 }
 
 </style>
