@@ -53,7 +53,7 @@
             </h3>
             <h2>Why use Porteloper?</h2>
             <h3 class="mb-4 mt-2">
-              Don't have a place to show off your work? Is your current portfolio is a bit outdated and / or dificult to maintain? Don't have the time to build your own site from scratch? Whatever the reason, Porteloper is here to help. Just create an account, build your portfolio, and share it with the world!
+              Don't have a place to show off your work? Is your current portfolio a bit outdated and / or difficult to maintain? Don't have the time to build your own site from scratch? Whatever the reason, Porteloper is here to help. Just create an account, build your portfolio, and share it with the world!
             </h3>
           </div>
         </v-flex>
