@@ -178,27 +178,27 @@ img.img-responsive{
 	}
 }
 
-@media (min-width: 455px) and (max-width: 599px){
-	#image-card-container{
-		min-height: 245px;
-	}
-}
-
 @media screen and (max-width: 600px){
 	.container{
 		padding: 0;
 	}
 }
 
+@media (min-width: 455px) and (max-width: 599px){
+	#image-card-container{
+		min-height: 280px;
+	}
+}
+
 @media (min-width: 426px) and (max-width: 454px){
 	#image-card-container{
-		min-height: 220px;
+		min-height: 255px;
 	}
 }
 
 @media screen and (max-width: 425px){
 	#image-card-container{
-		min-height: 185px;
+		min-height: 235px;
 	}
 }
 
