@@ -12,7 +12,10 @@
 				<v-container v-if="project">
 					<v-layout wrap>
 						<v-flex xs12 sm5 class="pa-2 text-xs-center">
-							<img v-if="mainImage" :src="`${serverImageHost}${mainImage.path}`" class="img-responsive main-image" />
+							<img v-if="mainImage" 
+							:src="`${serverImageHost}${mainImage.path}`" 
+							class="img-responsive main-image"
+							@click="openImageModal(`${serverImageHost}${mainImage.path}`)" />
 							<img v-else :src="defaultProjectImage" class="img-responsive" />
 							<br>
 							<v-layout wrap v-if="imageThumbs" align-content-center class="text-xs-center project-images">
@@ -40,6 +43,11 @@
 							</div>
 						</v-flex>
 					</v-layout>
+					<v-dialog v-model="imageModal" max-width="400">
+						<div class="pa-3 text-xs-center" style="background-color: #fff; width: 100%;">
+							<img v-if="imageModal" :src="`${serverImageHost}${mainImage.path}`" class="img-responsive main-image" />
+						</div>
+					</v-dialog>
 				</v-container>
 			</v-card>
 		</v-dialog>
@@ -56,7 +64,9 @@
 			return{
 				defaultProjectImage,
 				mainImage: null,
-				imageThumbs: null
+				imageThumbs: null,
+				imageModal: false,
+				picInImageModal: null
 			}
 		},
 		watch:{
@@ -69,6 +79,12 @@
 					this.mainImage = null;
 					this.imageThumbs = null;
 				}
+			}
+		},
+		methods:{
+			openImageModal(img){
+				this.imageModal = true;
+				this.picInImageModal = img;
 			}
 		}
 	}
