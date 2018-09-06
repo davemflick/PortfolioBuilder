@@ -1,6 +1,8 @@
-# client
 
-> A Vue.js project
+# Client side for Porteloper
+
+> Front end built with VueJS for Porteloper. This connects to the backend via Axios.
+> Vue initiated with Vue-CLI webpack simple
 
 ## Build Setup
 
