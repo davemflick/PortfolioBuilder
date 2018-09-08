@@ -46,7 +46,7 @@
                         <v-badge color="red" small overlap>
                           <v-icon class="delete-badge" 
                           slot="badge" dark small 
-                          @click="deleteProjectImage({projectId: project._id, imageId: img._id})"
+                          @click="deleteProjectImage({projectId: project._id, imageId: img._id, imagePath: img.path})"
                           >close</v-icon>
                           <v-avatar :size="50" :tile="true">
                             <img :src="serverImageHost + img.path" alt="Project Image" />
