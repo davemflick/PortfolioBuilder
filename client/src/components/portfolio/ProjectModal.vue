@@ -43,9 +43,9 @@
 							</div>
 						</v-flex>
 					</v-layout>
-					<v-dialog v-model="imageModal" max-width="400">
+					<v-dialog v-model="imageModal" max-width="600">
 						<div class="pa-3 text-xs-center" style="background-color: #fff; width: 100%;">
-							<img v-if="imageModal" :src="`${serverImageHost}${mainImage.path}`" class="img-responsive main-image" />
+							<img v-if="imageModal" :src="`${serverImageHost}${mainImage.path}`" class="img-responsive" />
 						</div>
 					</v-dialog>
 				</v-container>
@@ -101,8 +101,9 @@ img.img-responsive{
 }
 
 .main-image{
-	box-shadow: 2px 2px #ddd;
 	border-radius: 7px;
+	max-height: 325px;
+	cursor: pointer;
 }
 
 .project-thumb{
