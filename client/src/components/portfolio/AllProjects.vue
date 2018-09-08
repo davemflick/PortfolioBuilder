@@ -8,8 +8,10 @@
 			:key="`project-${i}`" 
 			@click="$emit('open', project)">
 			<div class="pa-2">
+				<div>
 				<img v-if="project.images.length > 0" :src="`${serverImageHost}${project.images.find(p=>p.isMain).path}`" class="img-responsive" />
 				<img v-else :src="defaultProject" class="img-responsive" />
+			</div>
 				<p>{{ project.name }}</p>
 			</div>
 		</v-flex>
@@ -40,6 +42,18 @@
 	border-radius: 2px;
 	cursor: pointer;
 	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+	justify-content: space-between;
+}
+
+.single-project>div>div{
+	width: 100%;
+}
+
+.single-project>div>div img{
+	max-height: 200px;
 }
 
 </style>
