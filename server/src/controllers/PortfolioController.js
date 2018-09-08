@@ -1,6 +1,7 @@
 var User = require('../models/User.js');
 var Portfolio = require('../models/Portfolio.js');
 var Project = require('../models/Project.js');
+const fs = require('fs');
 
 module.exports = {
 	//register middleware
@@ -40,8 +41,16 @@ module.exports = {
 
 	async removeProjectImage(req, res, next){
 		const project = req.body;
+		const imgPath = project.imagePath;
 		Project.findImageAndRemove(project.projectId, project.imageId, function(error, project){
 			if(error){return next(error);}
+			if(imgPath){
+				fs.unlink(imgPath, function(errorx){
+					if(errorx){
+						console.log(errorx);
+					}
+				})
+			}
 			return res.json({ok: true, project});
 		});
 	},
