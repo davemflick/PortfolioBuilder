@@ -87,14 +87,14 @@
         uploadTarget(){
           if(this.uploadTarget){
             let type = this.uploadTarget.type;
-            if(type === 'certification' || type === 'banner' ){
-              this.needImgCrop = false;
-              this.imgContainer.width = '1000px';
-              this.imgContainer.height = '800px';
+            if(type === 'portfolioImage'){
+              this.needImgCrop = true;
             } else if(type === 'pdf'){
               this.needImgCrop = false;
             }else {
-              this.needImgCrop = true;
+              this.needImgCrop = false;
+              this.imgContainer.width = '1000px';
+              this.imgContainer.height = '800px';
             }
           }
         }
