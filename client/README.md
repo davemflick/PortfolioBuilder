@@ -3,6 +3,7 @@
 
 > Front end built with VueJS for Porteloper. This connects to the backend via Axios.
 > Vue initiated with Vue-CLI webpack simple
+> Production run via AWS S3 instance
 
 ## Build Setup
 
